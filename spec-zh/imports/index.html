@@ -208,57 +208,56 @@ var pulse = heart.querySelector('div.pulse');
 </code></pre>
 </div>
 
-<p>An <a href="#dfn-import">import</a> in the context of the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> of an <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#html-parser">HTML parser</a> or <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-xhtml-syntax.html#xml-parser">XML Parser</a> is said to be <dfn id="dfn-an-import-that-is-blocking-scripts">an import that is blocking scripts</dfn> if the <a href="http://dom.spec.whatwg.org/#concept-element">element</a> was created by that <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a>'s parser, or and the <a href="http://dom.spec.whatwg.org/#concept-element">element</a> is a <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> of type <A href="#link-type-import"><code>import</code></a> when the <a href="http://dom.spec.whatwg.org/#concept-element">element</a> was created by the parser, and the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> is not <a href="#dfn-import-link-async">marked as async</a>, and the the import is yet to be <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-end.html#completely-loaded">completely loaded</a>, and, the last time the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#event-loop">event loop</a> has reached step 1, the <a href="http://dom.spec.whatwg.org/#concept-element">element</a> was <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#in-a-document">in that <code>Document</code></a>, and the user agent hasn't given up on that <a href="#dfn-import">import</a> yet. A user agent may give up on an <a href="#dfn-import">import</a> at any time.</p>
-
+<p>在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#html-parser">HTML parser</a> 或 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-xhtml-syntax.html#xml-parser">XML Parser</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> 上下文中的 <a href="#dfn-import">import</a> 被称为 <dfn id="dfn-an-import-that-is-blocking-scripts">可阻塞脚本的导入</dfn>。 如果此 <a href="http://dom.spec.whatwg.org/#concept-element">element</a> 是 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> 的解析器创建的，或者这个 <a href="http://dom.spec.whatwg.org/#concept-element">element</a> 是一个 <A href="#link-type-import"><code>import</code></a> 类型的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a>，且此 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 没有 <a href="#dfn-import-link-async">标记为异步(marked as async)</a>， 且此import已经 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-end.html#completely-loaded">完全下载</a>，且 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#event-loop">event loop</a> 的最后时间已经到达步骤1，且 <a href="http://dom.spec.whatwg.org/#concept-element">element</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#in-a-document"> 在 <code>Document</code></a> 中，且用户代理尚未放弃此 <a href="#dfn-import">import</a>。 用户代理可以随时放弃一个 <a href="#dfn-import">import</a>。</p>
 
 <div class="informative">
 <p>
-Giving up an import before it loads, even if the import eventually does still load, means that the script might end up operating with incorrect information. For example, if an import registers a custom element and a script relies on the availability of this element, the script will find that this element is unavailable if the user agent gives up early. Implementers have to balance the likelihood of a script using incorrect information with the performance impact of doing nothing while waiting for a slow network request to finish.
+放弃一个未下载或仍在下载中的import，即脚本可以结束操作错误的信息。比如，如果一个import注册了一个自定义元素，而某个脚本依赖此元素，如果用户代理放弃，这个脚本会发现此元素不可用。实现者必须平衡脚本使用错误信息时，什么都不做只是等待完成一个很慢的网络请求，导致影响性能的可能性。
 </p>
 </div>
 
-<p>A <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> <dfn id="dfn-has-an-import-that-is-blocking-scripts">has an import that is blocking scripts</dfn> if there is <a href="#dfn-an-import-that-is-blocking-scripts">an import that is blocking scripts</a> in the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a>'s <a href="#dfn-import-dependent">import dependent</a>.
-A <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> <dfn id="dfn-has-no-import-that-is-blocking-scripts">has no import that is blocking scripts</dfn> if it does not <a href="#dfn-has-no-import-that-is-blocking-scripts">have an import that is blocking scripts</a> as defined in the previous paragraph.</p>
+<p>如果在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>文档</code></a> 的 <a href="#dfn-import-dependent">导入依赖</a> 中存在 <a href="#dfn-an-import-that-is-blocking-scripts">可阻塞脚本的导入</a>，那么此 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>文档</code></a> <dfn id="dfn-has-an-import-that-is-blocking-scripts">具有可阻塞脚本的导入</dfn>。否则此文档 <dfn id="dfn-has-no-import-that-is-blocking-scripts">没有可阻塞脚本的导入</dfn>。</p>
 
 <div class="informative">
-<p>The state of "<a href="#dfn-has-an-import-that-is-blocking-scripts">has an import that is blocking scripts</a>" can change each time an existing import is completely loaded or new import loading is started. HTML parser has changes to unblock it for each of such timings.</p>
+<p>每当一个import完成下载或一个新的import开始下载，状态 "<a href="#dfn-has-an-import-that-is-blocking-scripts">具有可阻塞脚本的导入</a>" 都会改变。在这些时刻，HTML解析器会做改变来解除阻塞。
+</p>
 </div>
 
-<h2 id="interface-document">Extensions to <code>Document</code> Interface</h2>
+<h2 id="interface-document"><code>Document</code> 接口扩展</h2>
 
-<h3 id="additions-to-document-open">Additions to <code>document.open() method</code></h3>
+<h3 id="additions-to-document-open">补充 <code>document.open() 方法</code></h3>
 
-<p>Add following step as the first step of the definition:</p>
+<p>增加如下步骤为定义的第一步：</p>
 
 <div class="monkeypatch">
 <ol>
-  <li>Throws an <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#invalidstateerror">InvalidStateError</a></code> exception if the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> is an <a href="#dfn-import">import</a>.</li>
+  <li>如果 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> 是一个 <a href="#dfn-import">import</a>，抛出 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#invalidstateerror">InvalidStateError</a></code> 异常。</li>
 </ol>
 </div>
 
-<h3 id="additions-to-document-write">Additions to <code>document.write()</code> method</h3>
+<h3 id="additions-to-document-write">补充 <code>document.write()</code> 方法</h3>
 
-<p>Add following step as the first step of the definition:</p>
+<p>增加如下步骤为定义的第一步：</p>
 
 <div class="monkeypatch">
 <ol>
-  <li>Throws an <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#invalidstateerror">InvalidStateError</a></code> exception if the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> is an <a href="#dfn-import">import</a>.</li>
+  <li>如果 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> 是一个 <a href="#dfn-import">import</a>，抛出 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#invalidstateerror">InvalidStateError</a></code> 异常。</li>
 </ol>
 </div>
 
-<h3 id="additions-to-document-write">Additions to <code>document.close()</code> method</h3>
+<h3 id="additions-to-document-write">补充 <code>document.close()</code> 方法</h3>
 
-<p>Add following step as the first step of the definition:</p>
+<p>增加如下步骤为定义的第一步：</p>
 
 <div class="monkeypatch">
 <ol>
-  <li>Throws an <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#invalidstateerror">InvalidStateError</a></code> exception if the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> is an <a href="#dfn-import">import</a>.</li>
+  <li>如果 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> 是一个 <a href="#dfn-import">import</a>，抛出 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#invalidstateerror">InvalidStateError</a></code> 异常。</li>
 </ol>
 </div>
 
-<h2 id="loading-imports">Loading Imports</h2>
+<h2 id="loading-imports">加载 Imports</h2>
 
-<h3 id="import-dependent">Import Dependent</h3>
+<h3 id="import-dependent">导入依赖</h3>
 
 <p>Each document has an <dfn id="dfn-import-link-list">import link list</dfn>, each of whose item is consist of <dfn id="dfn-import-link-link">link</dfn>, the <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element">link</a></code> element and <dfn id="import-link-list-location">location</dfn>, a URL.
 Also, the item is optionally <dfn id="dfn-import-link-list-branch">marked as branch</dfn>.
