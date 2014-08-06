@@ -14,46 +14,47 @@
 </div>
 
 <h1>Web Components 简介</h1>
-<h2 id="wg-note">W3C Working Group Note 24 July 2014</h2>
+<h2 id="wg-note">W3C Working Group Note 24,7,2014</h2>
 <dl>
-<dt>This version</dt>
+<dt>当前版本</dt>
     <dd><a href="http://www.w3.org/TR/2014/NOTE-components-intro-20140724/">http://www.w3.org/TR/2014/NOTE-components-intro-20140724/</a></dd>
-<dt>Latest version</dt>
+<dt>最新版本</dt>
     <dd><a href="http://www.w3.org/TR/components-intro/">http://www.w3.org/TR/components-intro/</a></dd>
-<dt>Latest editor's draft</dt>
+<dt>最新编辑草案</dt>
     <dd><a href="http://w3c.github.io/webcomponents/explainer/">http://w3c.github.io/webcomponents/explainer/</a></dd>
-<dt>Previous version</dt>
+<dt>上一版本</dt>
     <dd><a href="http://www.w3.org/TR/2013/WD-components-intro-20130606/">http://www.w3.org/TR/2013/WD-components-intro-20130606/</a></dd>
-<dt>Revision history</dt>
+<dt>校订历史</dt>
     <dd><a href="https://github.com/w3c/webcomponents/commits/gh-pages/explainer/">https://github.com/w3c/webcomponents/commits/gh-pages/explainer/</a></dd>
-<dt>Participate</dt>
-    <dd>Discuss on <a href="http://lists.w3.org/Archives/Public/public-webapps/">public-webapps@w3.org</a> (<a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a>)</dd>
-    <dd><a href="https://www.w3.org/Bugs/Public/enter_bug.cgi?comment=&amp;blocked=14949&amp;short_desc=%5BExplainer%5D%3A%20&amp;product=WebAppsWG&amp;component=Component%20Model">File bugs</a> (w3.org's <a href="https://www.w3.org/Bugs/Public/">Bugzilla</a>)</dd>
-<dt>Editors</dt>
+<dt>参与制定</dt>
+    <dd>讨论 <a href="http://lists.w3.org/Archives/Public/public-webapps/">public-webapps@w3.org</a> (<a href="http://www.w3.org/2008/webapps/">Web Applications Working Group(Web应用工作组)</a>)</dd>
+    <dd><a href="https://www.w3.org/Bugs/Public/enter_bug.cgi?comment=&amp;blocked=14949&amp;short_desc=%5BExplainer%5D%3A%20&amp;product=WebAppsWG&amp;component=Component%20Model">File bugs(提交bug)</a> (w3.org's <a href="https://www.w3.org/Bugs/Public/">Bugzilla(bug跟踪)</a>)</dd>
+<dt>校订者</dt>
     <dd class="vcard"><span class="fn">Dimitri Glazkov</span>, <span class="org">Google</span>, &lt;<a class="email" href="mailto:dglazkov@chromium.org">dglazkov@chromium.org</a>&gt;</dd>
     <dd class="vcard"><span class="fn">Hayato Ito</span>, <span class="org">Google</span>, &lt;<a class="email" href="mailto:hayato@google.com">hayato@google.com</a>&gt;</dd>
-<dt>Authors</dt>
+<dt>标准作者</dt>
     <dd class="vcard"><span class="fn">Dominic Cooney</span>, <span class="org">Google</span>, &lt;<a class="email" href="mailto:dglazkov@chromium.org">dominicc@google.com</a>&gt;</dd>
 </dl>
 
-<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">版权</a> © 2014 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 版权所有 W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> 规则适用.</p>
 
 <hr>
 
-<h2 id="abstract">Abstract</h2>
+<h2 id="abstract">摘要</h2>
 
-<p>This document is a non-normative reference, which provides an overview of Web Components. It summarizes the normative information in the respective specifications in easy-to-digest prose with illustrations.</p>
+<p>本文档是非规范性参考文档, 文档提供关于Web Components的概述.文档总结Web Components标准的信息,针对各个技术规范作出了由浅入深的说明.</p>
 
-<h2 id="status">Status of This Document</h2>
+<h2 id="status">当前文档状态</h2>
 
-<p><em>This section describes the status of this document at the time of its publication. Other documents may supersede this document. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at http://www.w3.org/TR/.</em></p>
+<p><em>这里公布了目前文档的状态. 其它文档有可能替代本文档. 目前<abbr title="World Wide Web Consortium">W3C</abbr> 公布的一系列关于Web Components的最新修正过的技术文档可以通过<a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at http://www.w3.org/TR/.</em>查询</p>
 
-<p><strong>Work on this document has been discontinued and it should not be referenced. Numerous online resources about Web Components are available, including the <a href="http://www.w3.org/wiki/WebComponents/">Web Components wiki</a>.
+<p><strong>本文档已经停止更新，不应再用来被参考. 许多关于Web Components的在线资源都是有效的, 其中包括<a href="http://www.w3.org/wiki/WebComponents/">Web Components wiki</a>.
 </strong></p>
 
-<p>This document was published by the <a href="http://www.w3.org/2008/webapps/">Web Applications Working Group</a> as a Working Group Note. If you wish to make comments regarding this document, please send them to <a href="mailto:public-webapps@w3.org">public-webapps@w3.org</a> (<a href="mailto:public-webapps-request@w3.org?subject=subscribe">subscribe</a>, <a href="http://lists.w3.org/Archives/Public/public-webapps/">archives</a>). All feedback is welcome.</p><p>Publication as a Working Group Note does not imply endorsement by the <abbr title="World Wide Web Consortium">W3C</abbr> Membership. This is a draft document and may be updated, replaced or obsoleted by other documents at any time. It is inappropriate to cite this document as other than work in progress.</p>
+<p><a href="http://www.w3.org/2008/webapps/">Web Applications Working Group(Web应用工作组)</a>公布本文档作为工作组的记录. 如果你希望对本文档提出更加合理的意见, 请将你的建议发送<a href="mailto:public-webapps@w3.org">public-webapps@w3.org</a> (<a href="mailto:public-webapps-request@w3.org?subject=subscribe">subscribe</a>, <a href="http://lists.w3.org/Archives/Public/public-webapps/">archives</a>). 所有的合理建议我们都非常欢迎</p>
+<p>一个工作组的记录公布并不意味着已经取得<abbr title="World Wide Web Consortium">W3C</abbr>.这份草案文档可能会随时被其它文档更新,取代,废除. 除了本文档的修订工作,本文档不适合被引用.</p>
 
-<p>This document was produced by a group operating under the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>. <abbr title="World Wide Web Consortium">W3C</abbr> maintains a <a href="http://www.w3.org/2004/01/pp-impl/42538/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group; that page also includes instructions for disclosing a patent. An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the <abbr title="World Wide Web Consortium">W3C</abbr> Patent Policy</a>.</p>
+<p>本文档的制作是通过一个小组来维护，符合<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5,2,2004 <abbr title="World Wide Web Consortium">W3C</abbr>专利政策</a>. <abbr title="World Wide Web Consortium">W3C</abbr> 维护了一个<a href="http://www.w3.org/2004/01/pp-impl/42538/status" rel="disclosure">公开的专利列表</a> 关系到小组的可交付的专利; 专利列表页面包含了每一个公开的专利. 个体认为所拥有的实际的专利知识包含在<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> 中的必须公开和 <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr>专利政策</a>第6部分中的相关的信息</p>
 
 </div>
 
