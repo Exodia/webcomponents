@@ -82,117 +82,108 @@
     </section>
 
     <section>
-      <h2>Concepts</h2>
+      <h2>概念</h2>
 
       <section class="informative">
-        <h3>Introduction</h3>
+        <h3>介绍</h3>
 
         <p>
-          See the <a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/">Shadow DOM 101</a> as a non-normative intruduction.
+          请移步至 <a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/">Shadow DOM 101</a> 阅读这份非正式性介绍。
         </p>
       </section>
 
       <section>
-        <h3>Shadow trees</h3>
+        <h3>Shadow 树</h3>
 
-        <p>A <dfn>document tree</dfn> is a <a>node tree</a> [[!DOM]] whose <a>root</a> <a>node</a> is a <a>document</a>.</p>
+        <p><dfn>文档树</dfn>是指<a>根</a><a>结点</a>是<a>文档</a>的<a>结点树</a> [[!DOM]]。</p>
 
-        <p>Any element can have an <dfn title="shadow roots list">associated ordered list</dfn> of zero or more <a title="node tree">node trees</a>.</p>
+        <p>任何元素都可以有一个包含 0 个或更多的<a title="node tree">结点树</a>的<dfn title="shadow roots list">关联有序列表</dfn>。</p>
 
-        <p>An element <dfn>hosts</dfn> a <a>node tree</a> if the <a>node tree</a> is a member of this associated list.</p>
+        <p>如果一个<a>结点树</a>是一个元素的关联列表的成员，则称该元素<dfn>宿主</dfn>该<a>结点树</a>。</p>
 
-        <p>A <dfn>shadow host</dfn> is an element that <a>hosts</a> one or more <a title="node tree">node trees</a>.</p>
+        <p><dfn>Shadow 宿主</dfn>是指<a>宿主</a>一个或多个<a title="node tree">结点树</a>的元素。</p>
 
-        <p>A <dfn>shadow tree</dfn> is a <a>node tree</a> <a title="hosts">hosted</a> by a <a>shadow host</a>.</p>
+        <p><dfn>Shadow 树</dfn>是指被 <a>shadow 宿主</a><a title="hosts">宿主</a>的<a>结点树</a>。</p>
 
-        <p>A <dfn>shadow root</dfn> is the <a>root</a> <a>node</a> of a shadow tree.</p>
+        <p><dfn>Shadow 根</dfn>是指 shadow 树的<a>根</a><a>结点</a>。</p>
 
-        <p>If more than one <a>shadow tree</a> is <a title="hosts">hosted</a> by the same <a>shadow host</a>, the more recently added <a>shadow tree</a> is called the <dfn>younger shadow tree</dfn> and the less recently added <a>shadow tree</a> is called the <dfn>older shadow tree</dfn>.</p>
+        <p>如果超过一个 <a>shadow 树</a>被<a title="hosts">宿主</a>于相同的 <a>shadow 宿主</a>，则最近添加的 <a>shadow 树</a>被称为<dfn>年轻 shadow 树</dfn>同时最早添加的 <a>shadow 树</a>被称为<dfn>老 shadow 树</dfn>。</p>
 
-        <p>If there is no <a>older shadow tree</a> than a given <a>shadow tree</a>,
-          the <a>shadow tree</a> is called the <dfn>oldest shadow tree</dfn>.</p>
+        <p>如果没有比给定的 <a>shadow 树</a><a>更老的 shadow 树</a>，则该 <a>shadow 树</a>被称为<dfn>最老的 shadow 树</dfn>。</p>
 
-        <p>If there is no <a>younger shadow tree</a> than a given <a>shadow tree</a>,
-          the <a>shadow tree</a> is called the <dfn>youngest shadow tree</dfn>.</p>
+        <p>如果没有比给定的 <a>shadow 树</a><a>更年轻的 shadow 树</a>，则该 <a>shadow 树</a>被称为<dfn>最年轻的 shadow 树</dfn>。</p>
 
-        <p>The <dfn>older shadow root</dfn> is the root node of the <a>older shadow tree</a>.</p>
+        <p><dfn>更老的 shadow 根</dfn>是指<a>更老的 shadow 树</a>的根结点。</p>
 
-        <p>The <dfn>younger shadow root</dfn> is the root node of the <a>younger shadow tree</a>.</p>
+        <p><dfn>更年轻的 shadow 根</dfn>是指<a>更年轻的 shadow 树</a>的根结点。</p>
 
-        <p>The <dfn>oldest shadow root</dfn> is the root node of the <a>oldest shadow tree</a>.</p>
+        <p><dfn>最老的 shadow 根</dfn>是指<a>最老的 shadow 树</a>的根结点。</p>
 
-        <p>The <dfn>youngest shadow root</dfn> is the root node of the <a>youngest shadow tree</a>.</p>
+        <p><dfn>最年轻的 shadow 根</dfn>是指<a>最年轻的 shadow 树</a>的根结点。</p>
 
         <p class="note">
-          For convenience, the <a>shadow root</a> provides its own set of <a title="DOM tree accessors">DOM tree accessor</a> methods.
-          No <a title="node">nodes</a> other than the <a>shadow root</a> descendants are accessible with these methods.
+          方便起见，<a>shadow 根</a>提供了其自己的<a title="DOM tree accessors">DOM 树存取器</a>方法集合。除了 <a>shadow 根</a>的后代，没有<a title="node">结点</a>可以访问这些方法。
         </p>
       </section>
 
       <section>
-        <h3>Trees of trees</h3>
+        <h3>树中树</h3>
 
-        <p>A <dfn>tree of trees</dfn> is a <a>tree</a> of <a title="node tree">node trees</a>.</p>
+        <p><dfn>树中树</dfn>是指包含<a title="node tree">结点树</a>的<a>树</a>。</p>
 
         <p class="note">
-          The purpose of introducing a tree of trees here is to define algorithms easily in the following sections.
-          This is a kind of a notation techchique to make the this specification simpler.
+          这里引入树中树的目的在于方便下面章节中的算法定义。
         </p>
 
-        <p>Just like a <a>node tree</a> is defined as <a title="tree">a set of relationships</a> between <a title="node">nodes</a>,
-          a <a>tree of trees</a> is similarly defined as a set of relationships between <a title="node tree">node trees</a>:</p>
+        <p>像<a>结点树</a>被定义为<a title="node">结点</a>之间的<a title="tree">一套关系集合</a>一样，<a>树中树</a>同样定义了<a title="node tree">结点树</a>之间的一套关系集合：</p>
         <ul>
           <li>
-            A <a>node tree</a> <var>A</var> is called a <dfn>parent tree</dfn> of a <a>node tree</a> <var>B</var> if either of the following conditions is satisfied:
+            如果下面两种条件之一被满足，<a>结点树</a> <var>A</var> 被称为<a>结点树</a> <var>B</var> 的一个<dfn>父级树</dfn>：
             <ul>
-              <li><var>A</var> and <var>B</var> are next to each other in the same <a title="shadow roots list">associated ordered list</a> and <var>A</var> is the <a>older shadow tree</a> relative to <var>B</var>.</li>
-              <li><var>B</var> is the <a>oldest shadow tree</a> and <a>shadow host</a> of <var>B</var> participates in <var>A</var>.</li>
+              <li><var>A</var> 和 <var>B</var> 在相同的<a title="shadow roots list">关联有序列表</a>中彼此相邻且 <var>A</var> 是相对于 <var>B</var><a>更老的 shadow 树</a>。</li>
+              <li><var>B</var> 是<a>最老的 shadow 树</a>并且 <var>B</var> 的 <a>shadow 宿主</a>参与在 <var>A</var> 之中。</li>
             </ul>
 
           </li>
-          <li>If there is more than one <a>node tree</a> that shares the same <a>parent tree</a>, the <a>tree order</a> between them in the <a>tree of trees</a> is defined as follows:
+          <li>如果有超过一个<a>结点树</a>共享相同的<a>父级树</a>，则它们在<a>树中树</a>里的<a>树顺序</a>以如下方式定义：
             <ol>
-              <li>Let <var>A</var> and <var>B</var> be <a title="node tree">node trees</a> that share the same <a>parent tree</a>.</li>
-              <li><var>A</var> comes before <var>B</var> if either of the following conditions is satisfied:
+              <li>让 <var>A</var> 和 <var>B</var> 成为共享同一个<a>父级树</a>的<a title="node tree">结点树</a>。</li>
+              <li>如果下面两个条件之一被满足，则 <var>A</var> 在 <var>B</var> 之前：
                 <ul>
-                  <li>The <a>shadow host</a> which <a>hosts</a> <var>A</var> is <a>preceding</a> the <a>shadow host</a> which <a>hosts</a> <var>B</var>.</li>
-                  <li><var>B</var> is not the <a>oldest shadow tree</a>.</li>
+                  <li><var>A</var> 的 <a>shadow 宿主</a><a>先于</a> <var>B</var> 的 <a>shadow 宿主</a>。</li>
+                  <li><var>B</var> 不是<a>最老的 shadow 树</a>。</li>
                 </ul>
               </li>
             </ol>
           </li>
-          <li>Other relationships and terms, such as <dfn>root tree</dfn>, <dfn>child tree</dfn>,
-            <dfn>descendant tree</dfn>, <dfn>inclusive descendant tree</dfn>,
-            <dfn>ancestor tree</dfn>, <dfn>inclusive ancestor tree</dfn>,
-            <dfn>preceding tree</dfn>
-            are defined in the similar way as defined in <a title="tree">trees</a>.</li>
+          <li>其它关系和属于，比如<dfn>树根</dfn>、<dfn>子树</dfn>、<dfn>后代树</dfn>、<dfn>包含的后代树</dfn>、<dfn>祖先树</dfn>、<dfn>包含的祖先树</dfn>、<dfn>前面的树</dfn>同理于<a title="tree">树</a>的定义。</li>
         </ul>
 
-        <p>The <a><code>ownerDocument</code></a> property of a <a>node</a> in a shadow tree <strong>must</strong> refers to the <a>document</a> of the <a>shadow host</a> which <a>hosts</a> the shadow tree.</p>
+        <p>一个 shadow 树的<a>结点</a>的 <a><code>ownerDocument</code></a> 属性<strong>必须</strong>引用该 shadow 树<a>的 shadow 宿主</a>的<a>文档</a>。</p>
 
-        <p><a><code>Window</code></a> object <a title="named access on the window object">named properties</a> [[!HTML]] <strong>must</strong> access the <a title="node">nodes</a> in the <a>document tree</a>.</p>
+        <p><a><code>Window</code></a> 对象中<a title="named access on the window object">被命名的属性</a> [[!HTML]] <strong>必须</strong> 访问该<a>文档树</a>中的<a title="node">结点</a>。</p>
 
         <section class="informative">
-          <h3>Example tree of trees</h3>
+          <h3>树中树的例子</h3>
 
           <figure>
             <object data="../../assets/images/tree-of-trees.svg" width="650" height="823"></object>
             <figcaption>
-              A tree of trees.
+              一个树中树
             </figcaption>
           </figure>
 
           <p>
-            In the figure, there are seven node trees, named A, B, C, D, E and F.
-            The node trees, C, D and E, are hosted by the same <a>shadow host</a>, which participates in the node tree A.
-            The node tree C is the <a>oldest shadow tree</a>. The node tree E is the <a>youngest shadow tree</a>.
-            The following set of relationships holds in the figure:
+            如图，这里有七个结点树，分别命名为 A、B、C、D、E 和 F。
+            结点树 C、D 和 E 被宿主在同一个参与在结点树 A 上的 <a>shadow 宿主</a>。
+            结点树 C 是<a>最老的 shadow 树</a>。结点树 E 是<a>最年轻的 shadow 树</a>。
+            改图还存在下列关系：
             <ul>
-              <li>The ordered list of A's <a title="child tree">child trees</a> is [B, C].</li>
-              <li>The ordered list of B's <a title="child tree">child trees</a> is [].</li>
-              <li>The ordered list of C's <a title="child tree">child trees</a> is [F, D].</li>
-              <li>The ordered list of D's <a title="child tree">child trees</a> is [E].</li>
-              <li>The ordered list of E's <a title="child tree">child trees</a> is [].</li>
+              <li>A 的<a title="child tree">子树</a>的有序列表是 [B, C]。</li>
+              <li>B 的<a title="child tree">子树</a>的有序列表是 []。</li>
+              <li>C 的<a title="child tree">子树</a>的有序列表是 [F, D]。</li>
+              <li>D 的<a title="child tree">子树</a>的有序列表是 [E]。</li>
+              <li>E 的<a title="child tree">子树</a>的有序列表是 []。</li>
             </ul>
           </p>
         </section>
@@ -200,19 +191,18 @@
       </section>
 
       <section>
-        <h3>Composed trees</h3>
+        <h3>组合树</h3>
 
-        <p>A <dfn>composed tree</dfn> is a <a>node tree</a> which is constructed out of <a title="node">nodes</a> from multiple <a title="node tree">node trees</a> in a <a>tree of trees</a>.
-          The exact algorithm of constructing a composed tree is specified later.</p>
+        <p><dfn>组合树</dfn>是指由<a>树中树</a>里的多个<a title="node tree">结点树</a>作为<a title="node">结点</a>架构而成的一个<a>结点树</a>。详细的组合树结构算法会稍后被规范。</p>
 
         <figure>
           <object data="../../assets/images/composed-tree.svg" width="654" height="606"></object>
-          <figcaption>A composed tree</figcaption>
+          <figcaption>一个组合树</figcaption>
         </figure>
 
-        <p>In <dfn>rendering</dfn> a <a>document tree</a>, or presenting it visually, the <a>composed tree</a> <strong>must</strong> be used instead of the <a>document tree</a>.</p>
+        <p>在<dfn>渲染</dfn>一个<a>文档树</a>，或对其进行可视化展示时，<a>组合树</a><strong>必须</strong>被替换作<a>文档树</a>。</p>
 
-        <p>The <a>composed tree</a> <strong>must</strong> be updated before the <a>rendering</a> occurs.</p>
+        <p><a>组合树</a><strong>必须</strong>在<a>渲染</a>发生之前被更新。</p>
       </section>
 
     </section>
