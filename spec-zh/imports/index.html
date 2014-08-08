@@ -357,9 +357,9 @@ var pulse = heart.querySelector('div.pulse');
 
 <h3 id="fetching-import">获取导入</h3>
 
-<p>All <a href="#dfn-import">imports</a> linked from documents that is the <a href="#dfn-master-document">master document</a> or the one in the <a href="#dfn-import-map">import map</a> <strong>must</strong> be fetched using the <a href="#dfn-import-fetching">import fetching algorithm</a> described below, instead of the one that HTML specifies to <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#concept-link-obtain">obtain a linked resouce</a>.</a></p>
+<p>所有链接到 <a href="#dfn-master-document">主文档</a> 或在 <a href="#dfn-import-map">import map</a> 的 <a href="#dfn-import">imports</a>，<strong>必需</strong>使用如下描述的 <a href="#dfn-import-fetching">导入获取算法</a>，代替HTML规范指定的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#concept-link-obtain">获取链接资源</a> 算法。</a></p>
 
-<p>The <dfn id="dfn-import-fetching">导入获取</dfn> 算法 <strong>必需</strong> <a href="#dfn-processing-equivalence">等价于</a> 执行如下步骤：</p>
+<p><dfn id="dfn-import-fetching">导入获取算法</dfn> <strong>必需</strong> <a href="#dfn-processing-equivalence">等价于</a> 执行如下步骤：</p>
 <div class="algorithm">
 <dl>
 <dt>输入</dt>
@@ -371,55 +371,53 @@ var pulse = heart.querySelector('div.pulse');
 <ol>
     <li>如果 <var>LOCATION</var> 已在 <a href="#dfn-import-map">导入映射</a> 中：</li>
     <li><ol>
-      <li>定义 <var>IMPORT</var> 等于 <var>LOCATION</var> 对应的 <a href="#dfn-imported-document">导入文档</a>，然后<strong>停止</strong>。</li>
+      <li>赋值 <var>IMPORT</var> 等于 <var>LOCATION</var> 对应的 <a href="#dfn-imported-document">导入文档</a>，然后<strong>停止</strong>。</li>
     </ol></li>
-    <li>从 <var>LOCATION</var> <a href="http://fetch.spec.whatwg.org/#concept-fetch">获取资源</a>， <a href="http://fetch.spec.whatwg.org/#concept-request-origin">request's origin</a> set to the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#origin">origin</a> of the <a href="#dfn-master-document">master document</a>, the <a href="http://fetch.spec.whatwg.org/#concept-request-mode">mode</a> to <i>CORS</i> and the <a href="http://fetch.spec.whatwg.org/#concept-request-credentials-mode">credentials mode</a> to <i>same-origin</i>.</li>
+    <li>从 <var>LOCATION</var> <a href="http://fetch.spec.whatwg.org/#concept-fetch">获取资源</a>，设置请求的 <a href="http://fetch.spec.whatwg.org/#concept-request-origin">源</a> 为 <a href="#dfn-master-document">主文档</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#origin">源</a>，<a href="http://fetch.spec.whatwg.org/#concept-request-mode">模式</a> 为 <i>CORS</i>，<a href="http://fetch.spec.whatwg.org/#concept-request-credentials-mode">证书模式</a> 为 <i>same-origin</i>。</li>
     <ol>
         <li>如果获取的 <a href="http://fetch.spec.whatwg.org/#concept-response-type">响应类型</a> 是 <i>错误</i>：</li>
         <li><ul>
-          <li>添加 <var>LOCATION</var> 和 <strong>null</strong> 到 <a href="#dfn-import-map">导入映射</a>，然后<strong>停止</strong>。
+          <li>添加 <var>LOCATION</var> 和 <strong>null</strong> 到 <a href="#dfn-import-map">import map</a>，然后<strong>停止</strong>。
         </ul></li>
-        <li>Let <var>IMPORT</var> be a new <a href="http://dom.spec.whatwg.org/#document"><code>Document</code></a>, <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#the-document's-address">the document's address</a> of which is <var>LOCATION</var></li>
-        <li>Let <var>PARSER</var> be a new <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#html-parser">HTML parser</a>, associated with <var>IMPORT</var></li>
-        <li>Add <var>LOCATION</var> and <var>IMPORT</var> to the <a href="#dfn-import-map">import map</a>.</li>
-        <li>For each <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#concept-task">task</a> that the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#concept-task">networking task source</a> places on the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#task-queue">task queue</a> while fetching:
+        <li>赋值 <var>IMPORT</var> 为一个新的 <a href="http://dom.spec.whatwg.org/#document"><code>Document</code></a>对象，其<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#the-document's-address">文档地址</a> 等于 <var>LOCATION</var> 。</li>
+        <li>赋值 <var>PARSER</var> 为一个新的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#html-parser">HTML parser</a>，与 <var>IMPORT</var> 相关。</li>
+        <li>添加 <var>LOCATION</var> 和 <var>IMPORT</var> 到 <a href="#dfn-import-map">import map</a>。</li>
+        <li>当每个 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#task-queue">任务队列</a> 里的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#networking-task-source">网络任务源</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#concept-task"> 任务</a> 获取资源时：
         <ol>
-            <li>Fill <var>PARSER</var>'s <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#the-input-byte-stream">input byte stream</a> with the fetched bytes</li>
-            <li>Let <var>PARSER</var> process the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#the-input-byte-stream">input byte stream</a> with <a href="http://encoding.spec.whatwg.org/#utf-8">utf-8</a> as <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#a-known-definite-encoding">a known definite encoding</a></li>
+            <li>用获取的字节数据填充 <var>PARSER</var> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#the-input-byte-stream">输入字节流</a>。</li>
+            <li>使用 <a href="http://encoding.spec.whatwg.org/#utf-8">utf-8</a>（<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#a-known-definite-encoding">一种已知确定的编码</a>），处理 <var>PARSER</var> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#the-input-byte-stream">输入字节流</a>。</li>
         </ol></li>
-        <li>When no more bytes are available:
+        <li>当已没有有效字节数据：
         <ol>
-            <li><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#queue-a-task">Queue a task</a> from the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#networking-task-source">networking task source</a> for <var>PARSER</var> to process implied <code>EOF</code> character</li>
+            <li> 从 <var>PARSER</var> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#networking-task-source">网络任务源</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#queue-a-task">产生一个队列任务</a>，处理隐含的 <code>EOF</code> 字符。</li>
         </ol>
     </ol></li>
 </ol>
 </div>
 
 <div class="informative">
-All of loaded imports and imports under loading are in the <a href="#dfn-import-link-list">import link list</a>, thus every <a href="#dfn-import">import</a> which is linked from imports in the list will also be loaded using the <a href="#dfn-import-fetching">import fetching</a> algorithm, with  <var>LOCATION</var> be the <a href="#dfn-import-location">import location</a> of the import.
+所有已经加载和正在加载的imports都在 <a href="#dfn-import-link-list">导入链接表</a> 中，因此，所有链接到此表中的imports的 <a href="#dfn-import">import</a> 也会使用 <a href="#dfn-import-fetching">导入获取算法</a> 被下载，其 <var>LOCATION</var> 是import的 <a href="#dfn-import-location">import location</a>。
 </div>
 
 <p>
-The loading attempt <strong>must</strong> be considered successful if <var>IMPORT</var> is not null on the algorithm completion, and failed otherwise.
+当此算法完成，如果 <var>IMPORT</var> 不为null，则<strong>必需</strong>认为下载是成功的，否则为失败。
 </p>
 
-<p>Every import that is not <a href="#dfn-import-link-async">marked as async</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-end.html#delay-the-load-event">delays the load event in the Document</a>.
+<p>每个没有被 <a href="#dfn-import-link-async">标记为异步</a> 的import会 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-end.html#delay-the-load-event">延迟文档的加载事件</a>。
 
 <div class="informative">
-<p>The <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> element fires a simple event called <code>load</code>
-for successful loading attempt. For failed attempt, it fires a simple event named <code>error</code>.</p>
-<p>As an import delays the load event, the <a href="http://dom.spec.whatwg.org/#document"><code>Document</code></a> isn't <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#completely-loaded">completely loaded</a> until loading attempts of all of its linked imports are finished.</p>
-</div>
+<p><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素成功下载后，会发送一个简单的 <code>load</code> 事件。下载失败则发送一个简单的 <code>error</code> 事件。</p>
+<p>因为导入会延迟加载事件，<a href="http://dom.spec.whatwg.org/#document"><code>Document</code></a> 不会 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#completely-loaded">完全下载</a>，直到它链接的所有导入都下载完成。</p>
 
-<h3 id="imports-and-csp">Imports and Content Security Policy</h3>
+<h3 id="imports-and-csp">导入和内容安全策略</h3>
 
 <p>
-<a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html">Content Security Policy</a> <strong>must</strong> restrict import loading through the <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#script-src">script-src</a> directive.
+<a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html">内容安全策略</a> <strong>必需</strong>通过 <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#script-src">script-src</a> 指令限制导入的加载。
 </p>
 
 <p>
-Each import <strong>must</strong> be restricted by the Content Security Policy of the <a href="#dfn-master-document">master document</a>.
-For example, if <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#content-security-policy-header-field">Content Security Header Field</a> is sent to an import, the user agent must <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#enforce">enforce</a> the policy of the <a href="#dfn-master-document">master document</a> to the imported document.
+每个导入<strong>必需</strong>被 <a href="#dfn-master-document">主文档</a> 的内容安全策略限制。
+例如，如果发送 <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#content-security-policy-header-field">内容安全头字段</a> 到一个导入，用户代理必需 <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#enforce">实施</a> <a href="#dfn-master-document">主文档</a> 的策略到导入文档。
 </p>
 
 <h2 id="parsing-imports">Parsing Imports</h2>
