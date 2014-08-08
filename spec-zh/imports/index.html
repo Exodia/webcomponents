@@ -420,70 +420,63 @@ var pulse = heart.querySelector('div.pulse');
 例如，如果发送 <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#content-security-policy-header-field">内容安全头字段</a> 到一个导入，用户代理必需 <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#enforce">实施</a> <a href="#dfn-master-document">主文档</a> 的策略到导入文档。
 </p>
 
-<h2 id="parsing-imports">Parsing Imports</h2>
+<h2 id="parsing-imports">解析导入</h2>
 
-<p>Parsing behaviour of <a href="#dfn-import">imports</a> is defined as a set of changes to the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#parsing">HTML Parsing</a>.</p>
+<p><a href="#dfn-import">导入</a> 的解析行为被定义为 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#parsing">HTML解析</a> 的一组改变。</p>
 
-<h3 id="additions-to-prepare-a-script-algorithm">Additions to Prepare A Script Algorithm</h3>
+<h3 id="additions-to-prepare-a-script-algorithm">补充：准备一个脚本算法</h3>
 
-<p>In step 15 of <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#prepare-a-script">prepare a script</a> algorithm, modify the last part of condition which begins with <em>If element does not have a <code>src</code> attribute</em> to read:</p>
+<p>在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#prepare-a-script">准备一个脚本</a> 算法的第15步，修改条件“<em>如果元素没有 <code>src</code> 属性</em>”的最后部分为：</p>
 <div class="monkeypatch">
-<p>... and the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> of the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#html-parser">HTML parser</a> or <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-xhtml-syntax.html#xml-parser">XML parser</a> that created the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#the-script-element"><code>script</code></a> element <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-a-style-sheet-that-is-blocking-scripts">has a style sheet that is blocking scripts</a> or <a href="#dfn-has-an-import-that-is-blocking-scripts">has an import that is blocking scripts</a></p>
+<p>... 且 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#html-parser">HTML parser</a> 或 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-xhtml-syntax.html#xml-parser">XML parser</a> 的创建了 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#the-script-element"><code>script</code></a> 元素的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a>，<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-a-style-sheet-that-is-blocking-scripts">有阻塞脚本的样式</a> 或 <a href="#dfn-has-an-import-that-is-blocking-scripts">有阻塞脚本的导入</a></p>
 </div>
 
-<h3 id="additions-to-tree-construction-algorithm">Additions to Tree Construction Algorithm</h3>
+<h3 id="additions-to-tree-construction-algorithm">补充：树构建算法</h3>
 
-<p>At the DOCTYPE part of section <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#the-initial-insertion-mode">12.2.5.4.1 The "initial" insertion mode</a>, modify text <q>if the document is not an iframe srcdoc document...</q> as follows</a>
+<p>在 DOCTYPE 的章节部分 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#the-initial-insertion-mode">12.2.5.4.1 初始插入模式</a>，修改 <q>如果文档不是一个 iframe srcdoc 文档 ...</q> 为如下：</a>
 
 <div class="monkeypatch">
-<p>if the document is not an iframe src document nor an <a href="#dfn-import">import</a>...</p>
+<p>如果文档不是一个 iframe srcdoc 文档，也不是一个 <a href="#dfn-import">导入</a> ...</p>
 </div>
 
-<p>In sub-condition named <em>Otherwise</em> of condition <em>An end tag whose name is "script"</em> in <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#parsing-main-incdata">"text" insertion mode</a>, modify step 3 to read:</p>
+<p>在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#parsing-main-incdata">文本插入模式</a> 的条件 <em>Otherwise</em> 的子条件“<em>一个script结束标记</em>”，修改步骤3为：</p>
 <div class="monkeypatch">
 <ol start="3">
-    <li>If the parser's <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-a-style-sheet-that-is-blocking-scripts">has a style sheet that is blocking scripts</a> or <a href="#dfn-has-an-import-that-is-blocking-scripts">has an import that is blocking scripts</a> or <em>the script</em>'s <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"ready to be parser-executed"</a> flag is not set: <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#spin-the-event-loop">spin the event loop</a> until the parser's <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-no-style-sheet-that-is-blocking-scripts">has no style sheet that is blocking scripts</a> and <a href="#dfn-has-no-import-that-is-blocking-scripts">has no import that is blocking scripts</a> and the script's <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"ready to be parser-executed"</a> flag is set.</li>
+    <li>如果解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-a-style-sheet-that-is-blocking-scripts">有阻塞脚本的样式</a> 或 <a href="#dfn-has-an-import-that-is-blocking-scripts">有阻塞脚本的导入</a> 或 <em>脚本</em>的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记没有设置，<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#spin-the-event-loop">spin 事件循环</a>，直到解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-no-style-sheet-that-is-blocking-scripts">没有阻塞脚本样式</a> 和 <a href="#dfn-has-no-import-that-is-blocking-scripts">没有阻塞脚本导入</a> 且脚本的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记被设置。</li>
 </ol>
 </div>
 
-<h3 id="additions-to-parsing-xhtml-documents">Additions to Parsing XHTML Documents</h3>
+<h3 id="additions-to-parsing-xhtml-documents">补充：解析XHTML文档</h3>
 
-<p>Modify step 3 of steps that run following <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#prepare-a-script">preparing</a> the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#the-script-element"><code>script</code></a> element to read:</p>
+<p>修改运行 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#prepare-a-script">准备</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#the-script-element"><code>script</code></a> 元素的第3步如下：</p>
 <div class="monkeypatch">
 <ol start="3">
-    <li><p><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#spin-the-event-loop">Spin the event loop</a> until the parser's <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-no-style-sheet-that-is-blocking-scripts">has no style sheet that is blocking scripts</a> and <a href="#dfn-has-no-import-that-is-blocking-scripts">has no import that is blocking scripts</a> and the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#pending-parsing-blocking-script">pending parsing-blocking script</a>'s <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"ready to be parser-executed"</a> flag is set.</p></li>
+    <li><p><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#spin-the-event-loop">Spin 事件循环</a>，直至解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-no-style-sheet-that-is-blocking-scripts">没有阻塞脚本的样式</a> 和 <a href="#dfn-has-no-import-that-is-blocking-scripts">没有阻塞脚本的导入</a> 且 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#pending-parsing-blocking-script">等待解析块脚本</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记被设置。</p></li>
 </ol>
 </div>
 
-<h2 id="scripts-imports">Scripting in Imports</h2>
+<h2 id="scripts-imports">在导入中编写脚本</h2>
 
-<h3 id="additions-to-script-enabling-criteria">Additions to Script Enabling Criteria</h3>
+<h3 id="additions-to-script-enabling-criteria">补充：脚本启用标准</h3>
 
-<p>Add following condition to the list of <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#enabling-and-disabling-scripting">Enabling and disabling scripting</a> criteria:</p>
+<p>增加下述条件到 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#enabling-and-disabling-scripting">开启和关闭脚本</a> 标准列表：</p>
 
 <div class="monkeypatch">
 <ul>
-  <li>Scripting is enabled for a <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#node">node</a> if the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> object of the node is in the <a href="#dfn-import-map">import map</a>.</li>
+  <li>启用 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#node">节点</a> 的脚本，如果节点的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> 对象在 <a href="#dfn-import-map">导入映射</a> 中。</li>
 </ul>
 </div>
 
-<h3 id="additions-to-dom-document-currentscript">Additions to document.currentScript</h3>
+<h3 id="additions-to-dom-document-currentscript">补充：document.currentScript</h3>
 
-<p>
-Modify the definition of <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-currentscript"><code>document.currentScript</code></a>
-as follows:
-</p>
+<p>修改 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-currentscript"><code>document.currentScript</code> </a>的定义为：</p>
 <div class="monkeypatch">
-The <dfn id="dom-document-currentscript" title="dom-document-currentScript"><code>currentScript</code></dfn> attribute, on getting,
-must return the value to which it was most recently initialized in the document or the <a href="#dfn-import-map">import map</a> of the document.
-When the Document is created, the <code>currentScript</code> must be initialized to null.
-If the Document is an <a href="#dfn-imported-document">imported document</a>, its <code>currentScript</code> is always null.
+<dfn id="dom-document-currentscript" title="dom-document-currentScript"><code>currentScript</code></dfn> 属性，必需返回文档或文档的 <a href="#dfn-import-map">导入映射</a> 中最近初始化的脚本。当文档创建后，<code>currentScript</code> 属性必需初始化为 null。如果文档为 <a href="#dfn-imported-document">导入文档</a>，那么它的 <code>currentScript</code> 始终为 null。
 </div>
 
-<h2 id="style-imports">Style processing with Imports</h2>
+<h2 id="style-imports">导入的样式处理</h2>
 
-<p>The contents of the <code><a href="http://www.whatwg.org/specs/web-apps/current-work/#the-style-element">style</a></code> elements and
-the external resources of the <code><a href="http://www.whatwg.org/specs/web-apps/current-work/#the-link-element">link</a></code> elements in <a href="#dfn-import">imports</a> <strong>must</strong> be considered as input sources of the <a href="http://www.w3.org/TR/CSS21/intro.html#processing-model">style processing model</a> of the <a href="#dfn-master-document">master document</a>.</p>
+<p><a href="#dfn-import">导入</a> 的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/#the-style-element">style</a></code> 元素和外部资源 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/#the-link-element">link</a></code> 元素的内容<strong>必需</strong>被当做 <a href="#dfn-master-document">主文档</a> 的 <a href="http://www.w3.org/TR/CSS21/intro.html#processing-model">样式处理模型</a> 的输入源。</p>
 
 <div class="fixme">
 <p>Between declarations from different documents, the document order in terms of <a href="http://www.w3.org/TR/css3-cascade/#cascade-order">order of appearance</a> is defined by comparing two elements <var>x</var>, whose owner document is <var>Dx</var>, and <var>y</var>, whose owner document is <var>Dy</var>, as follows:</p>
