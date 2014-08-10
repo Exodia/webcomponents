@@ -958,82 +958,82 @@
     </section>
 
     <section>
-      <h2>User Interaction</h2>
+      <h2>用户交互</h2>
 
       <section class="informative">
-        <h3>Ranges and Selections</h3>
+        <h3>范围 和 选区</h3>
 
         <p>
-          <a>Selection</a> [[!EDITING]] is not defined. Implementation should do their best to do what's best for them. Here's one possible, admittedly naive way:
+          <a>选区</a> [[!EDITING]]([[!可编辑的区域]])是没有被定义的. 选区的开发和实现应该做到最好. 这是一个可能公认的错误的方法:
         </p>
 
-        <p>Since <a title="node">nodes</a> which are in the different <a title="node tree">node trees</a> never have the same <a>root</a>, there may never exist a valid <a title="range">DOM range</a> that spans multiple <a title="node tree">node trees</a>.</p>
+        <p>由于<a title="node">nodes(节点)</a>在不同的<a title="node tree">node(节点)树上</a>绝对不可能拥有相同的<a>根(元素)</a>,它们可能绝对不会存在一个有效的<a title="range">DOM范围内</a>(这个DOM范围包含了多数的<a title="node tree">node(节点)树)</a>.</p>
 
-        <p>Accordingly, <a title="selection">selections</a> may only exist within one <a>node tree</a>, because they are defined by a single <a>range</a>. The <a>selection</a>, returned by the <a><code>window.getSelection()</code></a> method never returns a <a>selection</a> within a <a>shadow tree</a>.</p>
+        <p>因此<a title="selection">选区</a> 是可能存在于唯一一个 <a>node(节点)树</a>里, 因为选区被定义在一个单独的<a>范围里</a>. 通过方法<code><a>window.getSelection()</a></code>返回的<a>选区</a>绝对不会返回一个在<a>shadow(阴影)树</a>里的<a>选区</a>.</p>
 
-        <p>The <code>getSelection()</code> method of the <a>shadow root</a> object returns the current <a>selection</a> in this <a>shadow tree</a>.</p>
+        <p><a>shadow(阴影)根</a>对象的<code>getSelection()</code>方法返回的是当前<a>选区</a>是在当前(上下文)的<a>shadow tree(阴影树)</a>.</p>
       </section>
 
       <section>
-        <h3>Focus Navigation</h3>
+        <h3>引导获取焦点</h3>
 
-        <p>If a <a>node</a> doesn’t <a title="participates">participate</a> in the <a>composed tree</a>, the <a>node</a> <strong>must</strong> be skipped from the <a>navigation order</a> [[!CSS3UI]] sequence.</p>
+        <p>如果一个<a>节点</a>不<a title="participates">加入</a>一个<a>生成树(composed tree)</a>,  <a>此节点</a> <strong>必须</strong>从[[!CSS3UI]]<a>渲染树的顺序</a>中被忽略</p>
 
-        <p>For <a>sequential focus navigation</a>, the <a>navigation order</a> sequence for a given <a>shadow tree</a> <var>A</var> <strong>must</strong> be inserted into the <a>navigation order</a> for other <a>node tree</a> as follow:</p>
+        <p>对于<a>引导获取焦点的时序</a>, <a>此引导顺序</a>的时序对于一个给定的<a>shadow tree(阴影树)</a> <var>A</var> <strong>必须</strong> 被插入到其他<a>node tree(节点树)</a> <a>引导顺序中</a> , 规则规则如下:</p>
         <ol>
-          <li>If <var>A</var> is the <a>youngest shadow tree</a>:
+          <li>如果<var>A</var>是<a>最新的shadow tree(阴影树)</a>:
             <ol>
-              <li>Let <var>HOST</var> be the <a>shadow host</a> which <a>hosts</a> A</li>
-              <li>Let <var>B</var> be the <a>node tree</a> which <var>HOST</var> participates in</li>
-              <li>The <a>navigation order</a> for A <strong>must</strong> be inserted into the <a>navigation order</a> for <var>B</var>:
+              <li>让<var>宿主</var>成为<a>shadow host(阴影宿主)</a>,现在的阴影宿主就是<a>宿主</a>A</li>
+              <li>让<var>B</var>成为<a>node tree(节点树)</a>,<var>让节点树的宿主</var>加入</li>
+              <li>对于A的<a>引导顺序</a> <strong>必须</strong> 将A插入到<var>B</var> <a>的引导顺序</a>:
                 <ol>
-                  <li>immediately after <var>HOST</var>, if <var>HOST</var> is <a>focusable</a>; or</li>
-                  <li>in place of the <var>HOST</var> as if <var>HOST</var> were assigned the value of <a title="nav-index auto"><code>auto</code></a> for determining its position.</li>
+                  <li>立刻插入到<var>宿主</var>之后, 如果<var>宿主</var>是<a>可聚焦的</a>; 或者</li>
+                  <li>取代<var>此宿主</var> ，如果 <var>此宿主</var> 被指定了属性 <a title="nav-index auto"><code>auto</code>这个属性</a>(auto这个属性决定了此宿主的位置)</li>
                 </ol></li>
             </ol></li>
-          <li>Otherwise:
+          <li>如果不是那么:
             <ol>
-              <li>Let <var>B</var> be the <a>younger shadow tree</a> relative to <var>A</var></li>
-              <li>Let <var>SHADOW</var> be the <a>shadow insertion point</a> in <var>B</var></li>
-              <li>If <var>SHADOW</var> exists, the <a>navigation order</a> for <var>A</var> <strong>must</strong> be inserted into the <a>navigation order</a> for <var>B</var> immediately after <var>SHADOW</var> as if <var>SHADOW</var> were assigned the value of <a title="nav-index auto"><code>auto</code></a> for determining its position.</li>
+              <li>让<var>B</var>成为一个<a>优先级较高的shadow tree(阴影树)</a> , 让B关联到<var>A</var></li>
+              <li>让<var>SHADOW(阴影)</var>成为一个<a>shadow(阴影)插入点</a>插入 <var>B</var>中</li>
+              <li>如果<var>SHADOW(阴影)</var> 存在, 在<var>SHADOW(阴影)</var>之后,对于<var>A</var>的<a>引导顺序</a><strong>必须</strong>被插入到<var>B</var>的<a>引导顺序</a>  如果<var>SHADOW(阴影)</var> 被指定了值 <a title="nav-index auto"><code>auto</code></a> 去决定它的位置.</li>
             </ol></li>
         </ol>
 
-        <p>For <a>directional focus navigation</a>, it is up to the user agent to integrate the <a title="navigation order">navigation orders</a> for <a title="shadow tree">shadow trees</a> into the <a>document</a> <a>navigation order</a>.</p>
+        <p>对于<a>有指向性的引导焦点</a>, 它取决于用户代理完整的  <a title="navigation order">引导顺序</a> 中 <a title="shadow tree">shadow trees(阴影树)</a> 在 <a>文本</a>中 <a>引导顺序</a>.</p>
       </section>
 
       <section>
-        <h3>Active Element</h3>
+        <h3>激活的元素</h3>
 
-        <p>To maintain encapsulation, the value of the <a title="Document object">Document</a> object's focus API property <a>activeElement</a> <strong>must</strong> be adjusted. To prevent loss of information when adjusting this value, each <a>shadow root</a> <strong>must</strong> also have an <code>activeElement</code> property to store the value of the focused <a>element</a> in the <a>shadow tree</a>.</p>
+        <p>为了坚持封装性, <a>激活的元素</a>在<a title="Document object">文档</a>  对象的 focus(焦点) API 属性中的值 <strong>必须</strong>被调整的. 为了防止当调整这个值的时候丢失信息, 每一个 <a>shadow root(阴影的根)</a> <strong>必须</strong> 也拥有一个<code>激活元素的</code> 属性用来保存在<a>shadow tree(阴影树)</a>中获取焦点激活<a>元素的</a>属性值</p>
 
-        <p>The <dfn>active <a>element</a> adjustment algorithm</dfn> is used to determine the value of the <a>activeElement</a> property, and it <strong>must</strong> be equivalent to processing the following steps:</p>
+        <p>对于<dfn>激活 <a>元素</a> 的算法调整</dfn> 被用来决定<a>激活元素</a>的属性值,  激活元素<strong>必须</strong>经过如下列步骤一样的等价处理的过程:</p>
 
         <div class="algorithm">
           <dl>
-            <dt>Input</dt>
-            <dd><var>ELEMENT</var>, the focused <a>element</a></dd>
-            <dd><var>ROOT</var>, either a <a>document</a> or a <a>shadow root</a></dd>
-            <dt>Output</dt>
-            <dd><var>ADJUSTED</var>, an adjusted <a>activeElement</a> property of <var>ROOT</var>.</dd>
+            <dt>输入</dt>
+            <dd><var>元素</var>, 获取焦点的<a>元素</a></dd>
+            <dd><var>ROOT(根)</var>, 要么是一个<a>文档</a> 或者是一个 <a>shadow root(阴影根)</a></dd>
+            <dt>输出</dt>
+            <dd><var>校正</var>, 一个已经被校正的<a>激活元素</a>属性的<var>根</var>.</dd>
           </dl>
           <ol>
-            <li>Let <var>PATH</var> be the result of the <a>event path calculation algorithm</a> with <var>ELEMENT</var> and null as input</li>
-            <li>Let <var>ADJUSTED</var> be the result of the <a>retargeting algorithm</a> with <var>PATH</var> and <var>ROOT</var> as input</li>
+            <li>让 <var>路径</var><var>元素和null</var>的<a>事件路径算法结果</a>作为输入</li>
+            <li>让 <var>调整</var>过的<var>路径</var>和<var>根</var>的<a>重定向算法结果</a> 作为输出</li>
           </ol>
         </div>
       </section>
 
       <section>
-        <h3>Editing</h3>
+        <h3>校订</h3>
 
-        <p>The value of the <a><code>contenteditable</code></a> attribute <strong>must not</strong> propagate from <a>shadow host</a> to its <a title="shadow tree">shadow trees</a>.</p>
+        <p><a><code>contenteditable</code>属性的值</a><strong>一定不能通过<a>shadow host(阴影宿主)</a> </strong> 传播到它本身的 <a title="shadow tree">shadow trees(阴影树)</a>上.</p>
       </section>
 
       <section>
-        <h3>Assistive Technology</h3>
+        <h3>辅助技术</h3>
 
-        <p>User agents with assistive technology traverse the <a>composed tree</a>, and thus enable full use of WAI-ARIA [[!WAI-ARIA]] semantics in the <a title="shadow tree">shadow trees</a>.</p>
+        <p>用户代理可以通过辅助技术遍历<a>composed tree(生成树)</a>, 因此可以使完整的WAI-ARIA(可访问的富因特网应用程序) [[!WAI-ARIA]]语义在<a title="shadow tree">shadow trees(阴影树)</a>中使用.</p>
 
       </section>
 
