@@ -481,55 +481,55 @@ var pulse = heart.querySelector('div.pulse');
 <div class="fixme">
 <p>Between declarations from different documents, the document order in terms of <a href="http://www.w3.org/TR/css3-cascade/#cascade-order">order of appearance</a> is defined by comparing two elements <var>x</var>, whose owner document is <var>Dx</var>, and <var>y</var>, whose owner document is <var>Dy</var>, as follows:</p>
 
+<p>不同文档的声明，在 <a href="http://www.w3.org/TR/css3-cascade/#cascade-order">出现顺序</a> 方面的文档顺序被定义为，比较两个元素，<var>x</var>，其所有者文档是 <var>Dx</var>，和 <var>y</var>，其所有者文档是 <var>Dy</var>，如下：</p>
+
 <ul>
-  <li>If there is a document <var>Da</var> which is a common <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a> of both <var>Dx</var> and <var>Dy</var>, use the document order order of <var>Lx</var>, the first import <code>link</code> element in <var>Da</var> that links to <var>Dx</var> or <var>Dx</var>'s <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a>, and <var>Ly</var>, a <code>link</code> that imports <var>Dy</var> respectivly. The <var>x</var> element wins if <var>Lx</var> wins, or <var>y</var> wins otehrwise.
+  <li>如果有一个文档 <var>Da</var>，它是 <var>Dx</var> 和 <var>Dy</var> 的公共 <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a>，使用文档顺序，<var>Lx</var>，<var>Da</var> 的第一个导入 <code>link</code> 元素链接到 <var>Dx</var> 或 <var>Dx</var> 的 <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a>，而 <var>Ly</var>，一个 <code>link</code> 单独导入 <var>Dy</var> 。如果 <var>Lx</var> 在前，则 <var>x</var> 元素在前，否则 <var>y</var> 在前。
 
-  <li>If <var>Dx</var> is a <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a> of <var>Dy</var>, compare the document order of <var>x</var> and a <var>Ly</var>, the first import <code>link</code> in <var>Dx</var> which links to <var>Dy</var> or <var>Dy</var>'s <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a>. If <var>x</var> wins over <var>Ly</var> it wins over <var>y</var> as well.
+  <li>如果 <var>Dx</var> 是 <var>Dy</var> 的一个 <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a>，比较 <var>x</var> 的文档顺序和一个 <var>Ly</var>，<var>Dx</var> 的第一个链接到 <var>Dy</var> or <var>Dy</var> 的 <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a> 的导入 <code>link</code>。如果 <var>x</var> 在 <var>Ly</var> 前面，那么它也在 <var>y</var> 的前面。
 
-  <li>If <var>Dy</var> is a <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a> of <var>Dx</var>, compare the document order of <var>y</var> and a <var>Lx</var> respectivly.
+  <li>如果 <var>Dy</var> 是 <var>Dx</var> 的一个 <a href="#dfn-import-referrer-ancestor">import referrer ancestor</a>，单独的比较 <var>y</var> 文档顺序和一个 <var>Lx</var>。
 </ul>
 
 <div class="informative">
-<p>Here is an illustrative document order of an import tree.</p>
-<p>In this example, the master document has two <var>link</var> elements which import <var>B</var>'s <a href="#dfn-import-referrer-ancestor">import referrer ancestors</a>. When comparing <var>b1</var> and <var>m2</var>, <var>b1</var> wins over <var>m2</var> because the first <code>link</code>, which is used to the comparison, appears before <var>m2</var> in the master document.</code></p>
+<p>这是一个导入树的说明性文档顺序。</p>
+<p>在这个示例中，主文档有2个导入 <var>B</var> 的 <a href="#dfn-import-referrer-ancestor">import referrer ancestors</a> 的 <var>link</var> 元素。当比较 <var>b1</var> 和 <var>m2</var>，<var>b1</var> 在 <var>m2</var> 前面，因为在主文档中，用于比较的第一个 <code>link</code> 出现在 <var>m2</var> 的前面。</code></p>
 
   <img src="../../assets/images/import-style-document-order.png">
   <figcaption>
-    An example of document order of styles in different documents in an import tree.
+    一个导入树中不同文档样式的文档顺序示例。
   </figcaption>
 
-<p>The comparison uses the notion of <a href="#dfn-import-referrer-ancestor">import referrer ancestors</a> instead of <a href="#dfn-import-import-ancestor">import ancestor</a>. This implies that moving import <code>link</code> through DOM mutation affect the ordering. It follows how <code>style</code> elements and <code>link</code> element for stylesheets work.</p>
+<p>这个比较使用 <a href="#dfn-import-referrer-ancestor">import referrer ancestors</a> 概念来代替 <a href="#dfn-import-import-ancestor">import ancestor</a>。这意味着移动导入 <code>link</code> 改变DOM结构会影响这个顺序。它遵循样式表的 <code>style</code> 元素和 <code>link</code> 元素的工作方式。</p>
 </div>
 
-<p>See <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=24756">Bug 24756</a>.</p>
+<p>参见 <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=24756">Bug 24756</a>.</p>
 </div>
 
-<h2 id="events-imports">Events in Imports</h2>
+<h2 id="events-imports">导入中的事件</h2>
 
-<p>Events in <a href="#dfn-import">imports</a> is defined as a set of changes to the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#events">HTML Events</a>.</p>
+<p><a href="#dfn-import">导入</a> 中的事件被定义为一组 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#events">HTML Events</a> 改变。</p>
 
-<h3 id="additions-to-event-handlers">Additions to Event Handlers</h3>
+<h3 id="additions-to-event-handlers">附加：事件处理器</h3>
 
 <p>
-Modify the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#event-handler-content-attributes">event handler content attribute</a>'s
-script creation criteria by expanding the first paragraph:
+修改 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#event-handler-content-attributes">事件处理器内容属性</a> 的脚本创建标准，扩展第一段：
 
 <div class="monkeypatch">
-<p>When an event handler content attribute is set, if the element is owned by a <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> that is in a <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#browsing-context">browsing context</a> or
-in an <a href="#dfn-import-map">import map</a>, ...</p>
+<p>当设置一个事件处理器内容属性时，如果这个元素属于一个在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#browsing-context">浏览上下文</a> 或 <a href="#dfn-import-map">导入映射</a> 中的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">文档</a>，...</p>
 </div>
 
-<h2 id="acknowledgements">Acknowledgements</h2>
+<h2 id="acknowledgements">鸣谢</h2>
 
-<p><span class="vcard">David Hyatt</span> developed <a href="http://dev.w3.org/2006/xbl2/">XBL 1.0</a>, and <span class="vcard">Ian Hickson</span> co-wrote <a href="http://dev.w3.org/2006/xbl2/">XBL 2.0</a>. These documents provided tremendous insight into the problem of behavior attachment and greatly influenced this specification.</p>
+<p><span class="vcard">David Hyatt</span> 开发了 <a href="http://dev.w3.org/2006/xbl2/">XBL 1.0</a>，<span class="vcard">Ian Hickson</span> 参与了 <a href="http://dev.w3.org/2006/xbl2/">XBL 2.0</a> 的编写。这些文献在行为依附问题上提供了巨大而深刻的见解，并极大地影响了本说明书。</p>
 
-<p><span class="vcard">Alex Russell</span> and his considerable forethought triggered a new wave of enthusiasm around the subject of behavior attachment and how it can be applied practically on the Web.</p>
+<p><span class="vcard">Alex Russell</span> 和他的重要远见引发了新一波围绕行为依附课题的热潮和如何在网络上应用于实践。</p>
 
-<p><span class="vcard">Dominic Cooney</span> and <span class="vcard">Roland Steiner</span> worked tirelessly to scope the problem within the confines of the Web platform and provided a solid foundation for this document.</p>
+<p><span class="vcard">Dominic Cooney</span> 和 <span class="vcard">Roland Steiner</span> 不知疲倦的仔细研究网络平台范围内的问题，为此文档打下了坚实的基础。</p>
 
-<p>The editor would also like to thank <span class="vcard">Alex Komoroske</span>, <span class="vcard">Angelina Fabbro</span>, <span class="vcard">Anne van Kesteren</span>, <span class="vcard">Boris Zbarsky</span>, <span class="vcard">Brian Kardell</span>, <span class="vcard">Daniel Buchner</span>, <span class="vcard">Edward O'Connor</span>, <span class="vcard">Eric Bidelman</span>, <span class="vcard">Erik Arvidsson</span>, <span class="vcard">Elliott Sprehn</span>, <span class="vcard">Gabor Krizsanits</span>, <span class="vcard">Hayato Ito</span>, <span class="vcard">James Simonsen</span>, <span class="vcard">Jonas Sicking</span>, <span class="vcard">Ken Shirriff</span>, <span class="vcard">Neel Goyal</span>, <span class="vcard">Olli Pettay</span>, <span class="vcard">Rafael Weinstein</span>, <span class="vcard">Scott Miles</span>, <span class="vcard">Steve Orvell</span>, <span class="vcard">Tab Atkins</span>, <span class="vcard">William Chan</span>, and <span class="vcard">William Chen</span> for their comments and contributions to this specification.</p>
+<p>编辑还要感谢 <span class="vcard">Alex Komoroske</span>，<span class="vcard">Angelina Fabbro</span>，<span class="vcard">Anne van Kesteren</span>，<span class="vcard">Boris Zbarsky</span>，<span class="vcard">Brian Kardell</span>，<span class="vcard">Daniel Buchner</span>，<span class="vcard">Edward O'Connor</span>，<span class="vcard">Eric Bidelman</span>，<span class="vcard">Erik Arvidsson</span>，<span class="vcard">Elliott Sprehn</span>，<span class="vcard">Gabor Krizsanits</span>，<span class="vcard">Hayato Ito</span>，<span class="vcard">James Simonsen</span>，<span class="vcard">Jonas Sicking</span>，<span class="vcard">Ken Shirriff</span>，<span class="vcard">Neel Goyal</span>，<span class="vcard">Olli Pettay</span>，<span class="vcard">Rafael Weinstein</span>，<span class="vcard">Scott Miles</span>，<span class="vcard">Steve Orvell</span>，<span class="vcard">Tab Atkins</span>，<span class="vcard">William Chan</span>，和 <span class="vcard">William Chen</span>，感谢他们对此说明书的评论和贡献。</p>
 
-<p>This list is too short. There's a lot of work left to do. Please contribute by reviewing and filing bugs&mdash;and don't forget to ask the editor to add your name into this section.</p>
+<p>这个列表太短了。还有很多工作要做。请通过评审和提交bugs来参与贡献 &mdash; 不要忘了要求编辑添加你的名字到此章节。</p>
 
 </section>
 </body>
