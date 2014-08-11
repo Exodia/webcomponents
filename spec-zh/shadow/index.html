@@ -1012,7 +1012,7 @@
         <div class="algorithm">
           <dl>
             <dt>输入</dt>
-            <dd><var>元素</var>, 获取焦点的<a>元素</a></dd>
+            <dd><var>元素</var>, 得到焦点的<a>元素</a></dd>
             <dd><var>ROOT(根)</var>, 要么是一个<a>文档</a> 或者是一个 <a>shadow root(阴影根)</a></dd>
             <dt>输出</dt>
             <dd><var>校正</var>, 一个已经被校正的<a>激活元素</a>属性的<var>根</var>.</dd>
@@ -1040,20 +1040,20 @@
     </section>
 
     <section>
-      <h2>HTML Elements in Shadow Trees</h2>
+      <h2>Shadow Trees(阴影树)中的HTML元素</h2>
 
-      <p>Comparatively, a <a>shadow tree</a> can be seen as somewhere between <em>just part of a <a>document</a></em> and itself being a <a title="interface DocumentFragment">document fragment</a>. Since it is rendered, a <a>shadow tree</a> aims to retain the traits of a typical <a>tree</a> in a <a>document</a>. At the same time, it is an encapsulation abstraction, so it has to avoid affecting the <a>document tree</a>. Thus, the <a>HTML elements</a> <strong>must</strong> behave as specified [[!HTML]] in the <a title="shadow tree">shadow trees</a>, with a few exceptions.</p>
+      <p>相对来说, 一个<a>shadow tree(阴影树)</a>可以看作是存在于<em>部分<a>文档</a></em>和文档本身之间某处的一个<a title="interface DocumentFragment">文档碎片</a>. 当阴影树被渲染的时候, 单个<a>shadow tree(阴影树)</a> 目的是维持它本身在<a>文档</a>的传统<a>树</a>中的标准. 于此同时, 由于阴影树是抽象封装, 阴影树不能影响<a>文档树</a>. 因此, 阴影树中的<a>HTML元素</a> <strong>必须</strong> 表现为指定的 [[!HTML]]的行为在<a title="shadow tree">shadow trees(阴影树)</a>中, 除了少数例外的情况</p>
 
       <section>
-        <h3>Inert HTML Elements</h3>
+        <h3>无效的HTML元素</h3>
 
-        <p>A subset of <a>HTML elements</a> <strong>must</strong> behave as <dfn>inert</dfn>, or not part of the <a>document tree</a>. This is consistent how the <a>HTML elements</a> would behave in a <a title="interface DocumentFragment">document fragment</a>. These <a title="element">elements</a> are:</p>
+        <p><a>HTML元素</a>一个子集合<strong>确定</strong> 行为表现为 <dfn>无效</dfn>, 或者不属于<a>document tree(文档树)</a>. 在这种一致的<a title="interface DocumentFragment">document fragment(文档碎片)</a>中的这种<a>HTML元素</a>如何表现. 这样 <a title="element">elements(元素)</a>有:</p>
         <ul>
           <li><a title="base element"><code>base</code></a></li>
           <li><a title="link element"><code>link</code></a></li>
         </ul>
 
-        <p>All other <a>HTML elements</a> in the <a title="shadow tree">shadow trees</a> <strong>must</strong> behave as if they were part of the <a>document tree</a>.</p>
+        <p>剩下的其他<a>HTML元素</a>在<a title="shadow tree">shadow trees(阴影树)里</a> <strong>必须</strong> 表现为就像它们出现在<a>document tree(文档树)</a>中的表现.</p>
       </section>
 
     </section>
