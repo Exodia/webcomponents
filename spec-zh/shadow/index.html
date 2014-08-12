@@ -1059,9 +1059,9 @@
     </section>
 
     <section>
-      <h2>HTML Elements and Their Shadow Trees</h2>
+      <h2>HTML元素和它们的shadow trees(阴影树)</h2>
 
-      <p>Per <a title="HTML">specification</a>, some <a>HTML elements</a> are designed to either not render their contents or have special requirements in regard to contents rendering. In order to reconcile these differences in rendering behavior with the <a>composed tree</a>, all <a>HTML elements</a> <strong>must</strong> have an <a title="processing equivalence">equivalent</a> of a <a>shadow tree</a> that is created and populated at the time of <a>element</a> instantiation. It is up to a user agent to define the content of these trees. However, all conforming user agents <strong>must</strong> satisfy the following requirements:</p>
+      <p>每一个 <a title="HTML">规范</a>, 针对内容的渲染地方，一些<a>HTM元素</a>不是用来渲染它们的内容或针对特殊的需求所设计的. 是为了标准化HTML元素在<a>composed tree(生成树)</a>中渲染时的不同行为的,在<a>shadow tree(阴影树)</a>被创建和被填充进去的实例化<a>元素</a>的时候,所有的HTML元素<strong>必须</strong>具有<a title="processing equivalence">相同</a>的阴影树.这取决于用户代理定义阴影树.当然, 所有符合标准的用户代理<strong>必须</strong>满足以下的要求:</p>
 
       <table>
         <thead>
@@ -1073,29 +1073,29 @@
         <tbody>
           <tr>
             <td><a title="img element"><code>img</code></a>, <a title="iframe element"><code>iframe</code></a>, <a title="embed element"><code>embed</code></a>, <a title="object element"><code>object</code></a>, <a title="video element"><code>video</code></a>, <a title="audio element"><code>audio</code></a>, <a title="canvas element"><code>canvas</code></a>, <a title="map element"><code>map</code></a>, <a title="input element"><code>input</code></a>, <a title="textarea element"><code>textarea</code></a>, <a title="progress element"><code>progress</code></a>, <a title="meter element"><code>meter</code></a></td>
-            <td>If the <a>element</a> can have <a>fallback content</a>, contains one <a>content insertion point</a>. The <a>matching criteria</a> value is the <a>universal selector</a> only when the <a>element</a> needs to show <a>fallback content</a>. Otherwise, contains no <a title="content insertion point">content insertion points</a> or an <a>content insertion point</a> that matches nothing.</td>
+            <td>如果这些<a>元素</a>可能有<a>回调的内容</a>, 包含一个<a>内容的插入点</a>. 这个(内容的插入点的)<a>匹配条件</a>的值<a>是一个通用的选择器</a>紧紧当这些<a>元素</a>需要展示<a>回调内容</a>时.其它方面, 包含没有<a title="content insertion point">内容插入点</a> 或者一个<a>内容插入点</a>什么都无法匹配.</td>
           </tr>
           <tr>
             <td><a title="fieldset element"><code>fieldset</code></a></td>
-            <td>Contains two <a title="content insertion point">content insertion points</a> with the following <a>matching criteria</a>:
+            <td>包含两个<a title="content insertion point">内容的插入点</a>要符合下列<a>匹配条件</a>:
               <ol>
                 <li><code>legend:first-of-type</code></li>
-                <li><a>universal selector</a></li>
+                <li><a>universal selector(普通选择符)</a></li>
               </ol>
             </td>
           </tr>
           <tr>
             <td><a title="details element"><code>details</code></a></td>
-            <td>Contains two <a title="content insertion point">content insertion points</a> with the following <a>matching criteria</a>:
+            <td>包含两个<a title="content insertion point">内容的插入点</a>要符合下列<a>匹配条件</a>:
               <ol>
                 <li><code>summary:first-of-type</code></li>
-                <li><a>universal selector</a></li>
+                <li><a>universal selector(普通选择符)</a></li>
               </ol>
             </td>
           </tr>
           <tr>
-            <td>All other <a title="element">elements</a></td>
-            <td>Contains one <a>content insertion point</a> with the <a>universal selector</a> as the <a>matching criteria</a></td>
+            <td>剩下所有<a title="element">elements(元素)</a></td>
+            <td>包含一个<a>内容插入点</a>并且有<a>universal selector(普通选择符)</a>作为<a>匹配条件</a></td>
           </tr>
         </tbody>
       </table>
