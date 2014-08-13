@@ -1102,180 +1102,172 @@
     </section>
 
     <section>
-      <h2>Elements and DOM Objects</h2>
+      <h2>Elements(元素)和DOM Objects(DOM对象)</h2>
 
       <section>
-        <h3><code>ShadowRoot</code> Object</h3>
+        <h3><code>ShadowRoot(阴影根)</code>对象</h3>
 
-        <p>The <code>ShadowRoot</code> object represents the <a>shadow root</a>.</p>
+        <p><code>ShadowRoot(阴影根)</code>对象代表此<a>shadow root(阴影根)</a>.</p>
 
         <dl class="idl" title="interface ShadowRoot : DocumentFragment">
           <dt>HTMLElement getElementById(DOMString elementId)</dt>
           <dd>
-            <strong>Must</strong> behave exactly like <a>document.getElementById</a>, except <a title="scoping constraints">scoped</a> to the <a>shadow tree</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementById</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>内.
           </dd>
 
           <dt>NodeList getElementsByClassName(DOMString className)</dt>
           <dd>
-            <strong>Must</strong> behave exactly like <a>document.getElementsByClassName</a>, except <a title="scoping constraints">scoped</a> to the <a>shadow tree</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementsByClassName</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
           </dd>
 
           <dt>NodeList getElementsByTagName(DOMString tagName)</dt>
           <dd>
-            <strong>Must</strong> behave exactly like <a>document.getElementsByTagName</a>, except <a title="scoping constraints">scoped</a> to the <a>shadow tree</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementsByTagName</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
           </dd>
 
           <dt>NodeList getElementsByTagNameNS(DOMString? namespace, DOMString localName)</dt>
           <dd>
-            <strong>Must</strong> behave exactly like <a>document.getElementsByTagNameNS</a>, except <a title="scoping constraints">scoped</a> to the <a>shadow tree</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementsByTagNameNS</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
           </dd>
 
           <dt>Selection? getSelection()</dt>
           <dd>
-            <p>Returns the current selection in the <a>shadow tree</a>.</p>
-            <p>When invoked, it <strong>must</strong> return the <a>selection</a> in the <a>shadow tree</a>.</p>
+            <p>返回当前在此<a>shadow tree(阴影树)</a>的区域</p>
+            <p>当此方法被调用, 它<strong>必须</strong>返回此<a>shadow tree(阴影树)</a>的<a>selection(区域)</a>.</p>
           </dd>
 
           <dt>Element? elementFromPoint(double x, double y)</dt>
           <dd>
-            <p>Returns an <a>element</a> at specified coordinates.</p>
-            <p class="note">Eventually, this needs to be part of CSSOM View Module specification [[!CSSOM-VIEW]]</p>
+            <p>返回一个<a>element(元素)</a>指定的坐标系.</p>
+            <p class="note">最终, 它需要是CSSOM View Module[[!CSSOM-VIEW]]标准的一部分</p>
             <p>
-              When invoked, it <strong>must</strong> return result of running the following steps:
+              当此方法被调用, 它<strong>必须</strong>返回下列步骤运行后的结果:
             </p>
             <ol>
-              <li>If <a>context object</a> is not a <a><code>ShadowRoot</code></a> instance, throw an <a><code>InvalidNodeTypeError</code></a>.</li>
-              <li>If either argument is negative, <code>x</code> is greater than the <a>viewport</a> width excluding the size of a rendered scroll bar (if any), or if <code>y</code> is greater than the <a>viewport</a> height excluding the size of a rendered scroll bar (if any), return <strong>null</strong>.</li>
-              <li>Let <var>HIT</var> be the <a>element</a> at coordinates <code>x</code> and <code>y</code> in the <a>viewport</a>, determined through hit testing</li>
-              <li>Let <var>PATH</var> be the result of running the <a>event path calculation algorithm</a> with <var>HIT</var> and null as input</li>
-              <li>Return the result of running the <a>retargeting algorithm</a> with <var>PATH</var> and <a>context object</a> as input</li>
+              <li>如果<a>context object(上下文对象)</a>不是一个<a><code>ShadowRoot(阴影根)</code></a>的实例, 那么抛出一个<a><code>InvalidNodeTypeError(无效节点的错误)</code></a>错误.</li>
+              <li>如果其中任意一个参数无效, <code>x</code>大于<a>viewport(视窗)</a>的宽度不包括已经被渲染出来的滚动条(如果有), 或者如果是<code>y</code>大于<a>viewport(视窗)</a>的高度不包括已经被渲染出来的滚动条(如果有), 返回<strong>null</strong>.</li>
+              <li>让<var>HIT</var>这样的方式成为描述<a>element(元素)</a>在<a>viewport(视窗)</a>中<code>X</code>和<code>Y</code>坐标, 这样的方式决定于是否通过打点测试</li>
+              <li>让<var>PATH(路径)</var>在<a>HIT</a>里通过<a>event path calculation algorithm(事件路径计算算法)</a>所得到的结果HRnull作为输入</li>
+              <li>返回通过<a>retargeting algorithm(重定向算法)</a>所得到的结果<var>PATH(路径)</var>和<a>context object(上下文对象)</a>作为输入</li>
             </ol>
           </dd>
 
-          <dt>readonly attribute Element? activeElement</dt>
+          <dt>只读 attribute Element? activeElement</dt>
           <dd>
-            <p>Represents the currently focused <a>element</a> in the <a>shadow tree</a>.</p>
-            <p>On getting, the attribute <strong>must</strong> return the currently focused <a>element</a> in the <a>shadow tree</a> or <code>null</code>, if there is none.</p>
+            <p>表示当前在<a>shadow tree(阴影树)</a>得到焦点的<a>element(元素)</a></p>
+            <p>当读取时, 这个属性<strong>必须</strong>返回在当前在<a>shadow tree(阴影树)</a>中得到焦点的<a>element(元素)</a>的属性或者为<code>null</code>, 如果这个属性不是空的.</p>
           </dd>
 
-          <dt>readonly attribute Element host</dt>
+          <dt>只读 attribute Element host</dt>
           <dd>
-            <p>Represents the <a>shadow host</a> which <a>hosts</a> the <a>context object</a>.</p>
-            <p>On getting, the attribute <strong>must</strong> return the <a>shadow host</a> which <a>hosts</a> the <a>context object</a>.</p>
+            <p>表示此<a>shadow host(阴影宿主)</a>,此<a>hosts(宿主)</a>有此<a>context object(上下文对象)</a>.</p>
+            <p>当读取时, 这个属性<strong>必须</strong>返回此<a>shadow host(宿主)</a>,这个<a>hosts(宿主)</a>有此<a>context object(上下文对象)</a>.</p>
           </dd>
 
-          <dt>readonly attribute ShadowRoot? olderShadowRoot</dt>
+          <dt>只读 attribute ShadowRoot? olderShadowRoot</dt>
           <dd>
-            <p>Represents the <a>older shadow root</a> relative to the <a>context object</a></p>
+            <p>表示此<a>older shadow root(不是最新的阴影根)</a>所关联到此<a>context object(上下文对象)</a></p>
             <p>
-              On getting, the attribute <strong>must</strong> return a result that is <a title="processing equivalence">equivalent</a> to running the following steps:
+              当读取时, 此属性<strong>必须</strong>返回一个<a title="processing equivalence">equivalent(等价)</a>于下列步骤运行后的结果:
             </p>
             <ol>
-              <li>If the <a>context object</a> is the <a>oldest shadow root</a>, return <strong>null</strong>.</li>
-              <li>Return the <a>older shadow root</a> relative to the <a>context object</a>.</li>
+              <li>如果此<a>context object(上下文对象)</a>是在<a>oldest shadow root(最原始的阴影根)</a>, 返回<strong>null</strong>.</li>
+              <li>返回一个<a>older shadow root(不是最新的阴影根)</a>所关联到的<a>context object(上下文对象)</a>.</li>
             </ol>
-            <p>For <a>HTML elements</a>, the <a href="#html-elements-and-their-shadow-trees">UA-provided</a> <a title="shadow tree">shadow trees</a> <strong>must not</strong> be accessible.</p>
+            <p>对于<a>HTML elements(HTML元素)</a>, <a href="#html-elements-and-their-shadow-trees">UA-provided</a> <a title="shadow tree">shadow trees(阴影树)</a> <strong>一定是</strong>不能被使用的.</p>
           </dd>
 
           <dt>attribute DOMString innerHTML</dt>
           <dd>
-            <p>Represents the markup of <a><code>ShadowRoot</code></a>'s contents.</p>
-            <p>On getting, the attribute <strong>must</strong> return the result of running the <a>HTML fragment serialization algorithm</a> with the <a>context object</a> as <a title="shadow host"><code>shadow host</code></a>.</p>
+            <p>表示<a><code>ShadowRoot(阴影根)</code></a>的标记上下文.</p>
+            <p>当读取该属性时, 此属性<strong>必须</strong>返回在此<a>context object(上下文对象)</a>中通过<a>HTML fragment serialization algorithm(HTML文档序列化算法)</a>所处理过的结果作为 <a title="shadow host"><code>shadow host(阴影宿主)</code></a></p>
             <p>
-              On setting, these steps <strong>must</strong> be run:
+              当设置该属性时,<strong>必须</strong>经过以下步骤:
             </p>
             <ol>
-              <li>Let <var>FRAGMENT</var> be the result of invoking the <a title="parse fragment">fragment parsing algorithm</a> [[!DOMPARSING]] with the new value as <var>MARKUP</var>, and the <a>context object</a> as <a title="shadow host"><code>shadow host</code></a></li>
-              <li><a>Replace all</a> with <var>FRAGMENT</var> within the <a>shadow root</a>.</li>
+              <li>让<var>FRAGMENT(片段)</var>经过调用<a title="parse fragment">fragment parsing algorithm(片段解析算法)</a> [[!DOMPARSING]]使新设置的值作为<var>MARKUP(标识)</var>的结果, 并且此<a>context object(上下文对象)</a>作为<a title="shadow host"><code>shadow host(阴影宿主)</code></a></li>
+              <li><a>Replace all(替换所有)</a>在<a>shadow root(阴影根)中的<var>FRAGMENT(片段)</var></a></li>
             </ol>
           </dd>
 
-          <dt>readonly attribute StyleSheetList styleSheets</dt>
+          <dt>只读 attribute StyleSheetList styleSheets</dt>
           <dd>
-            <p>Represents the <a>shadow root style sheets</a>.</p>
-            <p>On getting, the attribute <strong>must</strong> return a <a><code>StyleSheetList</code></a> sequence containing the <a>shadow root style sheets</a>.
+            <p>表示此<a>shadow root(阴影根)的样式列表</a>.</p>
+            <p>当读取该属性事时, 此属性<strong>必须</strong>返回一个<a><code>StyleSheetList(样式表)</code></a>序列包含此<a>shadow root(阴影根)的样式表</a>.
             </p>
           </dd>
         </dl>
 
-        <p>The <a><code>nodeType</code></a> attribute of a <a><code>ShadowRoot</code></a> instance <strong>must</strong> return <a><code>DOCUMENT_FRAGMENT_NODE</code></a>. Accordingly, the <a><code>nodeName</code></a> attribute of a <a><code>ShadowRoot</code></a> instance <strong>must</strong> return <code>"#document-fragment"</code>.</p>
+        <p>一个<a><code>ShadowRoot(阴影根)</code></a> 实例的 <a><code>nodeType(节点类型)</code></a>属性 <strong>必须</strong> 返回 <a><code>DOCUMENT_FRAGMENT_NODE</code></a>. 因此, 一个<a><code>ShadowRoot(阴影根)</code></a>实例的<a><code>nodeName(节点名)</code></a> 属性<strong>必须</strong>返回<code>"#document-fragment"</code>.</p>
 
-        <p>Invoking the <a><code>cloneNode()</code></a> method on a <a><code>ShadowRoot</code></a> instance <strong>must</strong> always throw a <a><code>DATA_CLONE_ERR</code></a> exception.</p>
+        <p>调用方法<a><code>cloneNode()</code></a>方法去复制<a><code>ShadowRoot(阴影根)</code></a> 实例时 <strong>必须</strong>通常会抛出一个 <a><code>DATA_CLONE_ERR</code></a>异常.</p>
 
       </section>
 
       <section>
-        <h3>Extensions to <code>Element</code> Interface</h3>
+        <h3><code>Element(元素)</code>接口的扩展</h3>
 
         <dl class="idl" title="partial interface Element">
-          <dt>ShadowRoot createShadowRoot()</dt>
+          <dt>ShadowRoot(阴影根)方法createShadowRoot()</dt>
           <dd>
-            When invoked, these steps <strong>must</strong> be run:
+            当此方法被调用, <strong>必须经过</strong>以下的步奏:
             <ol>
-              <li>Create a new instance of the <a><code>ShadowRoot</code></a> object</li>
-              <li>Add the <a><code>ShadowRoot</code></a> object to the <a title="shadow roots list">ordered list of shadow roots</a> associated with the <a>context object</a> as the <a>youngest shadow root</a></li>
-              <li>Return <a><code>ShadowRoot</code></a> object.</li>
+              <li>创建一个新的<a><code>ShadowRoot(阴影根)</code></a>对象实例</li>
+              <li>增加此<a><code>ShadowRoot(阴影根)</code></a>对象到一个<a title="shadow roots list">有序的阴影根列表上</a>根关联上的此<a>context object(上下文对象)</a>作为最新的<a>shadow root(阴影根)</a></li>
+              <li>返回一个<a><code>ShadowRoot(阴影根)</code></a>对象.</li>
             </ol>
           </dd>
 
-          <dt>NodeList getDestinationInsertionPoints()</dt>
-          <dd>When invoked, the method <strong>must</strong> return a <a>static</a> <a><code>NodeList</code></a> consisting of <a title="insertion point">insertion points</a> in the <a>destination insertion points</a> of the <a>context object</a>.</dd>
-
-          <dt>readonly attribute ShadowRoot? shadowRoot</dt>
-          <dd>
-            <p>Represents the <a>youngest shadow root</a> that <a>context object</a> <a>hosts</a>.</p>
-            <p>On getting, the attribute <strong>must</strong> return the <a>youngest shadow root</a> that <a>context object</a> <a>hosts</a>, or <strong>null</strong> if no such <a>shadow root</a> is accessible.</p>
-            <p>For <a>HTML elements</a>, the <a href="#html-elements-and-their-shadow-trees">UA-provided</a> <a title="shadow tree">shadow trees</a> <strong>must not</strong> be accessible.</p>
-          </dd>
-        </dl>
+          <dt>NodeList(节点列表) getDestinationInsertionPoints()</dt>
+          <dd>当此方法被调用, 此方法<strong>必须</strong>返回一个<a>static(静态)</a>的<a><code>NodeList(节点列表)</code></a>由在<a>destination insertion points(目标插入点)</a>中的<a title="insertion point">插入点</a>的<a>context object(上下文对象)</a>所组成的.</dd>
       </section>
 
       <section>
-        <h3>The <code>content</code> element</h3>
+        <h3>元素的<code>content(内容)</code></h3>
 
-        <p>The <code><dfn title="content element">content</dfn></code> element represents an <a>insertion point</a> in the <a>shadow tree</a>.</p>
+        <p>元素的<code><dfn title="content element">content(内容)</dfn></code>表示一个在<a>shadow tree(阴影树)</a>中的<a>insertion point(插入点)</a>.</p>
 
-        <p>If a <code>content</code> element does not satisfy the condition of an <a>insertion point</a>, it <strong>must</strong> have the same rendering behavior as the <a><code>HTMLUnknownElement</code></a>.</p>
+        <p>如果一个<code>content(内容)</code>元素不符合<a>insertion point(插入点)</a>的条件, </p>
 
         <dl>
-          <dt>Context</dt>
-          <dd>Where <a>flow content</a> is expected.</dd>
+          <dt>上下文</dt>
+          <dd>预计<a>flow content(流内容)</a>.</dd>
 
-          <dt>Content model</dt>
-          <dd><a>Transparent</a></dd>
+          <dt>内容模块</dt>
+          <dd><a>可见的</a></dd>
 
-          <dt>Children</dt>
-          <dd>Anything as fallback content</dd>
+          <dt>内容的子元素</dt>
+          <dd>一切可以作为回调的内容</dd>
 
-          <dt>Content attributes</dt>
-          <dd><a>Global attributes</a></dd>
+          <dt>内容的属性</dt>
+          <dd><a>全局属性</a></dd>
           <dd>
             <dl>
-              <dt><code><dfn title="content element select">select</dfn></code>, a <a title="comma separated tokens">set of comma-separated tokens</a></dt>
-              <dd>Represents the <a>matching criteria</a> for <a title="distribution">distributing</a> child <a title="node">nodes</a> of the <a>shadow host</a>. Each token <strong>must</strong> be a <a>compound selector</a>.</dd>
+              <dt><code><dfn title="content element select">select(选择)</dfn></code>, 设置一个<a title="comma separated tokens">comma-separated tokens(对于逗号分割的标识)</a></dt>
+              <dd>表示用于<a title="distribution">distributing(分发)</a><a>shadow host(宿主对象)</a>中的子<a title="node">nodes(节点)</a><a>matching criteria(匹配标准)</a>. 每一个标识<strong>必须</strong>是一个<a>compound selector(复合的选择器)</a>.</dd>
             </dl>
           </dd>
 
-          <dt>DOM Interface</dt>
+          <dt>DOM接口</dt>
           <dd>
             <dl class="idl" title="interface HTMLContentElement : HTMLElement">
               <dt>attribute DOMString select</dt>
-              <dd><strong>Must</strong> <a>reflect</a> the <a title="content element select">select</a> attribute.</dd>
+              <dd><strong>必须</strong> <a>显示</a>此<a title="content element select">select(选择)</a>属性.</dd>
 
               <dt>NodeList getDistributedNodes()</dt>
               <dd>
-                When invoked, it <strong>must</strong> return result of running the following steps:
+                当此方法被调用, 它<strong>必须返回</strong>一个经过下列步骤的结果:
                 <ol>
                   <li>
-                    If the <a>context object</a> is a <a>content insertion point</a>:
+                    如果此<a>context object(上下文对象)</a>是一个<a>内容插入点</a>:
                     <ol>
-                      <li>Return a <a>static</a> <a><code>NodeList</code></a> consisting of nodes in the <a>distributed nodes</a> of the <a>context object</a>.</li>
+                      <li>返回一个<a>静态</a>的<a><code>NodeList(节点列表)</code></a>由在<a>context object(上下文对象)</a>中<a>distributed nodes(分布的节点)</a>所组成的</li>
                     </ol>
                   </li>
                   <li>
-                    Otherwise:
+                    其它情况:
                     <ol>
-                      <li>Return an empty <a>static</a> <a><code>NodeList</code></a>.</li>
+                      <li>返回一个空的<a>static(静态)</a> <a><code>NodeList(节点列表)</code></a>对象.</li>
                     </ol>
                   </li>
                 </ol>
@@ -1286,38 +1278,41 @@
       </section>
 
       <section>
-        <h3>The <code>shadow</code> element</h3>
+        <h3><code>shadow(阴影)</code>元素</h3>
 
-        <p>The <code><dfn title="shadow element">shadow</dfn></code> element represents an <a>shadow insertion point</a> in a <a>shadow tree</a>.</p>
-        <p>If a <code>shadow</code> element does not satisfy the condition of an <a>insertion point</a>, it <strong>must</strong> have the same rendering behavior as the <a><code>HTMLUnknownElement</code></a>.</p>
+        <p><code><dfn title="shadow element">shadow(阴影)</dfn></code>元素表示在<a>shadow tree(阴影树)</a>中的一个<a>shadow insertion point(阴影插入点)</a>.</p>
+        <p>如果一个<code>shadow(阴影)</code>元素不满足<a>insertion point(插入点)</a>的条件, 它<strong>必须</strong>就像<a><code>HTMLUnknownElement(未知HTML元素)</code></a>一样的渲染行为.</p>
 
         <dl>
-          <dt>Context</dt>
-          <dd>Where <a>flow content</a> is expected.</dd>
+          <dt>上下文</dt>
+          <dd>预计的<a>流内容</a>.</dd>
 
-          <dt>Content model</dt>
-          <dd><a>Transparent</a></dd>
+          <dt>内容模块</dt>
+          <dd><a>可见的</a></dd>
 
-          <dt>Children</dt>
-          <dd>Anything</dd>
+          <dt>阴影元素的子元素</dt>
+          <dd>可以是一切</dd>
 
-          <dt>DOM Interface</dt>
+          <dt>DOM接口</dt>
           <dd>
-            <dl class="idl" title="interface HTMLShadowElement : HTMLElement">
+            <dl class="idl" title="interface HTMLContentElement : HTMLElement">
+              <dt>attribute DOMString select</dt>
+              <dd><strong>必须</strong> <a>显示</a>此<a title="content element select">select(选择)</a>属性.</dd>
+
               <dt>NodeList getDistributedNodes()</dt>
               <dd>
-                When invoked, it <strong>must</strong> return result of running the following steps:
+                当此方法被调用, 它<strong>必须返回</strong>一个经过下列步骤的结果:
                 <ol>
                   <li>
-                    If the <a>context object</a> is a <a>shadow insertion point</a>:
+                    如果此<a>context object(上下文对象)</a>是一个<a>内容插入点</a>:
                     <ol>
-                      <li>Return a <a>static</a> <a><code>NodeList</code></a> consisting of nodes in the <a>distributed nodes</a> of the <a>context object</a>.</li>
+                      <li>返回一个<a>静态</a>的<a><code>NodeList(节点列表)</code></a>由在<a>context object(上下文对象)</a>中<a>distributed nodes(分布的节点)</a>所组成的</li>
                     </ol>
                   </li>
                   <li>
-                    Otherwise:
+                    其它情况:
                     <ol>
-                      <li>Return an empty <a>static</a> <a><code>NodeList</code></a>.</li>
+                      <li>返回一个空的<a>static(静态)</a> <a><code>NodeList(节点列表)</code></a>对象.</li>
                     </ol>
                   </li>
                 </ol>
@@ -1328,19 +1323,19 @@
       </section>
 
       <section>
-        <h3>Extensions to <code>Event</code> Interface</h3>
+        <h3>异常的<code>Event(事件)的</code>接口</h3>
 
         <dl class="idl" title="partial interface Event">
-          <dt>readonly attribute object path</dt>
+          <dt>只读 attribute object path</dt>
           <dd>
-            <p>Represents the event path.</p>
+            <p>表示此事件对象路径.</p>
             <p>
-              On getting, the attribute <strong>must</strong> create and return a new JavaScript Array object, that is a copy of the event path for the <a>context object</a>.
+              当获取该属性时, 此属性<strong>必须</strong> 创建和返回一个新的JavaScript数组对象, 此数组对象从<a>context object(上下文对象)</a>的事件路径中拷贝而来.
             </p>
             <p class="issue">
-              Use <code>Array</code> as the return type of the <code>path</code> attribute in WebIDL.
-              WebIDL bugs: <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=20020"><code>Array</code> subclassing</a>
-              and <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=23225">class, not interface</a>.
+              使用<code>Array(数组)</code> 作为在WebIDL中返回类型的<code>path(路径)</code>属性.
+              WebIDL的bugs: <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=20020"><code>Array</code>subclassing</a>
+              和<a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=23225"> class, not interface</a>.
             </p>
           </dd>
         </dl>
