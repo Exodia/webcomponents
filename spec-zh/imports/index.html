@@ -480,18 +480,18 @@ var pulse = heart.querySelector('div.pulse');
 
 <div class="fixme">
 
-<p>不同文档的声明，在 <a href="http://www.w3.org/TR/css3-cascade/#cascade-order">出现顺序</a> 方面的文档顺序被定义为，比较两个元素，<var>x</var>，其所有者文档是 <var>Dx</var>，和 <var>y</var>，其所有者文档是 <var>Dy</var>，如下：</p>
+<p>不同文档之间的文档顺序中的 <a href="http://www.w3.org/TR/css3-cascade/#cascade-order">出现顺序</a> 被定义为，比较两个元素，<var>x</var>，其所在文档是 <var>Dx</var>，和 <var>y</var>，其所在文档是 <var>Dy</var>，如下：</p>
 
 <ul>
-  <li>如果有一个文档 <var>Da</var>，它是 <var>Dx</var> 和 <var>Dy</var> 的公共 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，使用文档顺序，<var>Lx</var>，<var>Da</var> 的第一个导入 <code>link</code> 元素链接到 <var>Dx</var> 或 <var>Dx</var> 的 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，而 <var>Ly</var>，一个 <code>link</code> 单独导入 <var>Dy</var> 。如果 <var>Lx</var> 在前，则 <var>x</var> 元素在前，否则 <var>y</var> 在前。
+  <li>如果有一个文档 <var>Da</var>，它是 <var>Dx</var> 和 <var>Dy</var> 的公共 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，<var>Lx</var> 是 <var>Da</var> 中第一个链接到 <var>Dx</var> 或 <var>Dx</var> 的 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a> 的导入 <code>link</code> 元素，<var>Ly</var> 是一个单独导入 <var>Dy</var> 的 <code>link</code> 元素。使用文档顺序比较两者，如果 <var>Lx</var> 在前，则元素 <var>x</var> 在前，否则 <var>y</var> 在前。
 
-  <li>如果 <var>Dx</var> 是 <var>Dy</var> 的一个 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，比较 <var>x</var> 的文档顺序和一个 <var>Ly</var>，<var>Dx</var> 的第一个链接到 <var>Dy</var> or <var>Dy</var> 的 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a> 的导入 <code>link</code>。如果 <var>x</var> 在 <var>Ly</var> 前面，那么它也在 <var>y</var> 的前面。
+  <li>如果 <var>Dx</var> 是 <var>Dy</var> 的一个 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，<var>Ly</var> 是 <var>Dx</var> 中第一个链接到 <var>Dy</var> 或 <var>Dy</var> 的 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a> 的导入 <code>link</code> 元素。比较 <var>x</var> 的文档顺序和 <var>Ly</var>，如果 <var>x</var> 在 <var>Ly</var> 前面，那么 <var>x</var> 也在 <var>y</var> 的前面。
 
-  <li>如果 <var>Dy</var> 是 <var>Dx</var> 的一个 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，单独的比较 <var>y</var> 文档顺序和一个 <var>Lx</var>。
+  <li>如果 <var>Dy</var> 是 <var>Dx</var> 的一个 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，则比较 <var>y</var> 的文档顺序和 <var>Lx</var>。
 </ul>
 
 <div class="informative">
-<p>这是一个导入树的说明性文档顺序。</p>
+<p>这是一个导入树的文档顺序演示图。</p>
 <p>在这个示例中，主文档有2个导入 <var>B</var> 的 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a> 的 <var>link</var> 元素。当比较 <var>b1</var> 和 <var>m2</var>，<var>b1</var> 在 <var>m2</var> 前面，因为在主文档中，用于比较的第一个 <code>link</code> 出现在 <var>m2</var> 的前面。</code></p>
 
   <img src="../../assets/images/import-style-document-order.png">
