@@ -1344,9 +1344,9 @@
     </section>
 
     <section>
-      <h2>Shadow DOM Example</h2>
+      <h2>Shadow DOM示例</h2>
 
-      <p>Bob was asked to turn a simple list of links into a News Widget, which has links organized into two categories: breaking news and just news. The current document markup for the stories looks like this:</p>
+      <p>Bob被要求在把一个简单的链接列表变成一个消息控件,  消息控件能够连接到2个不同类别的新闻: 突发新闻和最新新闻. 目前新闻报道的文档组成看上去就像这样:</p>
       <pre class="example highlight">
 &lt;ul class=&quot;stories&quot;&gt;
     &lt;li&gt;&lt;a href=&quot;//example.com/stories/1&quot;&gt;A story&lt;/a&gt;&lt;/li&gt;
@@ -1358,7 +1358,7 @@
 &lt;/ul&gt;
       </pre>
 
-      <p>To organize the stories, Bob decides to use <strong>shadow DOM</strong>. Doing so will allow Bob to keep the document markup uncluttered, and harnessing the power of insertion point makes sorting stories by class name a very simple task. After getting another cup of <a href="http://en.wikipedia.org/wiki/List_of_coffee_beverages#Green_Eye">Green Eye</a>, he quickly mocks up the following shadow tree, to be hosted by the <code>ul</code> element:</p>
+      <p>为了管理新闻报道, Bob决定使用<strong>shadow DOM</strong>. 这样做允许Bob保持整个标签的整洁, 拥有可以控制插入点的权会使得通过类名分类新闻的任务变的非常简单. 在得到一杯<a href="http://en.wikipedia.org/wiki/List_of_coffee_beverages#Green_Eye">Green Eye</a>后, 他制作出了如下shadow tree(阴影树),<code>ul</code>元素成为了宿主:</p>
       <pre class="example highlight">
 &lt;div class=&quot;breaking&quot;&gt;
     &lt;ul&gt;
@@ -1371,7 +1371,7 @@
     &lt;/ul&gt;
 &lt;/div&gt;
       </pre>
-      <p>Bob then styles the newborn widget according to comps from the designer by adding this to the shadow tree mockup:</p>
+      <p>Bob接下来根据来自于设计师的要求给新建立的消息控件样式，然后把它加入到shadow tree(阴影树)模型中:</p>
       <pre class="example highlight">
 &lt;style&gt;
     div.breaking {
@@ -1385,7 +1385,7 @@
     }
 &lt;/style&gt;
       </pre>
-      <p>While pondering if his company should start looking for a new designer, Bob converts the mockup to code:</p>
+      <p>他仔细考虑了下他的公司是否应该找一个新的设计师, Bob将模型转化成了代码:</p>
       <pre class="example highlight">
 function createStoryGroup(className, contentSelector)
 {
@@ -1417,11 +1417,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
       </pre>
 
-      <p>Well done, Bob! With the cup of coffee still half-full, the work is complete. Recognizing his awesomeness, Bob returns to teaching n00bs the ways of <a href="http://en.wikipedia.org/wiki/Puyo_Puyo_(series)">Puyo Puyo</a>.</p>
+      <p>干得好, Bob! 在咖啡还有半杯的情况下, 工作完成了. 意识到自己很厉害, Bob将自己的经验通过<a href="http://en.wikipedia.org/wiki/Puyo_Puyo_(series)">Puyo Puyo</a>这样的方式传授给大家.</p>
 
-      <p>A few months pass.</p>
+      <p>几个月过去了.</p>
 
-      <p>It's election time. With Bob at his annual conference, Alice is charged with adding <strong>another</strong>, temporary box to the news widget, filled with election-related stories. Alice studies Bob's code, reads up on the shadow DOM spec and realizes that, thanks to multiple shadow tree support, she doesn't have to touch his code. As usual, her solution is elegant and simple, fitting neatly right under Bob's code:</p>
+      <p>红旗飘飘了！ 在Bob一年一度的研讨会中, Alice 负责增加 <strong>另一个</strong>, 临时的盒子在新闻控件中, 其中有许多关于选举的新闻. Alice阅读学习了Bob's代码, 阅读了shadow DOM的标准并且实现了, 多亏shadow tree(阴影树)复合的支持, 她并没有修改Bob的代码. 就像平常一样, 她的解决方法优雅而简单, 适当的在Bob的代码上做了点巧妙的变化:</p>
       <pre class="example highlight">
 // TODO(alice): BEGIN -- DELETE THIS CODE AFTER ELECTIONS ARE OVER.
 var ELECTION_BOX_REMOVAL_DEADLINE = ...;
@@ -1451,21 +1451,21 @@ if (Date.now() &lt; ELECTION_BOX_REMOVAL_DEADLINE) {
 }
 // TODO(alice): END -- DELETE THIS CODE AFTER ELECTIONS ARE OVER.
       </pre>
-      <p>Using the <code>shadow</code> element allows Alice to compose Bob's widget <strong>inside</strong> of hers&mdash;without having to change a line of production code. Smiling to herself, Alice realizes that Bob may have come up with a way to keep the document markup clean, but <strong>she</strong> is the one who takes the cake for using shadow tree composition in such a cool way.</p>
+      <p>使用<code>shadow(阴影)</code> 元素允许Alice去组合Bob's组件<strong>到自己的组件里</strong>&mdash;在没有改变产品任何一行代码的情况下. 她对自己笑了, Alice意识到Bob已经想出一个方式关于保持文档标签整洁的想法, 但<strong>她</strong>是一个如此早的使用shadow tree(阴影树)组成这种很酷的方式去解决问题的人.</p>
     </section>
 
     <section class="appendix">
-      <h2>Acknowledgements</h2>
+      <h2>致谢</h2>
 
-      <p><span class="vcard">David Hyatt</span> developed <a href="http://dev.w3.org/2006/xbl2/">XBL 1.0</a>, and <span class="vcard">Ian Hickson</span> co-wrote <a href="http://dev.w3.org/2006/xbl2/">XBL 2.0</a>. These documents provided tremendous insight into the problem of functional encapsulation and greatly influenced this specification.</p>
+      <p><span class="vcard">David Hyatt</span> 开发了 <a href="http://dev.w3.org/2006/xbl2/">XBL 1.0</a>, 并且和<span class="vcard">Ian Hickson</span>合写了<a href="http://dev.w3.org/2006/xbl2/">XBL 2.0</a>. 这两篇文档提供了极好的见解在函数闭包的问题并对本规范产生了巨大的影响.</p>
 
-      <p><span class="vcard">Alex Russell</span> and his considerable forethought triggered a new wave of enthusiasm around the subject of shadow DOM and how it can be applied practically on the Web.</p>
+      <p><span class="vcard">Alex Russell</span>和他非常有远见的想法引发了在shadow Dom这个主题上引发了狂热的浪潮和如何在web中实际应用起来.</p>
 
-      <p><span class="vcard">Dominic Cooney</span>, <span class="vcard">Hajime Morrita</span>, and <span class="vcard">Roland Steiner</span> worked tirelessly to scope the problem of functional encapsulation within the confines of the Web platform and provided a solid foundation for this document.</p>
+      <p><span class="vcard">Dominic Cooney</span>, <span class="vcard">Hajime Morrita</span>, and <span class="vcard">Roland Steiner</span>不辞辛劳的工作在web平台范围里去解决函数闭包问题并且为这篇文档提供了稳固的基础.</p>
 
-      <p>The editor would also like to thank <span class="vcard">Alex Komoroske</span>, <span class="vcard">Anne van Kesteren</span>, <span class="vcard">Brandon Payton</span>, <span class="vcard">Brian Kardell</span>, <span class="vcard">Darin Fisher</span>, <span class="vcard">Eric Bidelman</span>, <span class="vcard">Deepak Sherveghar</span>, <span class="vcard">Edward O'Connor</span>, <span class="vcard">Elisée Maurer</span>, <span class="vcard">Elliott Sprehn</span>, <span class="vcard">Erik Arvidsson</span>, <span class="vcard">Glenn Adams</span>, <span class="vcard">Jonas Sicking</span>, <span class="vcard">Malte Ubl</span>, <span class="vcard">Mike Taylor</span>, <span class="vcard">Oliver Nightingale</span>, <span class="vcard">Olli Pettay</span>, <span class="vcard">Rafael Weinstein</span>, <span class="vcard">Richard Bradshaw</span>, <span class="vcard">Ruud Steltenpool</span>, <span class="vcard">Sam Dutton</span>, <span class="vcard">Sergey G. Grekhov</span>, <span class="vcard">Shinya Kawanaka</span>, <span class="vcard">Tab Atkins</span>, <span class="vcard">Takashi Sakamoto</span>, and <span class="vcard">Yoshinori Sano</span> for their comments and contributions to this specification.</p>
+      <p>编者也感谢像<span class="vcard">Alex Komoroske</span>, <span class="vcard">Anne van Kesteren</span>, <span class="vcard">Brandon Payton</span>, <span class="vcard">Brian Kardell</span>, <span class="vcard">Darin Fisher</span>, <span class="vcard">Eric Bidelman</span>, <span class="vcard">Deepak Sherveghar</span>, <span class="vcard">Edward O'Connor</span>, <span class="vcard">Elisée Maurer</span>, <span class="vcard">Elliott Sprehn</span>, <span class="vcard">Erik Arvidsson</span>, <span class="vcard">Glenn Adams</span>, <span class="vcard">Jonas Sicking</span>, <span class="vcard">Malte Ubl</span>, <span class="vcard">Mike Taylor</span>, <span class="vcard">Oliver Nightingale</span>, <span class="vcard">Olli Pettay</span>, <span class="vcard">Rafael Weinstein</span>, <span class="vcard">Richard Bradshaw</span>, <span class="vcard">Ruud Steltenpool</span>, <span class="vcard">Sam Dutton</span>, <span class="vcard">Sergey G. Grekhov</span>, <span class="vcard">Shinya Kawanaka</span>, <span class="vcard">Tab Atkins</span>, <span class="vcard">Takashi Sakamoto</span>, and <span class="vcard">Yoshinori Sano</span>，感谢他们对此标准的意见和协助.</p>
 
-      <p>This list is too short. There's a lot of work left to do. Please contribute by reviewing and filing bugs&mdash;and don't forget to ask the editor to add your name into this section.</p>
+      <p>此标准仍不完善. 还有许多工作需要做. 请通过阅读帮助我们并且记录bugs&mdash;千万不要忘记叫编者将你的名字添加到这里来.</p>
     </section>
 
   </body>
