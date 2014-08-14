@@ -107,7 +107,7 @@
 
         <p><dfn>Shadow 根</dfn>是指 shadow 树的<a>根</a><a>结点</a>。</p>
 
-        <p>如果超过一个 <a>shadow 树</a>被<a title="hosts">宿主</a>于相同的 <a>shadow 宿主</a>，则最近添加的 <a>shadow 树</a>被称为<dfn>年轻 shadow 树</dfn>同时最早添加的 <a>shadow 树</a>被称为<dfn>老 shadow 树</dfn>。</p>
+        <p>如果超过一个 <a>shadow 树</a>被<a title="hosts">宿主</a>于相同的 <a>shadow 宿主</a>，则最近添加的 <a>shadow 树</a>被称为<dfn>更年轻的 shadow 树</dfn>同时最早添加的 <a>shadow 树</a>被称为<dfn>更老的 shadow 树</dfn>。</p>
 
         <p>如果没有比给定的 <a>shadow 树</a><a>更老的 shadow 树</a>，则该 <a>shadow 树</a>被称为<dfn>最老的 shadow 树</dfn>。</p>
 
@@ -208,191 +208,185 @@
     </section>
 
     <section>
-      <h2>Distributions</h2>
+      <h2>分布</h2>
 
       <section>
-        <h3>Insertion Points</h3>
+        <h3>插入点</h3>
 
-        <p>An <dfn>insertion point</dfn> is a defined location where <a title="node">nodes</a> in a different <a>node tree</a> appear instead of the nodes's original position when constructing a <a>composed tree</a>.</p>
+        <p><dfn>插入点</dfn>是指一个被定义好的位置，当构造一个<a>组合树</a>的时候，别的<a>结点树</a>里的<a title="node">结点</a>可以替换出现在这个结点的位置。</p>
 
         <figure>
           <object data="../../assets/images/distributions.svg" width="663" height="598"></object>
-          <figcaption>A distribution</figcaption>
+          <figcaption>一个分布</figcaption>
         </figure>
 
-        <p>A <dfn>distribution</dfn> is the mechanism that determines which <a title="node">nodes</a> appear at each <a>insertion point</a>. The exact algorithm of a <a>distribution</a> is specified later.</p>
+        <p><dfn>分布</dfn>是决定哪个<a title="node">结点</a>出现在各个<a>插入点</a>的机制。<a>分布</a>的详细算法规范会在稍后看到。</p>
       </section>
 
 
       <section>
-        <h3>Content Insertion Points</h3>
+        <h3>内容插入点</h3>
 
-        <p>A <dfn>content insertion point</dfn> is an <a>insertion point</a> to where the child <a title="node">nodes</a> of the <a>shadow host</a> are distributed.
-          The <a>content element</a> that satisfies all of the following conditions represents a <a>content insertion point</a>:</p>
+        <p><dfn>内容插入点</dfn>是 <a>shadow 宿主</a>分布子<a title="node">结点</a>的<a>插入点</a>。满足下列所有条件的<a>内容元素</a>就相当于一个<a>内容插入点</a>：</p>
         <ul>
-          <li>The <a>root</a> <a>node</a> of the <a>content element</a> is a <a>shadow root</a></li>
-          <li>There is no other <a>content element</a> in the <a title="ancestor">ancestors</a> of the <a>content element</a></li>
-          <li>There is no <a>shadow element</a> in the <a title="ancestor">ancestors</a> of the <a>content element</a></li>
+          <li>其<a>内容元素</a>的<a>根</a><a>结点</a>是一个 <a>shadow 根</a></li>
+          <li>该<a>内容元素</a>的<a title="ancestor">祖先</a>里没有别的<a>内容元素</a></li>
+          <li>该<a>内容元素</a>的<a title="ancestor">祖先</a>里没有 <a>shadow 元素</a></li>
         </ul>
       </section>
 
       <section>
-        <h3>Shadow Insertion Points</h3>
+        <h3>Shadow 插入点</h3>
 
-        <p>A <dfn>shadow insertion point</dfn> is an <a>insertion point</a> to where the children of the <a>older shadow root</a> are distributed.
-          The <a>shadow element</a> that satisfies of the following conditions represents a <a>shadow insertion point</a>:</p>
+        <p><dfn>Shadow 插入点</dfn>是会发布<a>更老的 shadow 根</a>的子节点<a>插入点</a>。满足下列所有条件的 <a>shadow 元素</a>就相当于一个 <a>shadow 插入点</a>：</p>
         <ul>
-          <li>The <a>root</a> <a>node</a> of the <a>shadow element</a> is a <a>shadow root</a></li>
-          <li>There is no other <a>shadow element</a> which is <a>preceding</a> the <a>shadow element</a></li>
-          <li>There is no other <a>content element</a> in the <a title="ancestor">ancestors</a> of the <a>shadow element</a></li>
+          <li>其 <a>shadow 元素</a>的<a>根</a><a>结点</a>是一个 <a>shadow 根</a></li>
+          <li>没有<a>先于</a>该 <a>shadow 元素</a>的 <a>shadow 元素</a></li>
+          <li>该 <a>shadow 元素</a>的<a title="ancestor">祖先</a>里没有别的<a>内容元素</a></li>
         </ul>
       </section>
 
       <section>
-        <h3>Distribution Results</h3>
+        <h3>分布结果</h3>
 
-        <p>Each <a>tree of trees</a> has the <dfn>distribution result</dfn> which describes the result of distributions.
-          The <a>distribution result</a> <strong>must</strong> be <a title="processing equivalence">equivalent</a> of the following:</p>
+        <p>每个<a>树中树</a>都有<dfn>分布结果</dfn>。<a>分布结果</a><strong>必须</strong>与下列描述<a title="processing equivalence">等价</a>：</p>
         <ol>
-          <li>Each <a>insertion point</a> has an ordered list, called <dfn>distributed nodes</dfn>, which consists of <a title="node">nodes</a> which are distributed into the <a>insertion point</a>.</li>
-          <li>Each <a>node</a> that is not an <a>insertion point</a> has an ordered list, called <dfn>destination insertion points</dfn>, which consists of <a title="insertion point">insertion points</a> to where the <a>node</a> is distributed</li>
+          <li>每个<a>插入点</a>有一个被称作<dfn>已分布结点</dfn>的有序列表，该列表由分布在该<a>插入点</a>的<a title="node">结点</a>组成。</li>
+          <li>每个非<a>插入点</a>的<a>结点</a>有一个被称作<dfn>目的插入点</dfn>的有序列表，该列表由分布该<a>结点</a>的<a title="insertion point">插入点</a>组成。</li>
         </ol>
 
-        <p>An <a>insertion point</a> <var>A</var> is the <dfn>final destination</dfn> of a <a>node</a> <var>B</var> if <var>A</var> is the last item of the <a>destination insertion points</a> of <var>B</var>.</p>
+        <p>如果<a>插入点</a> <var>A</var> 是<a>结点</a> <var>B</var> 的<a>目的插入点</a>，则 <var>A</var> 是 <var>B</var> 的<dfn>最终目的</dfn>。</p>
 
-        <p>When a <a>node</a> <var>A</var> is <dfn title="distributes">distributed</dfn> into an <a>insertion point</a> <var>B</var>, the following steps <strong>must</strong> happen:</p>
+        <p>当<a>结点</a> <var>A</var> 被<dfn title="distributes">分布</dfn>到<a>插入点</a> <var>B</var> 时，<strong>必然</strong>发生下列步骤：</p>
         <ul>
-          <li>Add <var>A</var> to the <a>distributed nodes</a> of <var>B</var></li>
-          <li>Add <var>B</var> to the <a>destination insertion points</a> of <var>A</var></li>
+          <li>把 <var>A</var> 添加到 <var>B</var> 的<a>已分布结点</a>中</li>
+          <li>把 <var>B</var> 添加到 <var>A</var> 的<a>目的插入点</a>中</li>
         </ul>
 
         <div class="note">
-          <p>One case that deserves special consideration is the situation when an <a>insertion point</a> is a child <a>node</a> of another <a>shadow host</a>. In such situations, the <a title="node">nodes</a> <a title="distributes">distributed</a> into that <a>insertion point</a> appear as if they were child <a title="node">nodes</a> of the <a>shadow host</a> in the context of <a>distribution</a>. Thus, the <a title="node">nodes</a> <a title="distributes">distributed</a> to a <a>shadow tree</a> could have already been <a title="distributes">distributed</a> from its parent tree.</p>
+          <p>当一个<a>插入点</a>是另一个 <a>shadow 宿主</a>的子<a>结点</a>时，需要特殊考虑。<a title="distributes">分布</a>到其<a>插入点</a>的<a title="node">结点</a>会出现并相当于它们是<a>分布</a>上下文的 <a>shadow 宿主</a>的子<a title="node">结点</a>。因此<a title="distributes">分布</a>到 <a>shadow 树</a>的<a title="node">结点</a>可能已被<a title="distributes">分布</a>自其父级树。</p>
 
-          <p>Despite being distributed to more than one insertion point, a node still only appears once in the composed tree at the final destination.</p>
+          <p>一个结点尽管被分布到了不止一个插入点，其在最终目的的组合树中只会出现一个。</p>
         </div>
 
         <figure>
           <object data="../../assets/images/re-distributions.svg" width="693" height="822"></object>
-          <figcaption>A re-distribution.
-            In the figure, a node <em>child 1</em> is distributed into <em>insertion point 1</em>. Then <em>child1</em> is re-distributed into <em>insertion point 3</em>.
-            The destination insertion points of <em>child 1</em> is [<em>insertion point 1</em>, <em>insertion point 3</em>] and <em>insertion point 3</em> is the final destination of <em>child 1</em>.
-            The distributed nodes of <em>insertion point 1</em> and <em>insertion point 3</em> is [<em>child 1</em>] and [<em>child 1</em>, <em>child 3</em>], respectively.
+          <figcaption>一个重分布。在该图中，一个结点 <em>child 1</em> 被分布进了 <em>insertion point 1</em>。然后 <em>child1</em> 被重分布进了 <em>insertion point 3</em>。<em>Child 1</em> 的目的插入点是 [<em>insertion point 1</em>, <em>insertion point 3</em>] 同时 <em>insertion point 3</em> 是 <em>child 1</em>的最终目的。<em>Insertion point 1</em> 和 <em>insertion point 3</em> 的被分布结点分别是 [<em>child 1</em>] 和 [<em>child 1</em>, <em>child 3</em>]。
           </figcaption>
         </figure>
 
       </section>
 
       <section>
-        <h3>Distribution Algorithms</h3>
+        <h3>分布算法</h3>
 
-        <p>The <dfn>distribution algorithm</dfn> <strong>must</strong> be used to determine the <a>distribution result</a> for a <a>tree of trees</a> and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+        <p><dfn>分布算法</dfn><strong>必须</strong>用来判定一个<a>树中树</a>的<a>分布结果</a>且<strong>必须</strong><a title="processing equivalence">等价</a>于以下处理步骤：</p>
 
         <div class="algorithm">
           <dl>
-            <dt>Input</dt>
-            <dd><var>TREE-OF-TREES</var>, a <a>tree of trees</a></dd>
-            <dt>Output</dt>
-            <dd>The <a>distribution result</a> of <var>TREE-OF-TREES</var> is updated</dd>
+            <dt>输入</dt>
+            <dd><var>TREE-OF-TREES</var>，一个<a>树中树</a></dd>
+            <dt>输出</dt>
+            <dd><var>TREE-OF-TREES</var> 的<a>分布结果</a>被更新</dd>
           </dl>
           <ol>
-            <li>Let all <a>distributed nodes</a> and <a>destination insertion points</a> owned by <a title="node">nodes</a> in <var>TREE-OF-TREES</var> be empty</li>
-            <li>Let <var>ROOT-TREE</var> be the <a>root tree</a> of <var>TREE-OF-TREES</var></li>
-            <li>Run the <a>distribution resolution algorithm</a> with <var>ROOT-TREE</var> as input</li>
+            <li>将所有归属于 <var>TREE-OF-TREES</var> 中<a title="node">结点</a>的<a>分布结点</a>和<a>目的插入点</a>设为空</li>
+            <li>设 <var>ROOT-TREE</var> 为 <var>TREE-OF-TREES</var> 的<a>根树</a></li>
+            <li>将 <var>ROOT-TREE</var> 作为输入，执行<a>分布决议算法</a></li>
           </ol>
         </div>
 
-        <p>The <dfn>distribution resolution algorithm</dfn> <strong>must</strong> be used to determine the <a>distribution result</a> for a given <a>node tree</a> and its <a title="descendant tree">descendant trees</a>, and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+        <p><dfn>分布决议算法</dfn><strong>必须</strong>用来判定一个给定的<a>结点树</a>及其<a title="descendant tree">后代树</a>的<a>分布结果</a>，且<strong>必须</strong><a title="processing equivalence">等价</a>于以下处理步骤：</p>
 
         <div class="algorithm">
           <dl>
-            <dt>Input</dt>
-            <dd><var>NODE-TREE</var>, a <a>node tree</a></dd>
-            <dt>Output</dt>
-            <dd>The <a>distribution result</a> is updated for the <a title="inclusive descendant tree">inclusive descendant trees</a> of <var>NODE-TREE</var></dd>
+            <dt>输入</dt>
+            <dd><var>NODE-TREE</var>，一个<a>结点树</a></dd>
+            <dt>输出</dt>
+            <dd><var>NODE-TREE</var> 的<a title="inclusive descendant tree">包含的后代树</a>的<a>分布结果</a>会被更新</dd>
           </dl>
 
           <ol>
-            <li>For each <a>shadow host</a>, <var>SHADOW-HOST</var>, which participates in <var>NODE-TREE</var>, in <a>tree order</a>:
+            <li>把每个参与 <var>NODE-TREE</var> 其中的 <a>shadow 宿主</a>定为 <var>SHADOW-HOST</var>，以<a>树顺序</a>：
               <ol>
-                <li>Let <var>POOL</var> be the result of the <a>pool population algorithm</a> with <var>SHADOW-HOST</var> as input</li>
-                <li>For each <a>shadow tree</a>, <var>SHADOW-TREE</var>, which <var>SHADOW-HOST</var> <a>hosts</a>, in order from the <a>youngest shadow tree</a> to the <a>oldest shadow tree</a>:
+                <li>将 <var>SHADOW-HOST</var> 作为输入执行<a>池占据算法</a>的结果设为 <var>POOL</var></li>
+                <li>把每个 <var>SHADOW-HOST</var> <a>宿主</a>的 <a>shadow 树</a>定为 <var>SHADOW-TREE</var>，按照从<a>最年轻 shadow 树</a>到<a>最老 shadow 树</a>的顺序：
                   <ol>
-                    <li>Run the <a>pool distribution algorithm</a> with <var>SHADOW-TREE</var> and <var>POOL</var> as input</li>
+                    <li>将 <var>SHADOW-TREE</var> 和 <var>POOL</var> 作为输入执行<a>池分布算法</a></li>
                   </ol></li>
-                <li>For each <a>shadow tree</a>, <var>SHADOW-TREE</var>, that <var>SHADOW-HOST</var> <a>hosts</a>, in order from the <a>oldest shadow tree</a> to the <a>youngest shadow tree</a>:
+                <li>把每个 <var>SHADOW-HOST</var> <a>宿主</a>的 <a>shadow 树</a>定为 <var>SHADOW-TREE</var>，按照从<a>最老 shadow 树</a>到<a>最年轻 shadow 树</a>的顺序：
                   <ol>
-                    <li>Let <var>SHADOW</var> be the <a>shadow insertion point</a> which participates in <var>SHADOW-TREE</var></li>
-                    <li>If such a <var>SHADOW</var> exits:
+                    <li>把参与到 <var>SHADOW-TREE</var> 中的 <a>shadow 插入点</a>设为 <var>SHADOW</var></li>
+                    <li>如果存在这样的 <var>SHADOW</var>：
                       <ol>
-                        <li>If <var>SHADOW-TREE</var> is not the <a>oldest shadow tree</a>:
+                        <li>如果 <var>SHADOW-TREE</var> 不是<a>最老的 shadow 树</a>：
                           <ol>
-                            <li>Let <var>POOL</var> be the result of the <a>pool population algorithm</a> with the root node of the <a>older shadow tree</a> relative to <var>SHADOW-TREE</var> as input.</li>
+                            <li>将相对于 <var>SHADOW-TREE</var> <a>更老的 shadow 数</a>的根节点作为输入执行<a>池占据算法</a>的结果设为<var>POOL</var></li>
                           </ol></li>
-                        <li>For each <a>node</a>, <var>CHILD</var>, in <var>POOL</var>
+                        <li>把每个 <var>POOL</var> 中的<a>结点</a>定为 <var>CHILD</var>
                           <ol>
-                            <li><a title="distributes">Distribute</a> <var>CHILD</var> into <var>SHADOW</var></li>
+                            <li>把 <var>CHILD</var> <a title="distributes">分布</a>到 <var>SHADOW</var> 中</li>
                           </ol></li>
                       </ol></li>
-                    <li>Run the <a>distribution resolution algorithm</a>, recursively, with <var>SHADOW-TREE</var> as input</li>
+                    <li>将 <var>SHADOW-TREE</var> 作为输入递归执行<a>分布决议算法</a></li>
                   </ol></li>
               </ol></li>
           </ol>
         </div>
 
-        <p>The <dfn>pool population algorithm</dfn> <strong>must</strong> be used to populate <a title="node">nodes</a> from the child <a title="node">nodes</a> of a given <a>node</a> and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+        <p><dfn>池占据算法</dfn><strong>必须</strong>用来占据一个给定<a title="node">结点</a>的子<a title="node">结点</a>，且<strong>必须</strong>且<strong>必须</strong><a title="processing equivalence">等价</a>于以下处理步骤：</p>
 
         <div class="algorithm">
           <dl>
-            <dt>Input</dt>
-            <dd><var>NODE</var>, a node</dd>
-            <dt>Output</dt>
-            <dd><var>POOL</var>, an ordered list of nodes</dd>
+            <dt>输入</dt>
+            <dd><var>NODE</var>，一个结点</dd>
+            <dt>输出</dt>
+            <dd><var>POOL</var>，一个有序的结点列表</dd>
           </dl>
 
           <ol>
-            <li>Let <var>POOL</var> be an empty ordered list.</li>
-            <li>For each child <a>node</a>, <var>CHILD</var>, of <var>NODE</var>:
+            <li>将 <var>POOL</var> 设为一个空的有序列表。</li>
+            <li>把 <var>CHILD</var> 的每个<a>结点</a>定为 <var>NODE</var>：
               <ol>
-                <li>If <var>CHILD</var> is an <a>insertion point</a>:
+                <li>如果 <var>CHILD</var> 是一个<a>插入点</a>：
                   <ol>
-                    <li>Add all <a title="node">nodes</a> in the <a>distributed nodes</a> of <var>CHILD</var> to <var>POOL</var></li>
+                    <li>把所有 <var>CHILD</var> 的<a>已分布结点</a>中的<a title="node">结点</a>添加到 <var>POOL</var> 中</li>
                   </ol></li>
-                <li>Otherwise:
+                <li>否则：
                   <ol>
-                    <li>Add <var>CHILD</var> to <var>POOL</var></li>
+                    <li>把 <var>CHILD</var> 添加到 <var>POOL</var> 中</li>
                   </ol></li>
               </ol></li>
           </ol>
         </div>
 
-        <p>The <dfn>pool distribution algorithm</dfn> <strong>must</strong> be used to distribute <a title="node">nodes</a> in a pool into the <a title="content insertion point">content insertion points</a> in a <a>shadow tree</a> and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+        <p><dfn>池分布算法</dfn><strong>必须</strong>用来把一个池中的<a title="node">结点</a>分布到其 <a>shadow 树</a>中的<a title="content insertion point">内容插入点</a>中，且<strong>必须</strong><a title="processing equivalence">等价</a>于以下处理步骤：</p>
 
         <div class="algorithm">
           <dl>
-            <dt>Input</dt>
-            <dd><var>SHADOW-TREE</var>, a shadow tree</dd>
-            <dd><var>POOL</var>, an ordered list of nodes</dd>
-            <dt>Output</dt>
-            <dd>Nodes in POOL are distributed into the content insertion points in the tree.</dd>
+            <dt>输入</dt>
+            <dd><var>SHADOW-TREE</var>，一个 shadow 树</dd>
+            <dd><var>POOL</var>，一个有序结点列表</dd>
+            <dt>输出</dt>
+            <dd>POOL 中的结点被分布到了该树中的内容插入点中。</dd>
           </dl>
 
           <ol>
-            <li>For each <a>content insertion point</a>, <var>CONTENT</var>, which participates in <var>SHADOW-TREE</var>, in tree order:
+            <li>把每个参与到 <var>SHADOW-TREE</var> 中的<a>内容插入点</a>定为 <var>CONTENT</var>，并按照树顺序：
               <ol>
-                <li>For each <a>node</a>, <var>NODE</var>, in <var>POOL</var>
+                <li>把每个 <var>POOL</var> 里的<a>结点</a>定为<var>NODE</var>
                   <ol>
-                    <li>If <var>NODE</var> satisfies <var>CONTENT</var>'s matching criteria:
+                    <li>如果 <var>NODE</var> 满足 <var>CONTENT</var> 的批评标准：
                       <ol>
-                        <li><a title="distributes">Distribute</a> <var>NODE</var> into <var>CONTENT</var></li>
-                        <li>Remove <var>NODE</var> from <var>POOL</var></li>
+                        <li>把 <var>NODE</var> <a title="distributes">分布</a>到 <var>CONTENT</var> 中</li>
+                        <li>从 <var>POOL</var> 中移除 <var>NODE</var></li>
                       </ol></li>
                   </ol></li>
-                <li>If no <a title="node">nodes</a> are distributed to <var>CONTENT</var>:
+                <li>如果没有分布到 <var>CONTENT</var> 中的<a title="node">结点</a>：
                   <ol>
-                    <li>For each child, <var>CHILD</var>, of <var>CONTENT</var>
+                    <li>把每个 <var>CONTENT</var> 的孩子定为 <var>CHILD</var>
                       <ol>
-                        <li><a title="distributes">Distribute</a> <var>CHILD</var> into <var>CONTENT</var></li>
+                        <li>把 <var>CHILD</var> <a title="distributes">分布</a>到 <var>CONTENT</var> 中</li>
                       </ol></li>
                   </ol></li>
               </ol></li>
@@ -400,29 +394,29 @@
 
         </div>
 
-        <p class="note">If no nodes are distributed into a <a>content insertion point</a> <var>CONTENT</var>, the child <a title="node">nodes</a> of <var>CONTENT</var> are distributed into <var>CONTENT</var> as fallback nodes.</p>
+        <p class="note">如果没有结点被分布到一个<a>内容插入点</a> <var>CONTENT</var> 中，则 <var>CONTENT</var> 的子<a title="node">结点</a>会被分布到 <var>CONTENT</var> 中作为后备结点。</p>
 
-        <p>If any condition which affects the <a>distribution result</a> changes, the <a>distribution result</a> <strong>must</strong> be updated before any use of the <a>distribution result</a>.</p>
+        <p>如果影响<a>分布结果</a>的任何条件发生改变，则<a>分布结果</a><strong>必须</strong>先于任何对<a>分布结果</a>的使用被更新。</p>
 
       </section>
 
       <section>
-        <h3>Satisfying Matching Criteria</h3>
+        <h3>满足匹配标准</h3>
 
-        <p>The <dfn>matching criteria</dfn> for an <a>insertion point</a> is a set of <a title="compound selector">compound selectors</a> [[!SELECTORS4]]. These <a title="compound selector">compound selectors</a> are restricted to contain only these <a title="simple selector">simple selectors</a>:</p>
+        <p>一个<a>插入点</a>的<dfn>匹配标准</dfn>是一个<a title="compound selector">复合选择器</a> [[!SELECTORS4]] 的集合。这些<a title="compound selector">复合选择器</a>被约束在了只包含这些<a title="simple selector">单一选择器</a>的范围内：</p>
 
         <ul>
-          <li>A <a>type selector</a> or a <a>universal selector</a></li>
-          <li><a title="class selector">class selector(s)</a></li>
-          <li>An <a>ID selector</a></li>
-          <li><a title="attribute selector">attribute selector(s)</a></li>
-          <li>A <a>negation pseudo-class</a>, <code>:not()</code></li>
+          <li>一个<a>类型选择器</a>或<a>通用选择器</a></li>
+          <li><a title="class selector">类选择器</a></li>
+          <li>一个 <a>ID 选择器</a></li>
+          <li><a title="attribute selector">特性选择器</a></li>
+          <li>一个<a>否定的伪类</a> <code>:not()</code></li>
         </ul>
 
-        <p>A <a>node</a> <dfn title="satisfies-matching-criteria">satisfies</dfn> a <a>matching criteria</a> only if:</p>
+        <p>一个<a>结点</a>仅在下面的情形下<dfn title="satisfies-matching-criteria">满足</dfn>其<a>匹配规则</a>：</p>
         <ol>
-          <li>all <a title="compound selector">compound selectors</a> in the set, contain only the <a title="simple selector">simple selectors</a> specified above; and</li>
-          <li>a <a>node</a> matches at least one <a title="compound selector">compound selectors</a> in the set or the set is empty.</li>
+          <li>所有集合中的<a title="compound selector">复合选择器</a>都只包含上述的<a title="simple selector">单一选择器</a>；且</li>
+          <li>该<a>结点</a>至少匹配一个集合中的<a title="compound selector">复合选择器</a>或集合为空。</li>
         </ol>
       </section>
 
