@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'/>
+    <title>Shadow DOM 中文规范</title>
+    <script src='./autolink-config.js' class='remove'></script>
+    <script src='../../assets/scripts/autolink.js' class='remove'></script>
+    <link rel="stylesheet" href="../../assets/styles/respec-complement.css" type="text/css" />
+    <script src='//www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+          specStatus: "ED",
+          shortName: "shadow-dom",
+          editors: [{ name: "Dimitri Glazkov", url: "mailto:dglazkov@chromium.org", company: "Google, Inc." },
+                    { name: "Hayato Ito", url: "mailto:hayato@google.com", company: "Google, Inc." }],
+          wg: "W3C Web Applications (WebApps)",
+          wgURI: "http://www.w3.org/2008/webapps/",
+          wgPublicList: "public-webapps",
+          wgPatentURI: "",
+          edDraftURI: "http://w3c.github.io/webcomponents/spec/shadow/",
+          otherLinks: [
+              {
+                  key: "Revision history",
+                  href: "https://github.com/w3c/webcomponents/commits/gh-pages/spec/shadow/"
+              }
+          ],
+          localBiblio: {
+              "SELECTORS4": {
+                  title: "Selectors Level 4",
+                  href: "http://dev.w3.org/csswg/selectors4/",
+                  authors: ["Elika Etemad", "Tab Atkins Jr"],
+                  status: "ED"
+              },
+              "DOMPARSING": {
+                  title: "DOM Parsing and Serialization",
+                  href: "http://domparsing.spec.whatwg.org/",
+                  authors:  ["Ms2ger"]
+              },
+              "EDITING": {
+                  title: "HTML Editing APIs",
+                  href: "https://dvcs.w3.org/hg/editing/raw-file/tip/editing.html",
+                  authors:  ["Aryeh Gregor"]
+              }
+          }
+      };
+      var bugAssistConfig = {
+          blocked: '14978',
+          short_desc: '[Shadow]: ',
+          product: 'WebAppsWG',
+          component: 'Component Model'
+      };
+    </script>
+    <script src="../../assets/scripts/bug-assist.js" class="remove"></script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        这份规范描述了一种把多个 DOM 树结合进入一个层级结构中，并且这些树可以在同一份文档中交互的方法。这使得 DOM 结构能够更好的组合。
+      </p>
+    </section>
+
+    <section id='sotd'>
+    </section>
+
+    <section>
+      <h2>一致性</h2>
+
+      <p>所有的图表、示例、注意事项，都和明示的非正式性章节一样是非正式性的。其余的部分都是正式性的。</p>
+
+      <p>关键字“必须”、“禁止”、“要求”、“会”、“不会”、“应该”、“不应该”、“推荐”、“可以”和“可选的”等出现在文档的正式性部分中都应该遵循 [[!RFC2119]] 中的解释。但考虑到可读性，这些词汇在规范中并没有以大写形式出现。</p>
+
+      <p>为了帮助分层，且避免在规范的不同部分之间产生循环依赖，该文档由三个连贯的叙述内容组成：</p>
+      <ol>
+        <li>搭建该规范的基础和背景，</li>
+        <li>先解释概念模型和算法，然后</li>
+        <li>通过 DOM 接口和 HTML 元素表达该模型。</li>
+      </ol>
+
+      <p>某种意义上说，这三个部分分别相当于是 <em>数学</em>——推理环境、<em>物理</em>——对概念的逻辑推理、和<em>机械</em>——对实践应用的推理。</p>
+
+      <p>任何遵循该规范的用户代理必须根据概念模型决定的交互或状态，都会以<a href="http://en.wikipedia.org/wiki/Algorithm">算法</a>的方式进行捕获。该算法被定义为等价处理的术语。这里的<dfn>等价处理</dfn>是强制约束的算法实现，要求相同的输入通过用户代理实现和规范算法的输出是完全一致的。</p>
+    </section>
+
+    <section>
+      <h2>概念</h2>
+
+      <section class="informative">
+        <h3>介绍</h3>
+
+        <p>
+          请移步至 <a href="http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom/">Shadow DOM 101</a> 阅读这份非正式性介绍。
+        </p>
+      </section>
+
+      <section>
+        <h3>Shadow 树</h3>
+
+        <p><dfn>文档树</dfn>是指<a>根</a><a>结点</a>是<a>文档</a>的<a>结点树</a> [[!DOM]]。</p>
+
+        <p>任何元素都可以有一个包含 0 个或更多的<a title="node tree">结点树</a>的<dfn title="shadow roots list">关联有序列表</dfn>。</p>
+
+        <p>如果一个<a>结点树</a>是一个元素的关联列表的成员，则称该元素<dfn>宿主</dfn>该<a>结点树</a>。</p>
+
+        <p><dfn>Shadow 宿主</dfn>是指<a>宿主</a>一个或多个<a title="node tree">结点树</a>的元素。</p>
+
+        <p><dfn>Shadow 树</dfn>是指被 <a>shadow 宿主</a><a title="hosts">宿主</a>的<a>结点树</a>。</p>
+
+        <p><dfn>Shadow 根</dfn>是指 shadow 树的<a>根</a><a>结点</a>。</p>
+
+        <p>如果超过一个 <a>shadow 树</a>被<a title="hosts">宿主</a>于相同的 <a>shadow 宿主</a>，则最近添加的 <a>shadow 树</a>被称为<dfn>年轻 shadow 树</dfn>同时最早添加的 <a>shadow 树</a>被称为<dfn>老 shadow 树</dfn>。</p>
+
+        <p>如果没有比给定的 <a>shadow 树</a><a>更老的 shadow 树</a>，则该 <a>shadow 树</a>被称为<dfn>最老的 shadow 树</dfn>。</p>
+
+        <p>如果没有比给定的 <a>shadow 树</a><a>更年轻的 shadow 树</a>，则该 <a>shadow 树</a>被称为<dfn>最年轻的 shadow 树</dfn>。</p>
+
+        <p><dfn>更老的 shadow 根</dfn>是指<a>更老的 shadow 树</a>的根结点。</p>
+
+        <p><dfn>更年轻的 shadow 根</dfn>是指<a>更年轻的 shadow 树</a>的根结点。</p>
+
+        <p><dfn>最老的 shadow 根</dfn>是指<a>最老的 shadow 树</a>的根结点。</p>
+
+        <p><dfn>最年轻的 shadow 根</dfn>是指<a>最年轻的 shadow 树</a>的根结点。</p>
+
+        <p class="note">
+          方便起见，<a>shadow 根</a>提供了其自己的<a title="DOM tree accessors">DOM 树存取器</a>方法集合。除了 <a>shadow 根</a>的后代，没有<a title="node">结点</a>可以访问这些方法。
+        </p>
+      </section>
+
+      <section>
+        <h3>树中树</h3>
+
+        <p><dfn>树中树</dfn>是指包含<a title="node tree">结点树</a>的<a>树</a>。</p>
+
+        <p class="note">
+          这里引入树中树的目的在于方便下面章节中的算法定义。
+        </p>
+
+        <p>像<a>结点树</a>被定义为<a title="node">结点</a>之间的<a title="tree">一套关系集合</a>一样，<a>树中树</a>同样定义了<a title="node tree">结点树</a>之间的一套关系集合：</p>
+        <ul>
+          <li>
+            如果下面两种条件之一被满足，<a>结点树</a> <var>A</var> 被称为<a>结点树</a> <var>B</var> 的一个<dfn>父级树</dfn>：
+            <ul>
+              <li><var>A</var> 和 <var>B</var> 在相同的<a title="shadow roots list">关联有序列表</a>中彼此相邻且 <var>A</var> 是相对于 <var>B</var><a>更老的 shadow 树</a>。</li>
+              <li><var>B</var> 是<a>最老的 shadow 树</a>并且 <var>B</var> 的 <a>shadow 宿主</a>参与在 <var>A</var> 之中。</li>
+            </ul>
+
+          </li>
+          <li>如果有超过一个<a>结点树</a>共享相同的<a>父级树</a>，则它们在<a>树中树</a>里的<a>树顺序</a>以如下方式定义：
+            <ol>
+              <li>让 <var>A</var> 和 <var>B</var> 成为共享同一个<a>父级树</a>的<a title="node tree">结点树</a>。</li>
+              <li>如果下面两个条件之一被满足，则 <var>A</var> 在 <var>B</var> 之前：
+                <ul>
+                  <li><var>A</var> 的 <a>shadow 宿主</a><a>先于</a> <var>B</var> 的 <a>shadow 宿主</a>。</li>
+                  <li><var>B</var> 不是<a>最老的 shadow 树</a>。</li>
+                </ul>
+              </li>
+            </ol>
+          </li>
+          <li>其它关系和属于，比如<dfn>树根</dfn>、<dfn>子树</dfn>、<dfn>后代树</dfn>、<dfn>包含的后代树</dfn>、<dfn>祖先树</dfn>、<dfn>包含的祖先树</dfn>、<dfn>前面的树</dfn>同理于<a title="tree">树</a>的定义。</li>
+        </ul>
+
+        <p>一个 shadow 树的<a>结点</a>的 <a><code>ownerDocument</code></a> 属性<strong>必须</strong>引用该 shadow 树<a>的 shadow 宿主</a>的<a>文档</a>。</p>
+
+        <p><a><code>Window</code></a> 对象中<a title="named access on the window object">被命名的属性</a> [[!HTML]] <strong>必须</strong> 访问该<a>文档树</a>中的<a title="node">结点</a>。</p>
+
+        <section class="informative">
+          <h3>树中树的例子</h3>
+
+          <figure>
+            <object data="../../assets/images/tree-of-trees.svg" width="650" height="823"></object>
+            <figcaption>
+              一个树中树
+            </figcaption>
+          </figure>
+
+          <p>
+            如图，这里有七个结点树，分别命名为 A、B、C、D、E 和 F。
+            结点树 C、D 和 E 被宿主在同一个参与在结点树 A 上的 <a>shadow 宿主</a>。
+            结点树 C 是<a>最老的 shadow 树</a>。结点树 E 是<a>最年轻的 shadow 树</a>。
+            改图还存在下列关系：
+            <ul>
+              <li>A 的<a title="child tree">子树</a>的有序列表是 [B, C]。</li>
+              <li>B 的<a title="child tree">子树</a>的有序列表是 []。</li>
+              <li>C 的<a title="child tree">子树</a>的有序列表是 [F, D]。</li>
+              <li>D 的<a title="child tree">子树</a>的有序列表是 [E]。</li>
+              <li>E 的<a title="child tree">子树</a>的有序列表是 []。</li>
+            </ul>
+          </p>
+        </section>
+
+      </section>
+
+      <section>
+        <h3>组合树</h3>
+
+        <p><dfn>组合树</dfn>是指由<a>树中树</a>里的多个<a title="node tree">结点树</a>作为<a title="node">结点</a>架构而成的一个<a>结点树</a>。详细的组合树结构算法会稍后被规范。</p>
+
+        <figure>
+          <object data="../../assets/images/composed-tree.svg" width="654" height="606"></object>
+          <figcaption>一个组合树</figcaption>
+        </figure>
+
+        <p>在<dfn>渲染</dfn>一个<a>文档树</a>，或对其进行可视化展示时，<a>组合树</a><strong>必须</strong>被替换作<a>文档树</a>。</p>
+
+        <p><a>组合树</a><strong>必须</strong>在<a>渲染</a>发生之前被更新。</p>
+      </section>
+
+    </section>
+
+    <section>
+      <h2>Distributions</h2>
+
+      <section>
+        <h3>Insertion Points</h3>
+
+        <p>An <dfn>insertion point</dfn> is a defined location where <a title="node">nodes</a> in a different <a>node tree</a> appear instead of the nodes's original position when constructing a <a>composed tree</a>.</p>
+
+        <figure>
+          <object data="../../assets/images/distributions.svg" width="663" height="598"></object>
+          <figcaption>A distribution</figcaption>
+        </figure>
+
+        <p>A <dfn>distribution</dfn> is the mechanism that determines which <a title="node">nodes</a> appear at each <a>insertion point</a>. The exact algorithm of a <a>distribution</a> is specified later.</p>
+      </section>
+
+
+      <section>
+        <h3>Content Insertion Points</h3>
+
+        <p>A <dfn>content insertion point</dfn> is an <a>insertion point</a> to where the child <a title="node">nodes</a> of the <a>shadow host</a> are distributed.
+          The <a>content element</a> that satisfies all of the following conditions represents a <a>content insertion point</a>:</p>
+        <ul>
+          <li>The <a>root</a> <a>node</a> of the <a>content element</a> is a <a>shadow root</a></li>
+          <li>There is no other <a>content element</a> in the <a title="ancestor">ancestors</a> of the <a>content element</a></li>
+          <li>There is no <a>shadow element</a> in the <a title="ancestor">ancestors</a> of the <a>content element</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Shadow Insertion Points</h3>
+
+        <p>A <dfn>shadow insertion point</dfn> is an <a>insertion point</a> to where the children of the <a>older shadow root</a> are distributed.
+          The <a>shadow element</a> that satisfies of the following conditions represents a <a>shadow insertion point</a>:</p>
+        <ul>
+          <li>The <a>root</a> <a>node</a> of the <a>shadow element</a> is a <a>shadow root</a></li>
+          <li>There is no other <a>shadow element</a> which is <a>preceding</a> the <a>shadow element</a></li>
+          <li>There is no other <a>content element</a> in the <a title="ancestor">ancestors</a> of the <a>shadow element</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Distribution Results</h3>
+
+        <p>Each <a>tree of trees</a> has the <dfn>distribution result</dfn> which describes the result of distributions.
+          The <a>distribution result</a> <strong>must</strong> be <a title="processing equivalence">equivalent</a> of the following:</p>
+        <ol>
+          <li>Each <a>insertion point</a> has an ordered list, called <dfn>distributed nodes</dfn>, which consists of <a title="node">nodes</a> which are distributed into the <a>insertion point</a>.</li>
+          <li>Each <a>node</a> that is not an <a>insertion point</a> has an ordered list, called <dfn>destination insertion points</dfn>, which consists of <a title="insertion point">insertion points</a> to where the <a>node</a> is distributed</li>
+        </ol>
+
+        <p>An <a>insertion point</a> <var>A</var> is the <dfn>final destination</dfn> of a <a>node</a> <var>B</var> if <var>A</var> is the last item of the <a>destination insertion points</a> of <var>B</var>.</p>
+
+        <p>When a <a>node</a> <var>A</var> is <dfn title="distributes">distributed</dfn> into an <a>insertion point</a> <var>B</var>, the following steps <strong>must</strong> happen:</p>
+        <ul>
+          <li>Add <var>A</var> to the <a>distributed nodes</a> of <var>B</var></li>
+          <li>Add <var>B</var> to the <a>destination insertion points</a> of <var>A</var></li>
+        </ul>
+
+        <div class="note">
+          <p>One case that deserves special consideration is the situation when an <a>insertion point</a> is a child <a>node</a> of another <a>shadow host</a>. In such situations, the <a title="node">nodes</a> <a title="distributes">distributed</a> into that <a>insertion point</a> appear as if they were child <a title="node">nodes</a> of the <a>shadow host</a> in the context of <a>distribution</a>. Thus, the <a title="node">nodes</a> <a title="distributes">distributed</a> to a <a>shadow tree</a> could have already been <a title="distributes">distributed</a> from its parent tree.</p>
+
+          <p>Despite being distributed to more than one insertion point, a node still only appears once in the composed tree at the final destination.</p>
+        </div>
+
+        <figure>
+          <object data="../../assets/images/re-distributions.svg" width="693" height="822"></object>
+          <figcaption>A re-distribution.
+            In the figure, a node <em>child 1</em> is distributed into <em>insertion point 1</em>. Then <em>child1</em> is re-distributed into <em>insertion point 3</em>.
+            The destination insertion points of <em>child 1</em> is [<em>insertion point 1</em>, <em>insertion point 3</em>] and <em>insertion point 3</em> is the final destination of <em>child 1</em>.
+            The distributed nodes of <em>insertion point 1</em> and <em>insertion point 3</em> is [<em>child 1</em>] and [<em>child 1</em>, <em>child 3</em>], respectively.
+          </figcaption>
+        </figure>
+
+      </section>
+
+      <section>
+        <h3>Distribution Algorithms</h3>
+
+        <p>The <dfn>distribution algorithm</dfn> <strong>must</strong> be used to determine the <a>distribution result</a> for a <a>tree of trees</a> and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+
+        <div class="algorithm">
+          <dl>
+            <dt>Input</dt>
+            <dd><var>TREE-OF-TREES</var>, a <a>tree of trees</a></dd>
+            <dt>Output</dt>
+            <dd>The <a>distribution result</a> of <var>TREE-OF-TREES</var> is updated</dd>
+          </dl>
+          <ol>
+            <li>Let all <a>distributed nodes</a> and <a>destination insertion points</a> owned by <a title="node">nodes</a> in <var>TREE-OF-TREES</var> be empty</li>
+            <li>Let <var>ROOT-TREE</var> be the <a>root tree</a> of <var>TREE-OF-TREES</var></li>
+            <li>Run the <a>distribution resolution algorithm</a> with <var>ROOT-TREE</var> as input</li>
+          </ol>
+        </div>
+
+        <p>The <dfn>distribution resolution algorithm</dfn> <strong>must</strong> be used to determine the <a>distribution result</a> for a given <a>node tree</a> and its <a title="descendant tree">descendant trees</a>, and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+
+        <div class="algorithm">
+          <dl>
+            <dt>Input</dt>
+            <dd><var>NODE-TREE</var>, a <a>node tree</a></dd>
+            <dt>Output</dt>
+            <dd>The <a>distribution result</a> is updated for the <a title="inclusive descendant tree">inclusive descendant trees</a> of <var>NODE-TREE</var></dd>
+          </dl>
+
+          <ol>
+            <li>For each <a>shadow host</a>, <var>SHADOW-HOST</var>, which participates in <var>NODE-TREE</var>, in <a>tree order</a>:
+              <ol>
+                <li>Let <var>POOL</var> be the result of the <a>pool population algorithm</a> with <var>SHADOW-HOST</var> as input</li>
+                <li>For each <a>shadow tree</a>, <var>SHADOW-TREE</var>, which <var>SHADOW-HOST</var> <a>hosts</a>, in order from the <a>youngest shadow tree</a> to the <a>oldest shadow tree</a>:
+                  <ol>
+                    <li>Run the <a>pool distribution algorithm</a> with <var>SHADOW-TREE</var> and <var>POOL</var> as input</li>
+                  </ol></li>
+                <li>For each <a>shadow tree</a>, <var>SHADOW-TREE</var>, that <var>SHADOW-HOST</var> <a>hosts</a>, in order from the <a>oldest shadow tree</a> to the <a>youngest shadow tree</a>:
+                  <ol>
+                    <li>Let <var>SHADOW</var> be the <a>shadow insertion point</a> which participates in <var>SHADOW-TREE</var></li>
+                    <li>If such a <var>SHADOW</var> exits:
+                      <ol>
+                        <li>If <var>SHADOW-TREE</var> is not the <a>oldest shadow tree</a>:
+                          <ol>
+                            <li>Let <var>POOL</var> be the result of the <a>pool population algorithm</a> with the root node of the <a>older shadow tree</a> relative to <var>SHADOW-TREE</var> as input.</li>
+                          </ol></li>
+                        <li>For each <a>node</a>, <var>CHILD</var>, in <var>POOL</var>
+                          <ol>
+                            <li><a title="distributes">Distribute</a> <var>CHILD</var> into <var>SHADOW</var></li>
+                          </ol></li>
+                      </ol></li>
+                    <li>Run the <a>distribution resolution algorithm</a>, recursively, with <var>SHADOW-TREE</var> as input</li>
+                  </ol></li>
+              </ol></li>
+          </ol>
+        </div>
+
+        <p>The <dfn>pool population algorithm</dfn> <strong>must</strong> be used to populate <a title="node">nodes</a> from the child <a title="node">nodes</a> of a given <a>node</a> and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+
+        <div class="algorithm">
+          <dl>
+            <dt>Input</dt>
+            <dd><var>NODE</var>, a node</dd>
+            <dt>Output</dt>
+            <dd><var>POOL</var>, an ordered list of nodes</dd>
+          </dl>
+
+          <ol>
+            <li>Let <var>POOL</var> be an empty ordered list.</li>
+            <li>For each child <a>node</a>, <var>CHILD</var>, of <var>NODE</var>:
+              <ol>
+                <li>If <var>CHILD</var> is an <a>insertion point</a>:
+                  <ol>
+                    <li>Add all <a title="node">nodes</a> in the <a>distributed nodes</a> of <var>CHILD</var> to <var>POOL</var></li>
+                  </ol></li>
+                <li>Otherwise:
+                  <ol>
+                    <li>Add <var>CHILD</var> to <var>POOL</var></li>
+                  </ol></li>
+              </ol></li>
+          </ol>
+        </div>
+
+        <p>The <dfn>pool distribution algorithm</dfn> <strong>must</strong> be used to distribute <a title="node">nodes</a> in a pool into the <a title="content insertion point">content insertion points</a> in a <a>shadow tree</a> and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+
+        <div class="algorithm">
+          <dl>
+            <dt>Input</dt>
+            <dd><var>SHADOW-TREE</var>, a shadow tree</dd>
+            <dd><var>POOL</var>, an ordered list of nodes</dd>
+            <dt>Output</dt>
+            <dd>Nodes in POOL are distributed into the content insertion points in the tree.</dd>
+          </dl>
+
+          <ol>
+            <li>For each <a>content insertion point</a>, <var>CONTENT</var>, which participates in <var>SHADOW-TREE</var>, in tree order:
+              <ol>
+                <li>For each <a>node</a>, <var>NODE</var>, in <var>POOL</var>
+                  <ol>
+                    <li>If <var>NODE</var> satisfies <var>CONTENT</var>'s matching criteria:
+                      <ol>
+                        <li><a title="distributes">Distribute</a> <var>NODE</var> into <var>CONTENT</var></li>
+                        <li>Remove <var>NODE</var> from <var>POOL</var></li>
+                      </ol></li>
+                  </ol></li>
+                <li>If no <a title="node">nodes</a> are distributed to <var>CONTENT</var>:
+                  <ol>
+                    <li>For each child, <var>CHILD</var>, of <var>CONTENT</var>
+                      <ol>
+                        <li><a title="distributes">Distribute</a> <var>CHILD</var> into <var>CONTENT</var></li>
+                      </ol></li>
+                  </ol></li>
+              </ol></li>
+          </ol>
+
+        </div>
+
+        <p class="note">If no nodes are distributed into a <a>content insertion point</a> <var>CONTENT</var>, the child <a title="node">nodes</a> of <var>CONTENT</var> are distributed into <var>CONTENT</var> as fallback nodes.</p>
+
+        <p>If any condition which affects the <a>distribution result</a> changes, the <a>distribution result</a> <strong>must</strong> be updated before any use of the <a>distribution result</a>.</p>
+
+      </section>
+
+      <section>
+        <h3>Satisfying Matching Criteria</h3>
+
+        <p>The <dfn>matching criteria</dfn> for an <a>insertion point</a> is a set of <a title="compound selector">compound selectors</a> [[!SELECTORS4]]. These <a title="compound selector">compound selectors</a> are restricted to contain only these <a title="simple selector">simple selectors</a>:</p>
+
+        <ul>
+          <li>A <a>type selector</a> or a <a>universal selector</a></li>
+          <li><a title="class selector">class selector(s)</a></li>
+          <li>An <a>ID selector</a></li>
+          <li><a title="attribute selector">attribute selector(s)</a></li>
+          <li>A <a>negation pseudo-class</a>, <code>:not()</code></li>
+        </ul>
+
+        <p>A <a>node</a> <dfn title="satisfies-matching-criteria">satisfies</dfn> a <a>matching criteria</a> only if:</p>
+        <ol>
+          <li>all <a title="compound selector">compound selectors</a> in the set, contain only the <a title="simple selector">simple selectors</a> specified above; and</li>
+          <li>a <a>node</a> matches at least one <a title="compound selector">compound selectors</a> in the set or the set is empty.</li>
+        </ol>
+      </section>
+
+    </section>
+
+    <section>
+      <h2>Composition</h2>
+
+      <p>The <dfn>composed tree children calculation algorithm</dfn> <strong>must</strong> be used to determine the child <a title="node">nodes</a> of a <a>node</a> in the <a>composed tree</a> and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+
+      <div class="algorithm">
+        <dl>
+          <dt>Input</dt>
+          <dd><var>NODE</var>, a <a>node</a> which participates in a composed tree</dd>
+          <dt>Output</dt>
+          <dd><var>CHILDREN</var>, the child nodes of <var>NODE</var> in the <a>composed tree</a>.</dd>
+        </dl>
+
+        <ol>
+          <li>Let <var>CHILDREN</var> be an empty ordered list of nodes</li>
+          <li>If <var>NODE</var> is a <a>shadow host</a>:
+            <ol>
+              <li>Let <var>CHILD-POOL</var> be the children of the <a>youngest shadow root</a> which <var>NODE</var> <a>hosts</a>.</li>
+            </ol></li>
+          <li>Otherwise:
+            <ol>
+              <li>Let <var>CHILD-POOL</var> be the child <a title="node">nodes</a> of NODE</li>
+            </ol></li>
+          <li>For each <a>node</a>, <var>CHILD</var>, in <var>CHILD-POOL</var>:
+            <ol>
+              <li>If <var>CHILD</var> is an <a>insertion point</a>:
+                <ol>
+                  <li>For each <a>node</a>, <var>DISTRIBUTED-NODE</var>, in the <a>distributed nodes</a> of the <a>insertion point</a> <var>CHILD</var>:
+                    <ol>
+                      <li>If <var>CHILD</var> is the <a>final destination</a> of <var>DISTRIBUTED-NODE</var>, add <var>DISTRIBUTED-NODE</var> to <var>CHILDREN</var></li>
+                    </ol></li>
+                </ol></li>
+              <li>Otherwise:
+                <ol>
+                  <li>Add <var>CHILD</var> to <var>CHILDREN</var></li>
+                </ol></li>
+            </ol></li>
+        </ol>
+
+      </div>
+
+      <p>For a given <a>tree of trees</a> <var>TREE-OF-TREES</var>, the <a>composed tree</a> constructed from <var>TREE-OF-TREES</var> <strong>must</strong> be <a title="processing equivalence">equivalent</a> to the following tree:</p>
+      <ul>
+        <li>The <a>root</a> <a>node</a> of the <a>composed tree</a> is the <a>root</a> <a>node</a> of the <a>root tree</a> of <var>TREE-OF-TREES</var>.</li>
+        <li>For a given <a>node</a> which <a>participates</a> in the <a>composed tree</a>, the child <a title="node">nodes</a> of the <a>node</a> is the result of the <a>composed tree children calculation algorithm</a> with the <a>node</a> as input.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Events</h2>
+
+      <p>When an <a>event</a> is <a title="event dispatch">dispatched</a> in a <a>shadow tree</a>, its path either crosses the <a title="shadow tree">shadow trees</a> or is terminated at the <a>shadow root</a>. One exception are the <a title="mutation event">mutation events</a>. The <a title="mutation event">mutation event types</a> <strong>must</strong> never be dispatched in a <a>shadow tree</a>.</p>
+
+      <section>
+        <h3>Events that are Always Stopped</h3>
+
+        <p>The <dfn title="events-always-stopped">following events</dfn> <strong>must</strong> always be stopped at the <a>root</a> <a>node</a> of the <a>node tree</a>:</p>
+        <ul>
+          <li><code>abort</code></li>
+          <li><code>error</code></li>
+          <li><code>select</code></li>
+          <li><code>change</code></li>
+          <li><code>load</code></li>
+          <li><code>reset</code></li>
+          <li><code>resize</code></li>
+          <li><code>scroll</code></li>
+          <li><code>selectstart</code></li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Event Paths</h3>
+
+        <p>The <dfn>event path calculation algorithm</dfn> must be used to determine event path and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+
+        <div class="algorithm">
+          <dl>
+            <dt>Input</dt>
+            <dd><var>NODE</var>, a node</dd>
+            <dd><var>EVENT</var>, an event</dd>
+            <dt>Output</dt>
+            <dd><var>PATH</var>, an event path, a ordered list of an event target</dd>
+          </dl>
+          <ol>
+            <li>Let <var>PATH</var> be the empty ordered list of nodes</li>
+            <li>Let <var>CURRENT</var> be <var>NODE</var></li>
+            <li>Add <var>CURRENT</var> to <var>PATH</var></li>
+            <li>Repeat while <var>CURRENT</var> exists:
+              <ol>
+                <li>If the <a>destination insertion points</a> of <var>CURRENT</var> is not empty:
+                  <ol>
+                    <li>For each <a>insertion point</a>, <var>INSERTION-POINT</var>, in the <a>destination insertion points</a> of <var>CURRENT</var>:
+                      <ol>
+                        <li>If <var>INSERTION-POINT</var> is a <a>shadow insertion point</a>:
+                          <ol>
+                            <li>Let <var>SHADOW-ROOT</var> be the <a>root</a> <a>node</a> of <var>INSERTION-POINT</var></li>
+                            <li>If <var>SHADOW-ROOT</var> is not the <a>oldest shadow root</a>:
+                              <ol>
+                                <li>Add the <a>older shadow root</a> relative to <var>SHADOW-ROOT</var> to <var>PATH</var></li>
+                              </ol></li>
+                          </ol></li>
+                        <li>Add <var>INSERTION-POINT</var> to <var>PATH</var></li>
+                      </ol></li>
+                    <li>Let <var>CURRENT</var> be the <a>final destination</a> of <var>CURRENT</var></li>
+                  </ol></li>
+                <li>Otherwise:
+                  <ol>
+                    <li>If <var>CURRENT</var> is a <a>shadow root</a>:
+                      <ol>
+                        <li>If <var>NODE</var> and <var>CURRENT</var> are in the same <a>node tree</a> and <var>EVENT</var> is one of the <a title="events-always-stopped">events which must be stopped</a>:
+                          <ol>
+                            <li>Stop this algorithm</li>
+                          </ol></li>
+                        <li>Let <var>CURRENT</var> be the <a>shadow host</a> which <a>hosts</a> <var>CURRENT</var></li>
+                        <li>Add <var>CURRENT</var> to <var>PATH</var></li>
+                      </ol></li>
+                    <li>Otherwise:
+                      <ol>
+                        <li>Let <var>CURRENT</var> be the <a>parent</a> <a>node</a> of <var>CURRENT</var></li>
+                        <li>If <var>CURRENT</var> exists:
+                          <ol>
+                            <li>Add <var>CURRENT</var> to <var>PATH</var></li>
+                          </ol></li>
+                      </ol></li>
+                  </ol></li>
+              </ol></li>
+          </ol>
+        </div>
+
+      </section>
+
+      <section class="informative">
+        <h3>Event Paths Example</h3>
+
+        <p>
+          Suppose we have the following tree of trees:
+        </p>
+
+        <figure>
+          <object data="../../assets/images/event-path-tree-of-trees.svg" width="301" height="1074"></object>
+          <figcaption>An example tree of trees. Nodes which are not involved in the example event path, which is explained later, are omitted.</figcaption>
+        </figure>
+
+        <ul>
+          <li>
+            <code>A</code> is a <a>document</a>.
+          </li>
+          <li>
+            <code>E</code>, <code>J</code>, <code>N</code>, <code>Q</code>, <code>S</code> and <code>V</code> are <a title="shadow root">shadow roots</a>.
+          </li>
+          <li>
+            <code>I</code>, <code>M</code>, <code>P</code>, <code>R</code> and <code>U</code> are <a title="content insertion point">content insertion points</a>.
+          </li>
+          <li>
+            <code>X</code> is a <a>shadow insertion point</a>.
+          </li>
+        </ul>
+
+        <p>
+          This <a>tree of trees</a> has the following seven <a title="node tree">node trees</a>, one <a>document tree</a> and six <a title="shadow tree">shadow trees</a>:
+        </p>
+
+        <ul>
+          <li>
+            The <var>document tree 1</var>. Node <code>A</code>, <code>B</code>, <code>C</code> and <code>D</code> participate in that.
+          </li>
+          <li>
+            The <var>shadow tree 2</var> hosted by <code>B</code>. Node <code>E</code>, <code>F</code>, <code>G</code>, <code>H</code> and <code>I</code> participate in that.
+          </li>
+          <li>
+            The <var>shadow tree 3</var> hosted by <code>H</code>. Node <code>J</code>, <code>K</code>, <code>L</code> and <code>M</code> participate in that.
+          </li>
+          <li>
+            The <var>shadow tree 4</var> hosted by <code>K</code>. Node <code>N</code>, <code>O</code> and <code>P</code> participate in that.
+          </li>
+          <li>
+            The <var>shadow tree 5</var> hosted by <code>O</code>. Node <code>Q</code> and <code>R</code> participate in that.
+          </li>
+          <li>
+            The <var>shadow tree 6</var> hosted by <code>F</code>. Node <code>S</code>, <code>T</code> and <code>U</code> participate in that.
+          </li>
+          <li>
+            The <var>shadow tree 7</var> hosted by <code>B</code>. Node <code>V</code>, <code>W</code> and <code>X</code> participate in that.
+            This <a>shadow tree</a> is younger than the <var>shadow tree 2</var>.
+          </li>
+        </ul>
+
+        <p>
+          Let's assume that the <a>distribution result</a> of this <a>tree of trees</a> is:
+        </p>
+
+        <ul>
+          <li>
+            The <a>destination insertion points</a> of <code>C</code> are <code>[I, M]</code> (<code>C</code> is re-distributed)
+          </li>
+          <li>
+            The <a>destination insertion points</a> of <code>L</code> are <code>[P, R]</code> (<code>L</code> is re-distributed)
+          </li>
+          <li>
+            The <a>destination insertion points</a> of <code>G</code> are <code>[U]</code>
+          </li>
+          <li>
+            The <a>destination insertion points</a> of <code>F</code> are <code>[X]</code>
+          </li>
+        </ul>
+
+        <p>
+          In this case, if an event is dispatched on node <code>D</code>, the event path will be:
+        </p>
+        <p>
+          <code>
+            [D, C, I, M, L, P, R, Q, O, N, K, J, H, G, U, T, S, F, E, X, W, V, B, A]
+          </code>
+        </p>
+
+        <p>
+          Note that the <a>event path calculation algorithm</a> is designed to achieve the following goals:
+        </p>
+
+        <ol>
+          <li>
+            If there is a node, <var>CHILD</var>, in the event path and <var>CHILD</var> has a parent node, <var>PARENT</var>, in the node tree, the event path also includes <var>PARENT</var>.
+            <var>PARENT</var> always appears somewhere after <var>CHILD</var> in the event path.
+          </li>
+          <li>
+            Nodes in the event path form a <em>linear ancestor chain</em> in each <a>node tree</a>. There are no <em>branch points</em> in each <a>node tree</a>.
+          </li>
+        </ol>
+
+        <figure>
+          <object data="../../assets/images/event-path-node-trees.svg" width="884" height="473">></object>
+          <figcaption>
+            The relationship between an event path and node trees. In the figure, a number shown in a left-side of each node represents a zero-based position of each node in the event path.
+            A parent node always have a larger number than that of its child node in each node tree.
+          </figcaption>
+        </figure>
+
+        <p>
+          That means if we focus on one <a>node tree</a> and forget all other <a title="node tree">node trees</a>,
+          the event path would be seen as if the event happened only on the <a>node tree</a> which we are focused on.
+          This is an important aspect in a sense that hosting shadow trees doesn't have any effect to the event path <em>within</em> the <a>node tree</a> the <a>shadow host</a> participate in
+          as long as the event is not stopped somewhere in the <a title="descendant tree">descendant trees</a>.
+        </p>
+
+        <p>
+          For example, from the view of the <var>document tree 1</var>, the event path would be seen as <code>[D, C, B, A]</code>.
+          From the view of the <var>shadow tree 2</var>, the event path would be seen as <code>[I, H, G, F, E]</code>.
+          The similar things also apply to other <a title="node tree">node trees</a>.
+        </p>
+
+        <p>
+          It is also worth pointing out that if we exclude all <a title="insertion point">insertion points</a> and <a title="shadow root">shadow roots</a> from an event path,
+          the result would be equivalent to the inclusive ancestors of the node on which the event is dispatched, in the composed tree.
+        </p>
+
+        <figure>
+          <object data="../../assets/images/event-path-and-composed-tree.svg" width="217" height="1723"></object>
+          <figcaption>
+            The relationship between an event path and the <a>composed tree</a>. The event path used in the example is shown in the left-hand side and the <a>composed tree</a> is shown in the right-hand side.
+            If we exclude all <a title="insertion point">insertion points</a> and <a title="shadow root">shadow roots</a> from the event path,
+            the result would be equivalent to the inclusive ancestors of the node, <code>D</code>, in the <a>composed tree</a>.
+          </figcaption>
+        </figure>
+
+      </section>
+
+      <section>
+        <h3>Event Retargeting</h3>
+
+        <p>In the cases where event path is across multiple node trees, the event's information about the target of the event is adjusted in order to maintain <a href="#encapsulation">encapsulation</a>. Event <dfn>retargeting</dfn> is a process of computing relative targets for each ancestor of the <a>node</a> at which the event is dispatched. A <dfn>relative target</dfn> is a <a>node</a> that most accurately represents the target of a dispatched event at a given ancestor while maintaining the encapsulation.</p>
+
+        <p>The <dfn>retargeting algorithm</dfn> is used to determine relative targets, and it <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+
+        <div class="algorithm">
+          <dl>
+            <dt>Input</dt>
+            <dd><var>EVENT-PATH</var>, an event path</dd>
+            <dd><var>CURRENT-TARGET</var>, a <a>node</a> where the event listener is invoked.</dd>
+            <dt>Output</dt>
+            <dd><var>RELATIVE-TARGET</var>, adjusted target</dd>
+          </dl>
+          <ol>
+            <li>Let <var>CURRENT-TARGET-TREE</var> be the <a>node tree</a> which <var>CURRENT-TARGET</var> <a>participates</a> in</li>
+            <li>Let <var>ORIGINAL-TARGET</var> be the first item in <var>EVENT-PATH</var></li>
+            <li>Let <var>ORIGINAL-TARGET-TREE</var> be the <a>node tree</a> which <var>ORIGINAL-TARGET</var> <a>participates</a> in</li>
+            <li>Let <var>RELATIVE-TARGET-TREE</var> be the lowest common <a>inclusive ancestor tree</a> of <var>CURRENT-TARGET-TREE</var> and <var>ORIGINAL-TARGET-TREE</var></li>
+            <li>Let <var>RELATIVE-TARGET</var> be the first <a>node</a> in <var>EVENT-PATH</var> which satisfies the following condition:
+              <ol>
+                <li>The <a>node</a> <a>participates</a> in <var>RELATIVE-TARGET-TREE</var></li>
+              </ol>
+            </li>
+          </ol>
+        </div>
+
+        <p>The retargeting process <strong>must</strong> occur prior to dispatch of an event.</p>
+      </section>
+
+      <section>
+        <h3>Retargeting <code>relatedTarget</code></h3>
+
+        <p>Some events have a <a><code>relatedTarget</code></a> [[!DOM-Level-3-Events]] property, which holds a <a>node</a> that's not the event's target, but is related to the event.</p>
+
+        <p>For instance, a <code>mouseover</code> event's <a><code>relatedTarget</code></a> may hold the <a>node</a> from which the mouse has moved to event's <code>target</code>. In the case where <code>relatedTarget</code> is in a <a>shadow tree</a>, the conforming UAs <strong>must</strong> not leak its actual value outside of this tree. In cases where both <code>relatedTarget</code> and <code>target</code> are part of the same <a>shadow tree</a>, the conforming UAs <strong>must</strong> <em>stop</em> events at the shadow root to avoid the appearance of spurious <code>mouseover</code> and <code>mouseout</code> events firing from the same node.</p>
+
+        <p>Thus, if an event has a <code>relatedTarget</code>, its value and extent of event dispatch <strong>must</strong> be adjusted. In general:</p>
+        <ol>
+          <li>For a given node, the <code>relatedTarget</code> <strong>must</strong> be changed to its ancestor (or self) that is in the same <a>shadow tree</a> as the node</li>
+          <li>Event listeners <strong>must not</strong> be invoked on a <a>node</a> for which the <code>target</code> and <code>relatedTarget</code> are the same.</li>
+        </ol>
+
+        <p>The <dfn>related target resolution algorithm</dfn> <strong>must</strong> be used to determine the value of the <a><code>relatedTarget</code></a> property and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+
+        <div class="algorithm">
+          <dl>
+            <dt>Input</dt>
+            <dd><var>EVENT</var>, an event</dd>
+            <dd><var>CURRENT-TARGET</var>, the <a>node</a> on which event listeners would be invoked</dd>
+            <dd><var>RELATED-TARGET</var>, the related target for the event</dd>
+            <dt>Output</dt>
+            <dd><var>ADJUSTED-RELATED-TARGET</var>, the <dfn>adjusted related target</dfn> for <var>CURRENT-TARGET</var></dd>
+          </dl>
+          <ol>
+            <li>Let <var>CURRENT-TARGET-TREE</var> be the <a>node tree</a> which <var>CURRENT-TARGET</var> <a>participates</a> in</li>
+            <li>Let <var>RELATED-TARGET-TREE</var> be the <a>node tree</a> which <var>RELATED-TARGET</var> <a>participates</a> in</li>
+            <li>Let <var>RELATED-TARGET-EVENT-PATH</var> be the result of the <a>event path calculation algorithm</a> with <var>RELATED-TARGET</var> and <var>EVENT</var> as input</li>
+            <li>If <var>CURRENT-TARGET-TREE</var> and <var>RELATED-TARGET-TREE</var> participate in the same <a>tree of trees</a>:
+              <ol>
+                <li>Let <var>LOWEST-COMMON-ANCESTOR-TREE</var> be the lowest common <a>inclusive ancestor tree</a> of <var>CURRENT-TARGET-TREE</var> and <var>RELATED-TARGET-TREE</var></li>
+              </ol>
+            </li>
+            <li>Otherwise:
+              <ol>
+                <li>Let <var>LOWEST-COMMON-ANCESTOR-TREE</var> be the <a>root tree</a> of <var>RELATED-TARGET-TREE</var></li>
+              </ol>
+            </li>
+            <li>For each <a>inclusive ancestor tree</a>, <var>COMMON-ANCESTOR-TREE</var>, of the <var>LOWEST-COMMON-ANCESTOR-TREE</var>, in ascending order:
+              <ol>
+                <li>Let <var>ADJUSTED-RELATED-TARGET</var> be the first <a>node</a> in <var>RELATED-TARGET-EVENT-PATH</var> which satisfies the following condition:
+                  <ol>
+                    <li>The <a>node</a> <a>participates</a> in <var>COMMON-ANCESTOR-TREE</var></li>
+                  </ol>
+                </li>
+                <li>If such a <var>ADJUSTED-RELATED-TARGET</var> exists:
+                  <ol>
+                    <li>Stops this algorithm</li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </div>
+
+        <p class="note">The result of the related target resolution algorithm is not always null. Unless that, you should file a bug for this specification.</p>
+
+        <p>The relatedTarget retargeting process <strong>must</strong> occur prior to dispatch of an event.</p>
+      </section>
+
+      <section>
+        <h3>Retargeting Touch Events</h3>
+
+        <p>The <a><code>Touch</code></a> <a title="Touch target"><code>target</code></a> [[!TOUCH-EVENTS]] attribute must be adjusted in the same way as an event with a <a><code>relatedTarget</code></a>. Each <a><code>Touch</code></a> <a title="Touch target"><code>target</code></a> in the <a><code>TouchList</code></a> returned from <a><code>TouchEvent</code></a> <a title="touches"><code>touches()</code></a>, <a title="changedTouches"><code>changedTouches()</code></a> and <a title="targetTouches"><code>targetTouches()</code></a> must be the result of <a>related target resolution algorithm</a>, given <var>NODE</var> and <a><code>Touch</code></a> <a title="Touch target"><code>target</code></a> as arguments.</p>
+      </section>
+
+      <section>
+        <h3>Retargeting Focus Events</h3>
+
+        <p>The <code>focus</code>, <code>DOMFocusIn</code>, <code>blur</code>, and <code>DOMFocusOut</code> events <strong>must</strong> be treated in the same way as events with a <code>relatedTarget</code>, where the corresponding <a>node</a> that is losing focus as a result of <code>target</code> gaining focus or the <a>node</a> that is gaining focus, and thus causing the blurring of <code>target</code> acts as the related target.</p>
+      </section>
+
+      <section>
+        <h3>Event Dispatch</h3>
+
+        <p>At the time of event dispatch:</p>
+        <ul>
+          <li>The <a><code>Event</code></a> <a><code>target</code></a> and <a><code>currentTarget</code></a> attributes <strong>must</strong> return the <a>relative target</a> for the <a>node</a> on which event listeners are <a title="event listener invoke">invoked</a></li>
+          <li>The <a><code>MouseEvent</code></a> <a><code>relatedTarget</code></a> attribute <strong>must</strong> return the <a>adjusted related target</a></li>
+          <li>The <a><code>MouseEvent</code></a> <a><code>offsetX</code></a> and <a><code>offsetY</code></a> attributes <strong>must</strong> return the coordinates relative to the origin of the <a>padding edge</a> of the <a>relative target</a></li>
+          <li>The <a><code>Touch</code></a> <a title="Touch target"><code>target</code></a> attribute <strong>must</strong> return the <a>adjusted related target</a></li>
+          <li>If the <a><code>relatedTarget</code></a> and <a><code>target</code></a> are the same for a given node, its the event listeners <strong>must not</strong> be invoked. <a><code>TouchEvent</code></a> is not subject to this rule.</li>
+          <li>When <em>capturing</em>, which entails processing step 6 of the <a title="event dispatch">event dispatch algorithm</a>, the event listeners <strong>must not</strong> be <a title="event listener invoke">invoked</a> on a <a>node</a> <strong>if</strong> it is the same as its <a>relative target</a></li>
+          <li>When <em>bubbling</em>, which entails processing step 9 of the <a title="event dispatch">event dispatch algorithm</a>, the <a><code>Event</code></a> <a>eventPhase</a> attribute <strong>must</strong> return <a>AT_TARGET</a> <strong>if</strong> the <a>relative target</a> is same as the <a>node</a> on which event listeners are <a title="event listener invoke">invoked</a></li>
+          <li>If the event's <a><code>bubbles</code></a> attribute value is <strong>false</strong>, run these substeps:
+            <ol>
+              <li>Reverse the order of <em>event path</em></li>
+              <li>Initialize event's <a><code>eventPhase</code></a> attribute to <a><code>AT_TARGET</code></a></li>
+              <li>For each object in <em>event path</em> where the <a>relative target</a> is same as the object, <a title="event listener invoke">invoke</a> its <a title="event listener">event listeners</a>, with event <em>event</em>, as long as <em>event</em>'s <a>stop propagation flag</a> is unset</li>
+            </ol></li>
+        </ul>
+
+        <p>Upon completion of the event dispatch, the <a><code>Event</code></a> object's <a><code>target</code></a> and <a><code>currentTarget</code></a> <strong>must</strong> be to the highest ancestor's <a>relative target</a>. Since it is possible for a script to hold on to the <code>Event</code> object past the scope of event dispatch, this step is necessary to avoid revealing the <a title="node">nodes</a> in <a title="shadow tree">shadow trees</a>.</p>
+      </section>
+
+      <section class="informative">
+        <h3>Event Retargeting Example</h3>
+
+        <p>Suppose we have a user interface for a media controller, represented by this tree, composed of both <a>document tree</a> and the <a title="shadow tree">shadow trees</a>. In this example, we will assume that selectors are allowed to cross the shadow boundaries and we will use these selectors to identify the <a title="element">elements</a>. Also, we will invent a fictional <code>shadow-root</code> <a>element</a> to demarcate the shadow boundaries and represent <a title="shadow root">shadow roots</a>:</p>
+        <pre class="example">
+&lt;div id=&quot;player&quot;&gt;
+    <span class=shadow-boundary>&lt;shadow-root id=&quot;player-shadow-root&quot;&gt;</span>
+        &lt;div id=&quot;controls&quot;&gt;
+            &lt;button id=&quot;play-button&quot;&gt;PLAY&lt;/button&gt;
+            &lt;input type=&quot;range&quot; id=&quot;timeline&quot;&gt;
+                <span class=shadow-boundary>&lt;shadow-root id=&quot;timeline-shadow-root&quot;&gt;</span>
+                    &lt;div id=&quot;slider-thumb&quot; id=&quot;timeline-slider-thumb&quot;&gt;&lt;/div&gt;
+                <span class=shadow-boundary>&lt;/shadow-root&gt;</span>
+            &lt;/input&gt;
+            &lt;div id=&quot;volume-slider-container&quot;&gt;
+                &lt;input type=&quot;range&quot; id=&quot;volume-slider&quot;&gt;
+                    <span class=shadow-boundary>&lt;shadow-root id=&quot;volume-shadow-root&quot;&gt;</span>
+                        &lt;div id=&quot;slider-thumb&quot; id=&quot;volume-slider-thumb&quot;&gt;&lt;/div&gt;
+                    <span class=shadow-boundary>&lt;/shadow-root&gt;</span>
+                &lt;/input&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    <span class=shadow-boundary>&lt;/shadow-root&gt;</span>
+&lt;/div&gt;
+        </pre>
+
+        <p>Let's have a user position their pointing device over the volume slider's thumb (<code>#volume-slider-thumb</code>), thus triggering a <code>mouseover</code> event on that node. For this event, let's pretend it has no associated <code>relatedTarget</code>.</p>
+
+        <p>Per the <a>retargeting algorithm</a>, we should have the following set of ancestors and relative targets:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Ancestor</th>
+              <th>Relative Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>#player</code></td>
+              <td><code><strong>#player</strong></code></td>
+            </tr>
+            <tr>
+              <td><code>#player-shadow-root</code></td>
+              <td><code>#volume-slider</code></td>
+            </tr>
+            <tr>
+              <td><code>#controls</code></td>
+              <td><code>#volume-slider</code></td>
+            </tr>
+            <tr>
+              <td><code>#volume-slider-container</code></td>
+              <td><code>#volume-slider</code></td>
+            </tr>
+            <tr>
+              <td><code>#volume-slider</code></td>
+              <td><code><strong>#volume-slider</strong></code></td>
+            </tr>
+            <tr>
+              <td><code>#volume-shadow-root</code></td>
+              <td><code>#volume-slider-thumb</code></td>
+            </tr>
+            <tr>
+              <td><code>#volume-slider-thumb</code></td>
+              <td><code><strong>#volume-slider-thumb</strong></code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>After we dispatch the <code>mouseover</code> event using these newly computed relative targets, the user decides to move their pointing device over the thumb of the timeline
+          (<code>#timeline-slider-thumb</code>). This triggers both a <code>mouseout</code> event for the volume slider thumb and the <code>mouseover</code> event for the timeline thumb.</p>
+
+        <p>Let's see how the <code>relatedTarget</code> value of the volume thumb's <code>mouseout</code> event is affected. For this event, the <code>relatedTarget</code> is the timeline thumb (<code>#timeline-slider-thumb</code>). Per the <a>related target resolution algorithm</a>, we should have the following set of ancestors and adjusted related targets:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Ancestor</th>
+              <th>Relative Target</th>
+              <th>Adjusted related Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>#player</code></td>
+              <td><code><strong>#player</strong></code></td>
+              <td><code><strong>#player</strong></code></td>
+            </tr>
+            <tr>
+              <td><code>#player-shadow-root</code></td>
+              <td><code>#volume-slider</code></td>
+              <td><code>#timeline</code></td>
+            </tr>
+            <tr>
+              <td><code>#controls</code></td>
+              <td><code>#volume-slider</code></td>
+              <td><code>#timeline</code></td>
+            </tr>
+            <tr>
+              <td><code>#volume-slider-container</code></td>
+              <td><code>#volume-slider</code></td>
+              <td><code>#timeline</code></td>
+            </tr>
+            <tr>
+              <td><code>#volume-slider</code></td>
+              <td><code><strong>#volume-slider</strong></code></td>
+              <td><code>#timeline</code></td>
+            </tr>
+            <tr>
+              <td><code>#volume-shadow-root</code></td>
+              <td><code>#volume-slider-thumb</code></td>
+              <td><code>#timeline</code></td>
+            </tr>
+            <tr>
+              <td><code>#volume-slider-thumb</code></td>
+              <td><code><strong>#volume-slider-thumb</strong></code></td>
+              <td><code><strong>#timeline</strong></code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>The node, <code>#player</code>, has both <code>target</code> and <code>relatedTarget</code> being the same value (<code>#player</code>), which means that we do not dispatch the event on this <a>node</a> and its ancestors.</p>
+      </section>
+
+    </section>
+
+    <section>
+      <h2>用户交互</h2>
+
+      <section class="informative">
+        <h3>范围 和 选区</h3>
+
+        <p>
+          <a>选区</a> [[!EDITING]]([[!可编辑的区域]])是没有被定义的. 选区的开发和实现应该做到最好. 这是一个可能公认的错误的方法:
+        </p>
+
+        <p>由于<a title="node">nodes(节点)</a>在不同的<a title="node tree">node(节点)树上</a>绝对不可能拥有相同的<a>根(元素)</a>,它们可能绝对不会存在一个有效的<a title="range">DOM范围内</a>(这个DOM范围包含了多数的<a title="node tree">node(节点)树)</a>.</p>
+
+        <p>因此<a title="selection">选区</a> 是可能存在于唯一一个 <a>node(节点)树</a>里, 因为选区被定义在一个单独的<a>范围里</a>. 通过方法<code><a>window.getSelection()</a></code>返回的<a>选区</a>绝对不会返回一个在<a>shadow(阴影)树</a>里的<a>选区</a>.</p>
+
+        <p><a>shadow(阴影)根</a>对象的<code>getSelection()</code>方法返回的是当前<a>选区</a>是在当前(上下文)的<a>shadow tree(阴影树)</a>.</p>
+      </section>
+
+      <section>
+        <h3>引导获取焦点</h3>
+
+        <p>如果一个<a>节点</a>不<a title="participates">加入</a>一个<a>生成树(composed tree)</a>,  <a>此节点</a> <strong>必须</strong>从[[!CSS3UI]]<a>渲染树的顺序</a>中被忽略</p>
+
+        <p>对于<a>引导获取焦点的时序</a>, <a>此引导顺序</a>的时序对于一个给定的<a>shadow tree(阴影树)</a> <var>A</var> <strong>必须</strong> 被插入到其他<a>node tree(节点树)</a> <a>引导顺序中</a> , 规则规则如下:</p>
+        <ol>
+          <li>如果<var>A</var>是<a>最新的shadow tree(阴影树)</a>:
+            <ol>
+              <li>让<var>宿主</var>成为<a>shadow host(阴影宿主)</a>,现在的阴影宿主就是<a>宿主</a>A</li>
+              <li>让<var>B</var>成为<a>node tree(节点树)</a>,<var>让节点树的宿主</var>加入</li>
+              <li>对于A的<a>引导顺序</a> <strong>必须</strong> 将A插入到<var>B</var> <a>的引导顺序</a>:
+                <ol>
+                  <li>立刻插入到<var>宿主</var>之后, 如果<var>宿主</var>是<a>可聚焦的</a>; 或者</li>
+                  <li>取代<var>此宿主</var> ，如果 <var>此宿主</var> 被指定了属性 <a title="nav-index auto"><code>auto</code>这个属性</a>(auto这个属性决定了此宿主的位置)</li>
+                </ol></li>
+            </ol></li>
+          <li>如果不是那么:
+            <ol>
+              <li>让<var>B</var>成为一个<a>优先级较高的shadow tree(阴影树)</a> , 让B关联到<var>A</var></li>
+              <li>让<var>SHADOW(阴影)</var>成为一个<a>shadow(阴影)插入点</a>插入 <var>B</var>中</li>
+              <li>如果<var>SHADOW(阴影)</var> 存在, 在<var>SHADOW(阴影)</var>之后,对于<var>A</var>的<a>引导顺序</a><strong>必须</strong>被插入到<var>B</var>的<a>引导顺序</a>  如果<var>SHADOW(阴影)</var> 被指定了值 <a title="nav-index auto"><code>auto</code></a> 去决定它的位置.</li>
+            </ol></li>
+        </ol>
+
+        <p>对于<a>有指向性的引导焦点</a>, 它取决于用户代理完整的  <a title="navigation order">引导顺序</a> 中 <a title="shadow tree">shadow trees(阴影树)</a> 在 <a>文本</a>中 <a>引导顺序</a>.</p>
+      </section>
+
+      <section>
+        <h3>激活的元素</h3>
+
+        <p>为了坚持封装性, <a>激活的元素</a>在<a title="Document object">文档</a>  对象的 focus(焦点) API 属性中的值 <strong>必须</strong>被调整的. 为了防止当调整这个值的时候丢失信息, 每一个 <a>shadow root(阴影的根)</a> <strong>必须</strong> 也拥有一个<code>激活元素的</code> 属性用来保存在<a>shadow tree(阴影树)</a>中获取焦点激活<a>元素的</a>属性值</p>
+
+        <p>对于<dfn>激活 <a>元素</a> 的算法调整</dfn> 被用来决定<a>激活元素</a>的属性值,  激活元素<strong>必须</strong>经过如下列步骤一样的等价处理的过程:</p>
+
+        <div class="algorithm">
+          <dl>
+            <dt>输入</dt>
+            <dd><var>元素</var>, 得到焦点的<a>元素</a></dd>
+            <dd><var>ROOT(根)</var>, 要么是一个<a>文档</a> 或者是一个 <a>shadow root(阴影根)</a></dd>
+            <dt>输出</dt>
+            <dd><var>校正</var>, 一个已经被校正的<a>激活元素</a>属性的<var>根</var>.</dd>
+          </dl>
+          <ol>
+            <li>让 <var>路径</var><var>元素和null</var>的<a>事件路径算法结果</a>作为输入</li>
+            <li>让 <var>调整</var>过的<var>路径</var>和<var>根</var>的<a>重定向算法结果</a> 作为输出</li>
+          </ol>
+        </div>
+      </section>
+
+      <section>
+        <h3>校订</h3>
+
+        <p><a><code>contenteditable</code>属性的值</a><strong>一定不能通过<a>shadow host(阴影宿主)</a> </strong> 传播到它本身的 <a title="shadow tree">shadow trees(阴影树)</a>上.</p>
+      </section>
+
+      <section>
+        <h3>辅助技术</h3>
+
+        <p>用户代理可以通过辅助技术遍历<a>composed tree(生成树)</a>, 因此可以使完整的WAI-ARIA(可访问的富因特网应用程序) [[!WAI-ARIA]]语义在<a title="shadow tree">shadow trees(阴影树)</a>中使用.</p>
+
+      </section>
+
+    </section>
+
+    <section>
+      <h2>Shadow Trees(阴影树)中的HTML元素</h2>
+
+      <p>相对来说, 一个<a>shadow tree(阴影树)</a>可以看作是存在于<em>部分<a>文档</a></em>和文档本身之间某处的一个<a title="interface DocumentFragment">文档碎片</a>. 当阴影树被渲染的时候, 单个<a>shadow tree(阴影树)</a> 目的是维持它本身在<a>文档</a>的传统<a>树</a>中的标准. 于此同时, 由于阴影树是抽象封装, 阴影树不能影响<a>文档树</a>. 因此, 阴影树中的<a>HTML元素</a> <strong>必须</strong> 表现为指定的 [[!HTML]]的行为在<a title="shadow tree">shadow trees(阴影树)</a>中, 除了少数例外的情况</p>
+
+      <section>
+        <h3>无效的HTML元素</h3>
+
+        <p><a>HTML元素</a>一个子集合<strong>确定</strong> 行为表现为 <dfn>无效</dfn>, 或者不属于<a>document tree(文档树)</a>. 在这种一致的<a title="interface DocumentFragment">document fragment(文档碎片)</a>中的这种<a>HTML元素</a>如何表现. 这样 <a title="element">elements(元素)</a>有:</p>
+        <ul>
+          <li><a title="base element"><code>base</code></a></li>
+          <li><a title="link element"><code>link</code></a></li>
+        </ul>
+
+        <p>剩下的其他<a>HTML元素</a>在<a title="shadow tree">shadow trees(阴影树)里</a> <strong>必须</strong> 表现为就像它们出现在<a>document tree(文档树)</a>中的表现.</p>
+      </section>
+
+    </section>
+
+    <section>
+      <h2>HTML元素和它们的shadow trees(阴影树)</h2>
+
+      <p>每一个 <a title="HTML">规范</a>, 针对内容的渲染地方，一些<a>HTM元素</a>不是用来渲染它们的内容或针对特殊的需求所设计的. 是为了标准化HTML元素在<a>composed tree(生成树)</a>中渲染时的不同行为的,在<a>shadow tree(阴影树)</a>被创建和被填充进去的实例化<a>元素</a>的时候,所有的HTML元素<strong>必须</strong>具有<a title="processing equivalence">相同</a>的阴影树.这取决于用户代理定义阴影树.当然, 所有符合标准的用户代理<strong>必须</strong>满足以下的要求:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 30%">HTML Element</th>
+            <th>Shadow Tree Requirements</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a title="img element"><code>img</code></a>, <a title="iframe element"><code>iframe</code></a>, <a title="embed element"><code>embed</code></a>, <a title="object element"><code>object</code></a>, <a title="video element"><code>video</code></a>, <a title="audio element"><code>audio</code></a>, <a title="canvas element"><code>canvas</code></a>, <a title="map element"><code>map</code></a>, <a title="input element"><code>input</code></a>, <a title="textarea element"><code>textarea</code></a>, <a title="progress element"><code>progress</code></a>, <a title="meter element"><code>meter</code></a></td>
+            <td>如果这些<a>元素</a>可能有<a>回调的内容</a>, 包含一个<a>内容的插入点</a>. 这个(内容的插入点的)<a>匹配条件</a>的值<a>是一个通用的选择器</a>紧紧当这些<a>元素</a>需要展示<a>回调内容</a>时.其它方面, 包含没有<a title="content insertion point">内容插入点</a> 或者一个<a>内容插入点</a>什么都无法匹配.</td>
+          </tr>
+          <tr>
+            <td><a title="fieldset element"><code>fieldset</code></a></td>
+            <td>包含两个<a title="content insertion point">内容的插入点</a>要符合下列<a>匹配条件</a>:
+              <ol>
+                <li><code>legend:first-of-type</code></li>
+                <li><a>universal selector(普通选择符)</a></li>
+              </ol>
+            </td>
+          </tr>
+          <tr>
+            <td><a title="details element"><code>details</code></a></td>
+            <td>包含两个<a title="content insertion point">内容的插入点</a>要符合下列<a>匹配条件</a>:
+              <ol>
+                <li><code>summary:first-of-type</code></li>
+                <li><a>universal selector(普通选择符)</a></li>
+              </ol>
+            </td>
+          </tr>
+          <tr>
+            <td>剩下所有<a title="element">elements(元素)</a></td>
+            <td>包含一个<a>内容插入点</a>并且有<a>universal selector(普通选择符)</a>作为<a>匹配条件</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Elements(元素)和DOM Objects(DOM对象)</h2>
+
+      <section>
+        <h3><code>ShadowRoot(阴影根)</code>对象</h3>
+
+        <p><code>ShadowRoot(阴影根)</code>对象代表此<a>shadow root(阴影根)</a>.</p>
+
+        <dl class="idl" title="interface ShadowRoot : DocumentFragment">
+          <dt>HTMLElement getElementById(DOMString elementId)</dt>
+          <dd>
+            <strong>必须</strong>行为完全就像<a>document.getElementById</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>内.
+          </dd>
+
+          <dt>NodeList getElementsByClassName(DOMString className)</dt>
+          <dd>
+            <strong>必须</strong>行为完全就像<a>document.getElementsByClassName</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
+          </dd>
+
+          <dt>NodeList getElementsByTagName(DOMString tagName)</dt>
+          <dd>
+            <strong>必须</strong>行为完全就像<a>document.getElementsByTagName</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
+          </dd>
+
+          <dt>NodeList getElementsByTagNameNS(DOMString? namespace, DOMString localName)</dt>
+          <dd>
+            <strong>必须</strong>行为完全就像<a>document.getElementsByTagNameNS</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
+          </dd>
+
+          <dt>Selection? getSelection()</dt>
+          <dd>
+            <p>返回当前在此<a>shadow tree(阴影树)</a>的区域</p>
+            <p>当此方法被调用, 它<strong>必须</strong>返回此<a>shadow tree(阴影树)</a>的<a>selection(区域)</a>.</p>
+          </dd>
+
+          <dt>Element? elementFromPoint(double x, double y)</dt>
+          <dd>
+            <p>返回一个<a>element(元素)</a>指定的坐标系.</p>
+            <p class="note">最终, 它需要是CSSOM View Module[[!CSSOM-VIEW]]标准的一部分</p>
+            <p>
+              当此方法被调用, 它<strong>必须</strong>返回下列步骤运行后的结果:
+            </p>
+            <ol>
+              <li>如果<a>context object(上下文对象)</a>不是一个<a><code>ShadowRoot(阴影根)</code></a>的实例, 那么抛出一个<a><code>InvalidNodeTypeError(无效节点的错误)</code></a>错误.</li>
+              <li>如果其中任意一个参数无效, <code>x</code>大于<a>viewport(视窗)</a>的宽度不包括已经被渲染出来的滚动条(如果有), 或者如果是<code>y</code>大于<a>viewport(视窗)</a>的高度不包括已经被渲染出来的滚动条(如果有), 返回<strong>null</strong>.</li>
+              <li>让<var>HIT</var>这样的方式成为描述<a>element(元素)</a>在<a>viewport(视窗)</a>中<code>X</code>和<code>Y</code>坐标, 这样的方式决定于是否通过打点测试</li>
+              <li>让<var>PATH(路径)</var>在<a>HIT</a>里通过<a>event path calculation algorithm(事件路径计算算法)</a>所得到的结果HRnull作为输入</li>
+              <li>返回通过<a>retargeting algorithm(重定向算法)</a>所得到的结果<var>PATH(路径)</var>和<a>context object(上下文对象)</a>作为输入</li>
+            </ol>
+          </dd>
+
+          <dt>只读 attribute Element? activeElement</dt>
+          <dd>
+            <p>表示当前在<a>shadow tree(阴影树)</a>得到焦点的<a>element(元素)</a></p>
+            <p>当读取时, 这个属性<strong>必须</strong>返回在当前在<a>shadow tree(阴影树)</a>中得到焦点的<a>element(元素)</a>的属性或者为<code>null</code>, 如果这个属性不是空的.</p>
+          </dd>
+
+          <dt>只读 attribute Element host</dt>
+          <dd>
+            <p>表示此<a>shadow host(阴影宿主)</a>,此<a>hosts(宿主)</a>有此<a>context object(上下文对象)</a>.</p>
+            <p>当读取时, 这个属性<strong>必须</strong>返回此<a>shadow host(宿主)</a>,这个<a>hosts(宿主)</a>有此<a>context object(上下文对象)</a>.</p>
+          </dd>
+
+          <dt>只读 attribute ShadowRoot? olderShadowRoot</dt>
+          <dd>
+            <p>表示此<a>older shadow root(不是最新的阴影根)</a>所关联到此<a>context object(上下文对象)</a></p>
+            <p>
+              当读取时, 此属性<strong>必须</strong>返回一个<a title="processing equivalence">equivalent(等价)</a>于下列步骤运行后的结果:
+            </p>
+            <ol>
+              <li>如果此<a>context object(上下文对象)</a>是在<a>oldest shadow root(最原始的阴影根)</a>, 返回<strong>null</strong>.</li>
+              <li>返回一个<a>older shadow root(不是最新的阴影根)</a>所关联到的<a>context object(上下文对象)</a>.</li>
+            </ol>
+            <p>对于<a>HTML elements(HTML元素)</a>, <a href="#html-elements-and-their-shadow-trees">UA-provided</a> <a title="shadow tree">shadow trees(阴影树)</a> <strong>一定是</strong>不能被使用的.</p>
+          </dd>
+
+          <dt>attribute DOMString innerHTML</dt>
+          <dd>
+            <p>表示<a><code>ShadowRoot(阴影根)</code></a>的标记上下文.</p>
+            <p>当读取该属性时, 此属性<strong>必须</strong>返回在此<a>context object(上下文对象)</a>中通过<a>HTML fragment serialization algorithm(HTML文档序列化算法)</a>所处理过的结果作为 <a title="shadow host"><code>shadow host(阴影宿主)</code></a></p>
+            <p>
+              当设置该属性时,<strong>必须</strong>经过以下步骤:
+            </p>
+            <ol>
+              <li>让<var>FRAGMENT(片段)</var>经过调用<a title="parse fragment">fragment parsing algorithm(片段解析算法)</a> [[!DOMPARSING]]使新设置的值作为<var>MARKUP(标识)</var>的结果, 并且此<a>context object(上下文对象)</a>作为<a title="shadow host"><code>shadow host(阴影宿主)</code></a></li>
+              <li><a>Replace all(替换所有)</a>在<a>shadow root(阴影根)中的<var>FRAGMENT(片段)</var></a></li>
+            </ol>
+          </dd>
+
+          <dt>只读 attribute StyleSheetList styleSheets</dt>
+          <dd>
+            <p>表示此<a>shadow root(阴影根)的样式列表</a>.</p>
+            <p>当读取该属性事时, 此属性<strong>必须</strong>返回一个<a><code>StyleSheetList(样式表)</code></a>序列包含此<a>shadow root(阴影根)的样式表</a>.
+            </p>
+          </dd>
+        </dl>
+
+        <p>一个<a><code>ShadowRoot(阴影根)</code></a> 实例的 <a><code>nodeType(节点类型)</code></a>属性 <strong>必须</strong> 返回 <a><code>DOCUMENT_FRAGMENT_NODE</code></a>. 因此, 一个<a><code>ShadowRoot(阴影根)</code></a>实例的<a><code>nodeName(节点名)</code></a> 属性<strong>必须</strong>返回<code>"#document-fragment"</code>.</p>
+
+        <p>调用方法<a><code>cloneNode()</code></a>方法去复制<a><code>ShadowRoot(阴影根)</code></a> 实例时 <strong>必须</strong>通常会抛出一个 <a><code>DATA_CLONE_ERR</code></a>异常.</p>
+
+      </section>
+
+      <section>
+        <h3><code>Element(元素)</code>接口的扩展</h3>
+
+        <dl class="idl" title="partial interface Element">
+          <dt>ShadowRoot(阴影根)方法createShadowRoot()</dt>
+          <dd>
+            当此方法被调用, <strong>必须经过</strong>以下的步奏:
+            <ol>
+              <li>创建一个新的<a><code>ShadowRoot(阴影根)</code></a>对象实例</li>
+              <li>增加此<a><code>ShadowRoot(阴影根)</code></a>对象到一个<a title="shadow roots list">有序的阴影根列表上</a>根关联上的此<a>context object(上下文对象)</a>作为最新的<a>shadow root(阴影根)</a></li>
+              <li>返回一个<a><code>ShadowRoot(阴影根)</code></a>对象.</li>
+            </ol>
+          </dd>
+
+          <dt>NodeList(节点列表) getDestinationInsertionPoints()</dt>
+          <dd>当此方法被调用, 此方法<strong>必须</strong>返回一个<a>static(静态)</a>的<a><code>NodeList(节点列表)</code></a>由在<a>destination insertion points(目标插入点)</a>中的<a title="insertion point">插入点</a>的<a>context object(上下文对象)</a>所组成的.</dd>
+      </section>
+
+      <section>
+        <h3>元素的<code>content(内容)</code></h3>
+
+        <p>元素的<code><dfn title="content element">content(内容)</dfn></code>表示一个在<a>shadow tree(阴影树)</a>中的<a>insertion point(插入点)</a>.</p>
+
+        <p>如果一个<code>content(内容)</code>元素不符合<a>insertion point(插入点)</a>的条件, </p>
+
+        <dl>
+          <dt>上下文</dt>
+          <dd>预计<a>flow content(流内容)</a>.</dd>
+
+          <dt>内容模块</dt>
+          <dd><a>可见的</a></dd>
+
+          <dt>内容的子元素</dt>
+          <dd>一切可以作为回调的内容</dd>
+
+          <dt>内容的属性</dt>
+          <dd><a>全局属性</a></dd>
+          <dd>
+            <dl>
+              <dt><code><dfn title="content element select">select(选择)</dfn></code>, 设置一个<a title="comma separated tokens">comma-separated tokens(对于逗号分割的标识)</a></dt>
+              <dd>表示用于<a title="distribution">distributing(分发)</a><a>shadow host(宿主对象)</a>中的子<a title="node">nodes(节点)</a><a>matching criteria(匹配标准)</a>. 每一个标识<strong>必须</strong>是一个<a>compound selector(复合的选择器)</a>.</dd>
+            </dl>
+          </dd>
+
+          <dt>DOM接口</dt>
+          <dd>
+            <dl class="idl" title="interface HTMLContentElement : HTMLElement">
+              <dt>attribute DOMString select</dt>
+              <dd><strong>必须</strong> <a>显示</a>此<a title="content element select">select(选择)</a>属性.</dd>
+
+              <dt>NodeList getDistributedNodes()</dt>
+              <dd>
+                当此方法被调用, 它<strong>必须返回</strong>一个经过下列步骤的结果:
+                <ol>
+                  <li>
+                    如果此<a>context object(上下文对象)</a>是一个<a>内容插入点</a>:
+                    <ol>
+                      <li>返回一个<a>静态</a>的<a><code>NodeList(节点列表)</code></a>由在<a>context object(上下文对象)</a>中<a>distributed nodes(分布的节点)</a>所组成的</li>
+                    </ol>
+                  </li>
+                  <li>
+                    其它情况:
+                    <ol>
+                      <li>返回一个空的<a>static(静态)</a> <a><code>NodeList(节点列表)</code></a>对象.</li>
+                    </ol>
+                  </li>
+                </ol>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+      </section>
+
+      <section>
+        <h3><code>shadow(阴影)</code>元素</h3>
+
+        <p><code><dfn title="shadow element">shadow(阴影)</dfn></code>元素表示在<a>shadow tree(阴影树)</a>中的一个<a>shadow insertion point(阴影插入点)</a>.</p>
+        <p>如果一个<code>shadow(阴影)</code>元素不满足<a>insertion point(插入点)</a>的条件, 它<strong>必须</strong>就像<a><code>HTMLUnknownElement(未知HTML元素)</code></a>一样的渲染行为.</p>
+
+        <dl>
+          <dt>上下文</dt>
+          <dd>预计的<a>流内容</a>.</dd>
+
+          <dt>内容模块</dt>
+          <dd><a>可见的</a></dd>
+
+          <dt>阴影元素的子元素</dt>
+          <dd>可以是一切</dd>
+
+          <dt>DOM接口</dt>
+          <dd>
+            <dl class="idl" title="interface HTMLContentElement : HTMLElement">
+              <dt>attribute DOMString select</dt>
+              <dd><strong>必须</strong> <a>显示</a>此<a title="content element select">select(选择)</a>属性.</dd>
+
+              <dt>NodeList getDistributedNodes()</dt>
+              <dd>
+                当此方法被调用, 它<strong>必须返回</strong>一个经过下列步骤的结果:
+                <ol>
+                  <li>
+                    如果此<a>context object(上下文对象)</a>是一个<a>内容插入点</a>:
+                    <ol>
+                      <li>返回一个<a>静态</a>的<a><code>NodeList(节点列表)</code></a>由在<a>context object(上下文对象)</a>中<a>distributed nodes(分布的节点)</a>所组成的</li>
+                    </ol>
+                  </li>
+                  <li>
+                    其它情况:
+                    <ol>
+                      <li>返回一个空的<a>static(静态)</a> <a><code>NodeList(节点列表)</code></a>对象.</li>
+                    </ol>
+                  </li>
+                </ol>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+      </section>
+
+      <section>
+        <h3>异常的<code>Event(事件)的</code>接口</h3>
+
+        <dl class="idl" title="partial interface Event">
+          <dt>只读 attribute object path</dt>
+          <dd>
+            <p>表示此事件对象路径.</p>
+            <p>
+              当获取该属性时, 此属性<strong>必须</strong> 创建和返回一个新的JavaScript数组对象, 此数组对象从<a>context object(上下文对象)</a>的事件路径中拷贝而来.
+            </p>
+            <p class="issue">
+              使用<code>Array(数组)</code> 作为在WebIDL中返回类型的<code>path(路径)</code>属性.
+              WebIDL的bugs: <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=20020"><code>Array</code>subclassing</a>
+              和<a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=23225"> class, not interface</a>.
+            </p>
+          </dd>
+        </dl>
+      </section>
+
+    </section>
+
+    <section>
+      <h2>Shadow DOM示例</h2>
+
+      <p>Bob被要求在把一个简单的链接列表变成一个消息控件,  消息控件能够连接到2个不同类别的新闻: 突发新闻和最新新闻. 目前新闻报道的文档组成看上去就像这样:</p>
+      <pre class="example highlight">
+&lt;ul class=&quot;stories&quot;&gt;
+    &lt;li&gt;&lt;a href=&quot;//example.com/stories/1&quot;&gt;A story&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;//example.com/stories/2&quot;&gt;Another story&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;breaking&quot;&gt;&lt;a href=&quot;//example.com/stories/3&quot;&gt;Also a story&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;//example.com/stories/4&quot;&gt;Yet another story&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&quot;//example.com/stories/4&quot;&gt;Awesome story&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;breaking&quot;&gt;&lt;a href=&quot;//example.com/stories/5&quot;&gt;Horrible story&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+      </pre>
+
+      <p>为了管理新闻报道, Bob决定使用<strong>shadow DOM</strong>. 这样做允许Bob保持整个标签的整洁, 拥有可以控制插入点的权会使得通过类名分类新闻的任务变的非常简单. 在得到一杯<a href="http://en.wikipedia.org/wiki/List_of_coffee_beverages#Green_Eye">Green Eye</a>后, 他制作出了如下shadow tree(阴影树),<code>ul</code>元素成为了宿主:</p>
+      <pre class="example highlight">
+&lt;div class=&quot;breaking&quot;&gt;
+    &lt;ul&gt;
+        &lt;content select=&quot;.breaking&quot;&gt;&lt;/content&gt; &lt;!-- insertion point for breaking news --&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;other&quot;&gt;
+    &lt;ul&gt;
+        &lt;content&gt;&lt;/content&gt; &lt;!-- insertion point for the rest of the news --&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+      </pre>
+      <p>Bob接下来根据来自于设计师的要求给新建立的消息控件样式，然后把它加入到shadow tree(阴影树)模型中:</p>
+      <pre class="example highlight">
+&lt;style&gt;
+    div.breaking {
+        color: Red;
+        font-size: 20px;
+        border: 1px dashed Purple;
+    }
+    div.other {
+        padding: 2px 0 0 0;
+        border: 1px solid Cyan;
+    }
+&lt;/style&gt;
+      </pre>
+      <p>他仔细考虑了下他的公司是否应该找一个新的设计师, Bob将模型转化成了代码:</p>
+      <pre class="example highlight">
+function createStoryGroup(className, contentSelector)
+{
+    var group = document.createElement('div');
+    group.className = className;
+    // Empty string in select attribute or absence thereof work the same, so no need for special handling.
+    group.innerHTML = '&lt;ul&gt;&lt;content select=&quot;' + contentSelector + '&quot;&gt;&lt;/content&gt;&lt;/ul&gt;';
+    return group;
+}
+
+function createStyle()
+{
+    var style = document.createElement('style');
+    style.textContent = 'div.breaking { color: Red;font-size: 20px; border: 1px dashed Purple; }' +
+        'div.other { padding: 2px 0 0 0; border: 1px solid Cyan; }';
+    return style;
+}
+
+function makeShadowTree(storyList)
+{
+    var root = storyList.createShadowRoot();
+    root.appendChild(createStyle());
+    root.appendChild(createStoryGroup('breaking', '.breaking'));
+    root.appendChild(createStoryGroup('other', ''));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    [].forEach.call(document.querySelectorAll('ul.stories'), makeShadowTree);
+});
+      </pre>
+
+      <p>干得好, Bob! 在咖啡还有半杯的情况下, 工作完成了. 意识到自己很厉害, Bob将自己的经验通过<a href="http://en.wikipedia.org/wiki/Puyo_Puyo_(series)">Puyo Puyo</a>这样的方式传授给大家.</p>
+
+      <p>几个月过去了.</p>
+
+      <p>红旗飘飘了！ 在Bob一年一度的研讨会中, Alice 负责增加 <strong>另一个</strong>, 临时的盒子在新闻控件中, 其中有许多关于选举的新闻. Alice阅读学习了Bob's代码, 阅读了shadow DOM的标准并且实现了, 多亏shadow tree(阴影树)复合的支持, 她并没有修改Bob的代码. 就像平常一样, 她的解决方法优雅而简单, 适当的在Bob的代码上做了点巧妙的变化:</p>
+      <pre class="example highlight">
+// TODO(alice): BEGIN -- DELETE THIS CODE AFTER ELECTIONS ARE OVER.
+var ELECTION_BOX_REMOVAL_DEADLINE = ...;
+
+function createElectionStyle()
+{
+    var style = document.createElement('style');
+    // TODO(alice): Check designer's desk for hallucinogens.
+    style.textContent = 'div.election { color: Magenta; font-size: 24px; border: 2px dotted Fuchsia; }';
+    return style;
+}
+
+function makeElectionShadowTree(storyList)
+{
+    var root = storyList.createShadowRoot();
+    // Add and style election story box.
+    root.appendChild(createElectionStyle());
+    root.appendChild(createStoryGroup('election', '.election'));
+    // Insert Bob's shadow tree under the election story box.
+    root.appendChild(document.createElement('shadow'));
+}
+
+if (Date.now() &lt; ELECTION_BOX_REMOVAL_DEADLINE) {
+    document.addEventListener('DOMContentLoaded', function() {
+        [].forEach.call(document.querySelectorAll('ul.stories'), makeElectionShadowTree);
+    });
+}
+// TODO(alice): END -- DELETE THIS CODE AFTER ELECTIONS ARE OVER.
+      </pre>
+      <p>使用<code>shadow(阴影)</code> 元素允许Alice去组合Bob's组件<strong>到自己的组件里</strong>&mdash;在没有改变产品任何一行代码的情况下. 她对自己笑了, Alice意识到Bob已经想出一个方式关于保持文档标签整洁的想法, 但<strong>她</strong>是一个如此早的使用shadow tree(阴影树)组成这种很酷的方式去解决问题的人.</p>
+    </section>
+
+    <section class="appendix">
+      <h2>致谢</h2>
+
+      <p><span class="vcard">David Hyatt</span> 开发了 <a href="http://dev.w3.org/2006/xbl2/">XBL 1.0</a>, 并且和<span class="vcard">Ian Hickson</span>合写了<a href="http://dev.w3.org/2006/xbl2/">XBL 2.0</a>. 这两篇文档提供了极好的见解在函数闭包的问题并对本规范产生了巨大的影响.</p>
+
+      <p><span class="vcard">Alex Russell</span>和他非常有远见的想法引发了在shadow Dom这个主题上引发了狂热的浪潮和如何在web中实际应用起来.</p>
+
+      <p><span class="vcard">Dominic Cooney</span>, <span class="vcard">Hajime Morrita</span>, and <span class="vcard">Roland Steiner</span>不辞辛劳的工作在web平台范围里去解决函数闭包问题并且为这篇文档提供了稳固的基础.</p>
+
+      <p>编者也感谢像<span class="vcard">Alex Komoroske</span>, <span class="vcard">Anne van Kesteren</span>, <span class="vcard">Brandon Payton</span>, <span class="vcard">Brian Kardell</span>, <span class="vcard">Darin Fisher</span>, <span class="vcard">Eric Bidelman</span>, <span class="vcard">Deepak Sherveghar</span>, <span class="vcard">Edward O'Connor</span>, <span class="vcard">Elisée Maurer</span>, <span class="vcard">Elliott Sprehn</span>, <span class="vcard">Erik Arvidsson</span>, <span class="vcard">Glenn Adams</span>, <span class="vcard">Jonas Sicking</span>, <span class="vcard">Malte Ubl</span>, <span class="vcard">Mike Taylor</span>, <span class="vcard">Oliver Nightingale</span>, <span class="vcard">Olli Pettay</span>, <span class="vcard">Rafael Weinstein</span>, <span class="vcard">Richard Bradshaw</span>, <span class="vcard">Ruud Steltenpool</span>, <span class="vcard">Sam Dutton</span>, <span class="vcard">Sergey G. Grekhov</span>, <span class="vcard">Shinya Kawanaka</span>, <span class="vcard">Tab Atkins</span>, <span class="vcard">Takashi Sakamoto</span>, and <span class="vcard">Yoshinori Sano</span>，感谢他们对此标准的意见和协助.</p>
+
+      <p>此标准仍不完善. 还有许多工作需要做. 请通过阅读帮助我们并且记录bugs&mdash;千万不要忘记叫编者将你的名字添加到这里来.</p>
+    </section>
+
+  </body>
+</html>

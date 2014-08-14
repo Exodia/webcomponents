@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>HTML Imports 中文规范</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="stylesheet" href="../../assets/styles/spec.css" type="text/css">
+<link rel="stylesheet" href="../../assets/styles/prettify.css" type="text/css">
+<link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/W3C-ED" type="text/css" >
+<script src="../../assets/scripts/bug-assist.js"></script>
+<script src="../../assets/scripts/spec-assist.js"></script>
+<script src="../../assets/scripts/prettify.js"></script>
+<meta name="bug.blocked" content="20683">
+<meta name="bug.short_desc" content="[imports]: ">
+<meta name="bug.product" content="WebAppsWG">
+<meta name="bug.import" content="import Model">
+</head>
+
+<body>
+
+<div class="head">
+
+<div class="logo">
+    <a href="http://www.w3.org/"><img width="72" height="48" src="//www.w3.org/Icons/w3c_home" alt="W3C"></a>
+</div>
+
+<h1>HTML Imports 中文规范</h1>
+<h2 id="editors-draft">W3C 编辑草案</h2>
+<dl>
+<dt>当前版本</dt>
+    <dd><a href="http://w3c.github.io/webcomponents/spec/imports/">http://w3c.github.io/webcomponents/spec/imports/</a></dd>
+<dt>最新版本</dt>
+    <dd><a href="http://www.w3.org/TR/html-imports/">http://www.w3.org/TR/html-imports/</a></dd>
+<dt>最新编辑草案</dt>
+    <dd><a href="http://w3c.github.io/webcomponents/spec/imports/">http://w3c.github.io/webcomponents/spec/imports/</a></dd>
+<dt>历史版本</dt>
+    <dd>无</dd>
+<dt>修订历史</dt>
+    <dd><a id="log" href="https://github.com/w3c/webcomponents/commits/gh-pages/spec/imports/">https://github.com/w3c/webcomponents/commits/gh-pages/spec/imports/</a></dd>
+<dt>参与</dt>
+    <dd>讨论 <a href="http://lists.w3.org/Archives/Public/public-webapps/">public-webapps@w3.org</a> (<a href="http://www.w3.org/2008/webapps/">Web Applications 工作组</a>)</dd>
+    <dd><a href="https://www.w3.org/Bugs/Public/enter_bug.cgi?comment=&amp;blocked=20683&amp;short_desc=%5Bimports%5D%3A%20&amp;product=WebAppsWG&amp;import=import%20Model">提交Bug</a> (w3.org's <a href="https://www.w3.org/Bugs/Public/">Bugzilla</a>)</dd>
+<dt>编辑</dt>
+    <dd class="vcard"><span class="fn">Dimitri Glazkov</span>, <span class="org">Google</span>, &lt;<a class="email" href="mailto:dglazkov@chromium.org">dglazkov@chromium.org</a>&gt;</dd>
+    <dd class="vcard"><span class="fn">Hajime Morrita</span>, <span class="org">Google</span>, &lt;<a class="email" href="mailto:morrita@chromium.org">morrita@chromium.org</a>&gt;</dd>
+</dl>
+
+<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &copy; 2013 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>&copy;</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved. <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+
+<hr>
+
+<h2 id="abstract">摘要</h2>
+
+<p>HTML导入是一种在其他HTML文档中引入和复用HTML文档的方法。</p>
+
+<h2 id="status">文档状态</h2>
+
+<p><em>本节介绍此文档发布时的状态。其他文档可能取代此文档。在  <a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> 技术报告索引</a> (http://www.w3.org/TR/) 可以找到此技术报告的当前<abbr title="World Wide Web Consortium">W3C</abbr>发布版本和最新修订版本列表。</em></p>
+
+<p>此文档是由 <a href="http://www.w3.org/2008/webapps/">Web应用工作组</a> 发布的编辑草案。如果你想提交关于此文档的评论，请发送至 <a href="mailto:public-webapps@w3.org">public-webapps@w3.org</a> (<a href="mailto:public-webapps-request@w3.org?subject=subscribe">订阅</a>，<a href="http://lists.w3.org/Archives/Public/public-webapps/">存档</a>)。 欢迎任何反馈。</p>
+
+<p>发布为编辑草案并不意味着 <abbr title="World Wide Web Consortium">W3C</abbr> 会员的认可。这是一个文档草案，可能在任何时候更新、覆盖或被其他文档替代。不宜在在产品中引用此文档。</p>
+
+<p>此文档由 <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/"><abbr title="World Wide Web Consortium">W3C</abbr> 专利政策 (2004-02-05)</a> 操作的一个小组出品。 <abbr title="World Wide Web Consortium">W3C</abbr> 维护一个关联此小组产出成果的 <a href="http://www.w3.org/2004/01/pp-impl/45559/status" rel="disclosure">专利声明的公开名单</a>，该页面还包含了专利公开说明书。根据 <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr> 专利政策第6条</a>，拥有专利实际知识，且相信包含<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">基本权利</a>的人必须公开相关信息。</p>
+
+</div>
+
+<section class="toc">
+<h2 id="toc">目录</h2>
+<ol>
+    <li><a href="#about">关于本文档</a>
+    <li><a href="#dependencies">依赖</a>
+    <li><a href="#terminology">术语</a></li>
+    <li><a href="#link-type-import">链接类型 "<code>import</code>"</a>
+    <li><a href="#interface-import"><code>HTMLLinkElement</code> 接口扩展</a>
+    <li><a href="#interface-document"><code>Document</code> 接口扩展</a>
+    <li><a href="#loading-imports">加载导入</a>
+    <ol>
+      <li><a href="#import-dependent">导入依赖</a>
+      <li><a href="#updateing-branch">更新分支</a>
+      <li><a href="#requesting-import">请求导入</a>
+      <li><a href="#fetching-import">获取导入</a>
+      <li><a href="#imports-and-csp">导入与内容安全策略</a>
+    </ol>
+    <li><a href="#parsing-imports">解析导入</a>
+    <ol>
+        <li><a href="#additions-to-prepare-a-script-algorithm">附加：准备一个脚本算法</a>
+        <li><a href="#additions-to-tree-construction-algorithm">附加：树构建算法</a>
+        <li><a href="#additions-to-parsing-xhtml-documents">补充：解析XHTML文档</a>
+    </ol>
+    <li><a href="#scripts-imports">在 Imports 中编写脚本</a>
+    <ol>
+       <li><a href="#additions-to-script-enabling-criteria">补充：脚本启用标准</a>
+       <li><a href="#additions-to-dom-document-currentscript">补充：document.currentScript</a>
+    </ol>
+    <li><a href="#style-imports">导入的样式处理</a>
+    <li><a href="#events-imports">导入中的事件</a>
+    <ol>
+      <li><a href="#additions-to-event-handlers">补充：事件处理器</a>
+    </ol>
+    <li><a href="#acknowledgements" class="no-number">鸣谢</a>
+</ol>
+</section>
+
+<section class="spec">
+<h2 id="about">关于本文档</h2>
+
+<p>所有图表，示例，备注，以及明确标记为非规范的部分都是非规范的。其他内容都是规范的。</p>
+
+<p>在本文档的规范部分中的关键字 "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", 和 "OPTIONAL" 在 <a href="http://dev.w3.org/2006/xbl2/#refsRFC2119">RFC2119</a> 的描述中有解释。为了方便阅读，这些词语不会以全部大写字母出现在本规范。</p>
+
+<p>任何时刻，一个符合UA必须对状态或概念模型状态的反应做决定。这被称为<a href="http://en.wikipedia.org/wiki/Algorithm">算法</a>。这些算法根据等价处理定义。<dfn id="dfn-processing-equivalence">等价处理</dfn> 是强加给算法实现者的约束。对于相同的输入，要求UA实现和指定算法的输出必须保持完全一致。</p>
+
+<h2 id="dependencies">依赖</h2>
+
+<p>本文档依赖以下规范：</p>
+
+<ul>
+<!--     <li><a href="http://www.w3.org/TR/CSS2/">CSS Level 2 Revision 1</a></li>
+    <li><a href="http://dev.w3.org/csswg/cssom/">CSSOM</a></li>
+    <li><a href="http://www.w3.org/TR/DOM-Level-3-Events/">DOM Level 3 Events</a></li> -->
+    <li><a href="http://dom.spec.whatwg.org/">DOM4 (DOM Core)</a></li>
+    <li><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/">HTML</a></li>
+    <li><a href="http://domparsing.spec.whatwg.org/">DOM 解析和序列化</a></li>
+    <li><a href="http://ecma-international.org/ecma-262/5.1/">ECMAScript 语言规范</a></li>
+    <li><a href="http://url.spec.whatwg.org/">URL</a></li>
+<!--     <li><a href="http://www.w3.org/TR/selectors/">Selectors Level 3</a></li>
+    <li><a href="http://dev.w3.org/2006/webapi/selectors-api/">Selectors API Level 1</a></li>
+    <li><a href="http://www.w3.org/TR/shadow-dom/">Shadow DOM</a></li>
+    <li><a href="http://www.w3.org/TR/WebIDL/">Web IDL</a></li> -->
+</ul>
+
+<h2 id="terminology">术语</h2>
+
+<p>HTML导入, 或此后的 <dfn id="dfn-import">导入</dfn>，是指在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html">HTML 文档</a> 中作为 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html#external-resource-link">外部资源</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element">链接</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html">HTML 文档</a>。 链接到一个 <a href="#dfn-import">导入</a> 的文档称为 <dfn id="dfn-import-referrer">导入来源</dfn>。对任何给定的<a href="#dfn-import">导入</a>，一个 <dfn id="dfn-import-referrer-ancestor">导入来源祖先</dfn> 是它的 <a href="#dfn-import-referrer">导入来源</a> 或它的 <a href="#dfn-import-referrer">导入来源</a> 的任意 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>。
+
+<p>一个有它自己的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#browsing-context">浏览上下文</a> 的 <a href="#dfn-import-referrer">导入来源</a> 被称为 <dfn id="dfn-master-document">主文档</dfn>。 每个 <a href="#dfn-import">导入</a> 被关联到一个 <a href="#dfn-master-document">主文档</a>：如果 <a href="#dfn-import">导入</a> 的 <a href="#dfn-import-referrer">来源</a> 是一个 <a href="#dfn-master-document">主文档</a>，那么此 <a href="#dfn-import-referrer">来源</a> 是这个 <a href="#dfn-import">导入</a> 的 <a href="#dfn-master-document">主文档</a>。 否则，<a href="#dfn-import-referrer">导入来源</a> 的 <a href="#dfn-master-document">主文档</a> 是 <a href="#dfn-import">导入</a> 的 <a href="#dfn-master-document">主文档</a>。</p>
+
+<div class="fixme">
+导入文档与主文档共享它的 <code>defaultView</code>。
+(参见 <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=23170">Bug 23170</a>.)
+</div>
+
+<p>一个 <a href="#dfn-import">导入</a> 的 <a href="http://dom.spec.whatwg.org/#concept-document-url">URL</a> 称为 <dfn id="dfn-import-location">导入地址</dfn><!--, and the <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#origin">origin</a> of the <a href="#dfn-import-location">import location</a> is called <dfn id="dfn-import-origin">import origin</dfn>-->。</p>
+
+<p>在 <a href="#dfn-import-referrer">导入来源</a> 中，一个 <a href="#dfn-import">导入</a> 表示一个 <a href="http://dom.spec.whatwg.org/#interface-document"><code>Document</code></a>， 称为 <dfn id="dfn-imported-document">导入文档</dfn>。<a href="#dfn-imported-document">导入文档</a> 没有 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#browsing-context">浏览上下文</a>。</p>
+
+<p><a href="#dfn-master-document">主文档</a> 关联的所有 <a href="#dfn-import">导入</a> 形成一个 <a href="#dfn-master-document">主文档</a> 的 <dfn id="dfn-import-map">导入映射</dfn>。 此映射以 <a href="#dfn-import-location">导入地址</a> 作为键保存 <a href="#dfn-import">导入</a>。导入映射一开始是空的。新的项根据 <a href="#dfn-import-fetching">导入获取算法</a> 被添加到此映射中。</p>
+
+<h2 id="link-type-import">链接类型 "<code>import</code>"</h2>
+
+<p>为了能在HTML中声明 <a href="#dfn-import">导入</a>，<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html#linkTypes">HTML链接类型</a> 增加了一个新的链接类型：</p>
+
+<div class="monkeypatch">
+<p><a href="#link-type-import"><code>import</code></a> 关键字可以用于 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素。 此关键字创建一个 <a href="#dfn-import">导入</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html#external-resource-link">外部资源链接</a>。</p>
+
+<p><a href="#link-type-import"><code>import</code></a> 关键字给资源指定的默认类型是 <code>text/html</code>。</p>
+
+<p><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素有一个 <dfn id="dfn-import-async-attribute">async</dfn> 属性。<a href="#dfn-import-async-attribute"><code>async</code></a> 属性是一个 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/common-microsyntaxes.html#boolean-attributes">布尔属性</a>。
+
+<p><dfn id="dfn-obtaining-import"><a href="#dfn-import-fetching">获取</a></dfn> 资源的适当时间是，当<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html#external-resource-link">外部资源链接</a> 被创建或它的元素 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#insert-an-element-into-a-document">被插入到文档中</a>。</p>
+
+<p>不论 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#attr-link-media"><code>media</code></a> 导入始终会被获取和应用。</p>
+
+</div>
+
+<div class="informative">
+<p>下面文档有一个导入，位于 <kbd>/imports/heart.html</kbd>:</p>
+
+<pre><code class="prettyprint">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en-US"&gt;
+    &lt;head&gt;
+        &lt;title&gt;Human Being&lt;/title&gt;
+        &lt;link rel="import" href="/imports/heart.html"&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;What is a body without a heart?&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</div>
+
+<h2 id="interface-import"><code>HTMLLinkElement</code> 接口扩展</h2>
+
+<pre><code class="prettyprint">
+partial interface <dfn id="dfn-link-import">HTMLLinkElement</dfn> {
+    readonly attribute <a href="http://dom.spec.whatwg.org/#interface-document">Document</a>? <a href="#dfn-html-link-element-import">import</a>;
+};
+</code></pre>
+
+<p><dfn id="dfn-html-link-element-import"><code>import</code></dfn> 属性 <strong>必需</strong> 返回 <strong>null</strong>，如果：</p>
+<ul>
+    <li><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 不 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/elements.html#represents">表示</a> 一个 <a href="#dfn-import">导入</a></li>
+    <li><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素不 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#in-a-document">在 <code>Document</code></a> 中</li>
+</ul>
+<p>否则，此属性 <strong>必需</strong> 返回 <a href="#dfn-import">导入</a> 的 <a href="#dfn-imported-document">导入文档</a>，由 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素呈现。</p>
+
+<p>每次 <strong>必需</strong> 返回相同的对象。</p>
+
+<div class="informative">
+<p>这是如何访问前面例子中提到的导入文档：</p>
+<pre><code class="prettyprint">
+var link = document.querySelector('link[rel=import]');
+var heart = link.import;
+// Access DOM of the document in /imports/heart.html
+var pulse = heart.querySelector('div.pulse');
+</code></pre>
+</div>
+
+<p>在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#html-parser">HTML parser</a> 或 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-xhtml-syntax.html#xml-parser">XML Parser</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> 上下文中的 <a href="#dfn-import">导入</a> 被称为 <dfn id="dfn-an-import-that-is-blocking-scripts">阻塞脚本的导入</dfn>。 如果此 <a href="http://dom.spec.whatwg.org/#concept-element">元素</a> 是 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> 的解析器创建的，或者这个 <a href="http://dom.spec.whatwg.org/#concept-element">元素</a> 是一个 <A href="#link-type-import"><code>import</code></a> 类型的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a>，而且此 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 没有被 <a href="#dfn-import-link-async">标记为异步</a>， 而且此导入已经 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-end.html#completely-loaded">完全下载</a>，且 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#event-loop">事件循环</a> 的最后时间已经到达步骤1，而且 <a href="http://dom.spec.whatwg.org/#concept-element">元素</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#in-a-document"> 在 <code>Document</code></a> 中，而且用户代理尚未放弃此 <a href="#dfn-import">导入</a>。 用户代理可以随时放弃一个 <a href="#dfn-import">导入</a>。</p>
+
+<div class="informative">
+<p>
+放弃一个未下载或仍在下载中的导入，即脚本可以结束操作错误的信息。比如，如果一个导入注册了一个自定义元素，而某个脚本依赖此元素，如果用户代理放弃，这个脚本会发现此元素不可用。实现者必须平衡脚本使用错误信息时，什么都不做只是等待完成一个很慢的网络请求，导致影响性能的可能性。
+</p>
+</div>
+
+<p>如果在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>文档</code></a> 的 <a href="#dfn-import-dependent">导入依赖</a> 中存在 <a href="#dfn-an-import-that-is-blocking-scripts">阻塞脚本的导入</a>，那么此 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>文档</code></a> <dfn id="dfn-has-an-import-that-is-blocking-scripts">有可阻塞脚本的导入</dfn>。否则此文档 <dfn id="dfn-has-no-import-that-is-blocking-scripts">没有阻塞脚本的导入</dfn>。</p>
+
+<div class="informative">
+<p>每当一个导入完成下载或一个新的导入开始下载，状态 "<a href="#dfn-has-an-import-that-is-blocking-scripts">有阻塞脚本的导入</a>" 都会改变。在这些时刻，HTML解析器会解除阻塞。
+</p>
+</div>
+
+<h2 id="interface-document"><code>Document</code> 接口扩展</h2>
+
+<h3 id="additions-to-document-open">补充 <code>document.open() 方法</code></h3>
+
+<p>增加如下步骤为定义的第一步：</p>
+
+<div class="monkeypatch">
+<ol>
+  <li>如果 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> 是一个 <a href="#dfn-import">导入</a>，抛出 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#invalidstateerror">InvalidStateError</a></code> 异常。</li>
+</ol>
+</div>
+
+<h3 id="additions-to-document-write">补充 <code>document.write()</code> 方法</h3>
+
+<p>增加如下步骤为定义的第一步：</p>
+
+<div class="monkeypatch">
+<ol>
+  <li>如果 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> 是一个 <a href="#dfn-import">导入</a>，抛出 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#invalidstateerror">InvalidStateError</a></code> 异常。</li>
+</ol>
+</div>
+
+<h3 id="additions-to-document-write">补充 <code>document.close()</code> 方法</h3>
+
+<p>增加如下步骤为定义的第一步：</p>
+
+<div class="monkeypatch">
+<ol>
+  <li>如果 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> 是一个 <a href="#dfn-import">导入</a>，抛出 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#invalidstateerror">InvalidStateError</a></code> 异常。</li>
+</ol>
+</div>
+
+<h2 id="loading-imports">加载 Imports</h2>
+
+<h3 id="import-dependent">导入依赖</h3>
+
+<p>每个文档都有一个 <dfn id="dfn-import-link-list">导入链接表</dfn>，其项都由 <dfn id="dfn-import-link-link">链接</dfn> 构成， 包括 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element">link</a></code> 元素，<dfn id="import-link-list-location">URL地址</dfn>。而且，项可以 <dfn id="dfn-import-link-list-branch">标记为分支</dfn>。此表开始为空，通过 <a href="#dfn-import-request">导入请求</a> 算法添加项。</p>
+
+<p>一个 <a href="#dfn-imported-document">导入文档</a> 有0个或多个 <dfn id="dfn-import-import-ancestor">导入祖先</dfn>。<a href="#dfn-import-import-ancestor">导入祖先</a> 是一个文档。 如果文档 <var>A</var> 的 <a href="#dfn-import-link-list">导入链接列表</a> 包含一个 <a href="#import-link-list-location">地址</a> 指向文档 <var>B</var> 的 <a href="#dfn-import-link-list-branch">分支</a> 项，那么 <var>A</var> 是 <var>B</var> 的一个 <a href="#dfn-import-import-ancestor">导入祖先</a>。<var>B</var> 也称为 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> 的 <dfn id="dfn-import-parent">导入父亲</dfn>。<a href="#dfn-import-import-ancestor">导入祖先</a> 是可传递的：如果文档 <var>C</var> 是文档 <var>B</var> 的一个 <a href="#dfn-import-import-ancestor">导入祖先</a>，而文档 <var>B</var> 是文档 <var>A</var> 的一个 <a href="#dfn-import-import-ancestor">导入祖先</a>，那么 <var>C</var> 是文档 <var>A</var> 的一个 <a href="#dfn-import-import-ancestor">导入祖先</a>。</p>
+
+<p>一个 <a href="#dfn-imported-document">导入文档</a> 也有0个或多个 <dfn id="dfn-import-import-predecessor">导入前置</dfn>。 一个 <a href="#dfn-import-import-predecessor">导入前置</a> 是一个文档。如果在文档 <var>B</var> 的 <a href="#dfn-import-parent">导入父亲</a> 的 <a href="#dfn-import-link-list">导入链接地址</a> 里，文档 <var>A</var> 的URL地址位于文档 <var>B</var> 的URL地址之前，且定位 <a href="#dfn-import-link-link">链接</a> 被标记为 <a href="#dfn-import-link-list-branch">分支</a>，那么 <var>A</var> 是 <var>B</var> 的 <a href="#dfn-import-import-predecessor">导入前置</a>。</p>
+
+<p>文档 <var>A</var> 的 <dfn id="dfn-import-import-ancestor-predecessor">导入祖先前置</dfn> 定义如下：如果文档 <var>B</var> 是文档 <var>C</var> 的一个 <a href="#dfn-import-import-predecessor">导入前置</a>，而 <var>C</var> 是文档 <var>A</var> 的一个 <a href="#dfn-import-import-ancestor">导入祖先</a>，那么 <var>B</var> 是 <var>A</var> 的 一个 <a href="#dfn-import-import-ancestor- predecessor">导入祖先前置</a>。</p>
+
+<p>如果一个 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a> 是文档 <var>A</var> 的 <a href="#dfn-import-import-ancestor-predecessor">导入祖先前置</a> 或 <a href="#dfn-import-import-predecessor">导入前置</a>，或者是链接到 <var>A</var> 的 <a href="#dfn-import-link-list">导入链接表</a> 的 <a href="#dfn-import-link-list-branch">分支</a> 项，那么它是 <var>A</var> 的 <dfn id="dfn-import-dependent">导入依赖</dfn>。</p>
+
+<div class="informative">
+<p><a href="#dfn-import-link-list">导入链接表</a> 和 <a href="#dfn-import-dependent">导入依赖</a> 限制导入中的脚本执行顺序。每个导入中的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素的顺序决定了脚本执行顺序。<a href="#dfn-import-import-predecessor">导入前置</a> 的选择要知道这个顺序。</p>
+
+<p><a href="#dfn-import-link-list">导入链接表</a> 的链接结构形成一个有向图。每个节点是一个文档，它的边缘是一个 <a href="#dfn-import-link-link">链接</a>。 <a href="#dfn-import-link-list-branch">分支</a> 形成一个延伸树。这个树给出了脚本执行的准确顺序。</p>
+
+<figure id="fig-import-list">
+  <img src="../../assets/images/import-link-list.png">
+  <figcaption>
+    一个导入链接表的示例。
+  </figcaption>
+</figure>
+
+<p>
+在图中，
+</p>
+<ul>
+  <li>文档 <var>A</var> 有一个 <a href="#dfn-import-link-list">导入链接表</a>，包含一个链接到 <var>B</var> 和一个链接到 <var>C</var>。
+  <li>文档 <var>D</var> 有两个 <a href="#dfn-import-import-ancestor">导入祖先</a> <var>A</var> 和 <var>B</var>。
+  <li><var>B</var> 是 <var>D</var> 的一个 <a href="#dfn-import-import-ancestor">导入祖先</a>，<var>D</var> 的指向 <var>B</var> 的链接项没有被标记为 <a href="#dfn-import-link-list-branch">分支</a>。
+  <li>尽管文档 <var>D</var> 被文档 <var>B</var> 和 <var>C</var> 链接，但它的 <a href="#dfn-import-parent">导入父亲</a> 是 <var>B</var>，因为 <var>B</var> 有一个标记为 <a href="#dfn-import-link-list-branch">分支</a> 的 <a href="#dfn-import-link-link">链接</a> 到 <var>D</var>。
+  <li>看 <var>E</var>：
+    <ul>
+      <li><var>E</var> 没有任何 <a href="#dfn-import-import-predecessor">导入前置</a>。 因为从 <var>C</var> 到 <var>D</var> 的链接没有被标记为 <a href="#dfn-import-link-list-branch">分支</a>，而到 <var>G</var> 的链接不在到 <var>E</var> 的链接之前。</li>
+      <li><var>E</var> 的 <a href="#dfn-import-import-ancestor">导入祖先</a> 是 <var>A</var> 和 <var>C</var>。
+      <li><var>E</var> 的 <a href="#dfn-import-import-ancestor-predecessor">导入祖先前置</a> 是 <var>B</var>。因为 <var>C</var> 的 <a href="#dfn-import-import-predecessor">导入前置</a> 是 <var>B</var> 而 <var>A</var> 没有 <a href="#dfn-import-import-predecessor">导入前置</a>。
+      <li><var>E</var> 的 <a href="#dfn-import-link-list">导入链接表</a> 包含标记为 <a href="#dfn-import-link-list-branch">分支</a> 的 <var>H</var>。</li>
+      <li>因此 <var>E</var> 的 <a href="#dfn-import-dependent">导入依赖</a> 是一个 <a href="#dfn-import-import-ancestor-predecessor">导入祖先前置</a> <var>B</var>，和一个 <a href="#dfn-import-link-list">导入链接表</a> 中的项 <var>H</var>。</li>
+    </ul>
+  </li>
+  <li>看 <var>G</var>：
+    <ul>
+      <li><var>G</var> 的 <a href="#dfn-import-import-predecessor">导入前置</a> 是 <var>E</var>。</li>
+      <li><var>G</var> 的 <a href="#dfn-import-import-ancestor-predecessor">导入祖先前置</a> 跟 <var>E</var> 一样，是 <var>B</var>。</li>
+      <li><var>G</var> 的 <a href="#dfn-import-link-list">导入链接表</a> 是空的。</li>
+      <li>因此 <var>G</var> 的 <a href="#dfn-import-dependent">导入依赖</a> 是一个 <a href="#dfn-import-import-ancestor-predecessor">导入祖先前置</a> <var>B</var>，和一个 <a href="#dfn-import-import-predecessor">导入前置</a> <var>E</var>。</li>
+    </ul>
+  </li>
+</ul>
+
+<p><a href="#dfn-import-referrer">导入来源</a> 和 <a href="#dfn-import-parent">导入父亲</a> 的区别是 <a href="#dfn-import-referrer">导入来源</a> 体现了 <a href="http://www.w3.org/TR/dom/#node-tree">节点树</a> 的状态，而 <a href="#dfn-import-parent">导入父亲</a> 则是由此文档中的算法创造的。</p>
+
+</div>
+
+<h3 id="updateing-branch">更新分支</h3>
+
+<p>在一个 <a href="#dfn-import-link-link">链接</a> 被添加到 <a href="#dfn-import-link-list">导入链接表</a> 后，<dfn id="dfn-update-marking">更新标记</dfn> 算法 <strong>必需</strong> 被 <a href="#dfn-master-document">主文档</a> 执行。<a href="#dfn-processing-equivalence">等价于</a> 执行如下步骤：</p>
+
+<dl>
+<dt>输入</dt>
+<dd><var>DOCUMENT</var>，<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">文档对象</a></dd>
+</dl>
+
+<ol>
+  <li>如果 <var>DOCUMENT</var> 是 <a href="#dfn-master-document">主文档</a>，取消 <var>DOCUMENT</var> 的 <a href="#dfn-import-link-list">导入链接表</a> 中所有 <a href="#dfn-import-link-link">链接</a> 的 <a href="#dfn-import-link-list-branch">分支</a> 标记， 所有 <a href="#dfn-imported-document">导入</a> 都被关联到 <var>DOCUMENT</var>。</li>
+  <li>定义 <var>LIST</var> 等于 <var>DOCUMENT</var> 的 <a href="#dfn-import-link-list">导入链接表</a>。</li>
+  <li>对于 <var>LIST</var> 中的每个 <var>ITEM</var>：</li>
+  <li><ol>
+    <li>定义 <var>LOCATION</var> 等于 <var>ITEM</var> 的 <a href="#import-link-list-location">地址</a>。</li>
+    <li>定义 <var>IMPORT</var> 为一个 URL 等于 <var>LOCATION</var> 的 <a href="#dfn-import">导入</a>。</li>
+    <li>如果没有其他的 <a href="#dfn-import-link-link">链接</a> 的 <a href="#import-link-list-location">地址</a> 与 <var>LOCATION</var> 相同且被标记为 <a href="#dfn-import-link-list-branch">分支</a>，则标记 <var>ITEM</var> 为一个 <a href="#dfn-import-link-list-branch">分支</a>。</li>
+    <li>如果 <var>ITEM</var> 被标记为 <a href="#dfn-import-link-list-branch">分支</a> 且 <var>IMPORT</var> 不等于 <strong>null</strong>， 调用 <var>IMPORT</var> 的 <a href="#dfn-update-marking">更新标记</a> 算法。</li>
+  </ol></li>
+</ol>
+
+<h3 id="requesting-import">请求导入</h3>
+
+<p>当用户代理尝试 <a href="#dfn-obtaining-import">获取</a> 一个链接导入, 它 <strong>必需</strong> 运行 <dfn id="dfn-import-request">导入请求</dfn> 算法, <a href="#dfn-processing-equivalence">等价于</a> 运行如下步骤：</p>
+
+<div class="algorithm">
+<dl>
+<dt>输入</dt>
+<dd><var>LINK</var>，建立到导入的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html#external-resource-link">外部资源链接</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素。</dd>
+<dd><var>LOCATION</var>，链接资源的 <a href="http://dom.spec.whatwg.org/#concept-document-url">URL</a> 。</dd>
+</dl>
+<ol>
+  <li>如果 <var>LINK</var> 的 <a href="#dfn-import-async-attribute">async</a> 属性为 true, 则标记 <var>LINK</var> 为 <dfn id="dfn-import-link-async">异步</dfn>。
+  <li>定义 <var>DOCUMENT</var> 为 <var>LINK</var> 的一个文档。
+  <li>定义 <var>LIST</var> 为 <var>DOCUMENT</var> 的 <a href="#dfn-import-link-list">导入链接表</a>。
+  <li>定义 <var>ITEM</var> 为 <var>LINK</var> 和 <var>LOCATION</var>：</li>
+  <li><ol>
+    <li>添加 <var>ITEM</var> 到 <var>LIST</var> 的末尾。
+    <li>调用 <a href="#dfn-master-document">主文档</a> 的 <a href="#dfn-update-marking">更新标记</a> 算法。
+  </ol></li>
+</ol>
+</div>
+
+<h3 id="fetching-import">获取导入</h3>
+
+<p>所有链接到 <a href="#dfn-master-document">主文档</a> 或在 <a href="#dfn-import-map">导入映射</a> 中的 <a href="#dfn-import">导入</a>，<strong>必需</strong>使用如下描述的 <a href="#dfn-import-fetching">导入获取算法</a>，代替HTML规范指定的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#concept-link-obtain">获取链接资源</a> 算法。</a></p>
+
+<p><dfn id="dfn-import-fetching">导入获取算法</dfn> <strong>必需</strong> <a href="#dfn-processing-equivalence">等价于</a> 执行如下步骤：</p>
+<div class="algorithm">
+<dl>
+<dt>输入</dt>
+<dd><var>LINK</var>，建立到导入的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/links.html#external-resource-link">外部资源链接</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素。</dd>
+<dd><var>LOCATION</var>，<a href="#dfn-import-location">导入地址</a>。</dd>
+<dt>输出</dt>
+<dd><var>IMPORT</var>，<a href="#dfn-imported-document">导入文档</a>。</dd>
+</dl>
+<ol>
+    <li>如果 <var>LOCATION</var> 已在 <a href="#dfn-import-map">导入映射</a> 中：</li>
+    <li><ol>
+      <li>赋值 <var>IMPORT</var> 等于 <var>LOCATION</var> 对应的 <a href="#dfn-imported-document">导入文档</a>，然后<strong>停止</strong>。</li>
+    </ol></li>
+    <li>从 <var>LOCATION</var> <a href="http://fetch.spec.whatwg.org/#concept-fetch">获取资源</a>，设置请求的 <a href="http://fetch.spec.whatwg.org/#concept-request-origin">源</a> 为 <a href="#dfn-master-document">主文档</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/origin-0.html#origin">源</a>，<a href="http://fetch.spec.whatwg.org/#concept-request-mode">模式</a> 为 <i>CORS</i>，<a href="http://fetch.spec.whatwg.org/#concept-request-credentials-mode">证书模式</a> 为 <i>same-origin</i>。</li>
+    <ol>
+        <li>如果获取的 <a href="http://fetch.spec.whatwg.org/#concept-response-type">响应类型</a> 是 <i>错误</i>：</li>
+        <li><ul>
+          <li>添加 <var>LOCATION</var> 和 <strong>null</strong> 到 <a href="#dfn-import-map">导入映射</a>，然后<strong>停止</strong>。
+        </ul></li>
+        <li>赋值 <var>IMPORT</var> 为一个新的 <a href="http://dom.spec.whatwg.org/#document"><code>Document</code></a>对象，其<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#the-document's-address">文档地址</a> 等于 <var>LOCATION</var> 。</li>
+        <li>赋值 <var>PARSER</var> 为一个新的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#html-parser">HTML parser</a>，与 <var>IMPORT</var> 相关。</li>
+        <li>添加 <var>LOCATION</var> 和 <var>IMPORT</var> 到 <a href="#dfn-import-map">导入映射</a>。</li>
+        <li>当每个 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#task-queue">任务队列</a> 里的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#networking-task-source">网络任务源</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#concept-task"> 任务</a> 获取资源时：
+        <ol>
+            <li>用获取的字节数据填充 <var>PARSER</var> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#the-input-byte-stream">输入字节流</a>。</li>
+            <li>使用 <a href="http://encoding.spec.whatwg.org/#utf-8">utf-8</a>（<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#a-known-definite-encoding">一种已知确定的编码</a>），处理 <var>PARSER</var> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#the-input-byte-stream">输入字节流</a>。</li>
+        </ol></li>
+        <li>当已没有有效字节数据：
+        <ol>
+            <li> 从 <var>PARSER</var> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#networking-task-source">网络任务源</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#queue-a-task">产生一个队列任务</a>，处理隐含的 <code>EOF</code> 字符。</li>
+        </ol>
+    </ol></li>
+</ol>
+</div>
+
+<div class="informative">
+所有已经加载和正在加载的导入都在 <a href="#dfn-import-link-list">导入链接表</a> 中，因此，所有链接到此表中的导入的 <a href="#dfn-import">导入</a> 也会使用 <a href="#dfn-import-fetching">导入获取算法</a> 被下载，其 <var>LOCATION</var> 是导入的 <a href="#dfn-import-location">导入地址</a>。
+</div>
+
+<p>
+当此算法完成，如果 <var>IMPORT</var> 不为null，则<strong>必需</strong>认为下载是成功的，否则为失败。
+</p>
+
+<p>每个没有被 <a href="#dfn-import-link-async">标记为异步</a> 的导入会 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-end.html#delay-the-load-event">延迟文档的加载事件</a>。
+
+<div class="informative">
+<p><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素成功下载后，会发送一个简单的 <code>load</code> 事件。下载失败则发送一个简单的 <code>error</code> 事件。</p>
+<p>因为导入会延迟加载事件，<a href="http://dom.spec.whatwg.org/#document"><code>Document</code></a> 不会 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#completely-loaded">完全下载</a>，直到它链接的所有导入都下载完成。</p>
+
+<h3 id="imports-and-csp">导入和内容安全策略</h3>
+
+<p>
+<a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html">内容安全策略</a> <strong>必需</strong>通过 <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#script-src">script-src</a> 指令限制导入的加载。
+</p>
+
+<p>
+每个导入<strong>必需</strong>被 <a href="#dfn-master-document">主文档</a> 的内容安全策略限制。
+例如，如果发送 <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#content-security-policy-header-field">内容安全头字段</a> 到一个导入，用户代理必需 <a href="http://w3c.github.io/webappsec/specs/content-security-policy/csp-specification.dev.html#enforce">应用</a> <a href="#dfn-master-document">主文档</a> 的策略到导入文档。
+</p>
+
+<h2 id="parsing-imports">解析导入</h2>
+
+<p><a href="#dfn-import">导入</a> 的解析行为被定义为 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#parsing">HTML解析</a> 的一组改变。</p>
+
+<h3 id="additions-to-prepare-a-script-algorithm">补充：准备一个脚本算法</h3>
+
+<p>在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#prepare-a-script">准备一个脚本</a> 算法的第15步，修改条件“<em>如果元素没有 <code>src</code> 属性</em>”的最后部分为：</p>
+<div class="monkeypatch">
+<p>... 且 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#html-parser">HTML parser</a> 或 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-xhtml-syntax.html#xml-parser">XML parser</a> 的创建了 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#the-script-element"><code>script</code></a> 元素的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document"><code>Document</code></a>，<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-a-style-sheet-that-is-blocking-scripts">有阻塞脚本的样式</a> 或 <a href="#dfn-has-an-import-that-is-blocking-scripts">有阻塞脚本的导入</a></p>
+</div>
+
+<h3 id="additions-to-tree-construction-algorithm">补充：树构建算法</h3>
+
+<p>在 DOCTYPE 的章节部分 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#the-initial-insertion-mode">12.2.5.4.1 初始插入模式</a>，修改 <q>如果文档不是一个 iframe srcdoc 文档 ...</q> 为如下：</a>
+
+<div class="monkeypatch">
+<p>如果文档不是一个 iframe srcdoc 文档，也不是一个 <a href="#dfn-import">导入</a> ...</p>
+</div>
+
+<p>在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#parsing-main-incdata">文本插入模式</a> 的条件 <em>Otherwise</em> 的子条件“<em>一个script结束标记</em>”，修改步骤3为：</p>
+<div class="monkeypatch">
+<ol start="3">
+    <li>如果解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-a-style-sheet-that-is-blocking-scripts">有阻塞脚本的样式</a> 或 <a href="#dfn-has-an-import-that-is-blocking-scripts">有阻塞脚本的导入</a> 或 <em>脚本</em>的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记没有设置，<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#spin-the-event-loop">spin 事件循环</a>，直到解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-no-style-sheet-that-is-blocking-scripts">没有阻塞脚本样式</a> 和 <a href="#dfn-has-no-import-that-is-blocking-scripts">没有阻塞脚本导入</a> 且脚本的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记被设置。</li>
+</ol>
+</div>
+
+<h3 id="additions-to-parsing-xhtml-documents">补充：解析XHTML文档</h3>
+
+<p>修改运行 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#prepare-a-script">准备</a> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#the-script-element"><code>script</code></a> 元素的第3步如下：</p>
+<div class="monkeypatch">
+<ol start="3">
+    <li><p><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#spin-the-event-loop">Spin 事件循环</a>，直至解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-no-style-sheet-that-is-blocking-scripts">没有阻塞脚本的样式</a> 和 <a href="#dfn-has-no-import-that-is-blocking-scripts">没有阻塞脚本的导入</a> 且 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#pending-parsing-blocking-script">等待解析块脚本</a> 的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记被设置。</p></li>
+</ol>
+</div>
+
+<h2 id="scripts-imports">在导入中编写脚本</h2>
+
+<h3 id="additions-to-script-enabling-criteria">补充：脚本启用标准</h3>
+
+<p>增加下述条件到 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#enabling-and-disabling-scripting">开启和关闭脚本</a> 标准列表：</p>
+
+<div class="monkeypatch">
+<ul>
+  <li>启用 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#node">节点</a> 的脚本，如果节点的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a> 对象在 <a href="#dfn-import-map">导入映射</a> 中。</li>
+</ul>
+</div>
+
+<h3 id="additions-to-dom-document-currentscript">补充：document.currentScript</h3>
+
+<p>修改 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#dom-document-currentscript"><code>document.currentScript</code> </a>的定义为：</p>
+<div class="monkeypatch">
+<dfn id="dom-document-currentscript" title="dom-document-currentScript"><code>currentScript</code></dfn> 属性，必需返回文档或文档的 <a href="#dfn-import-map">导入映射</a> 中最近初始化的脚本。当文档创建后，<code>currentScript</code> 属性必需初始化为 null。如果文档为 <a href="#dfn-imported-document">导入文档</a>，那么它的 <code>currentScript</code> 始终为 null。
+</div>
+
+<h2 id="style-imports">导入的样式处理</h2>
+
+<p><a href="#dfn-import">导入</a> 的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/#the-style-element">style</a></code> 元素和外部资源 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/#the-link-element">link</a></code> 元素的内容<strong>必需</strong>被当做 <a href="#dfn-master-document">主文档</a> 的 <a href="http://www.w3.org/TR/CSS21/intro.html#processing-model">样式处理模型</a> 的输入源。</p>
+
+<div class="fixme">
+
+<p>不同文档之间的文档顺序中的 <a href="http://www.w3.org/TR/css3-cascade/#cascade-order">出现顺序</a> 被定义为，比较两个元素，<var>x</var>，其所在文档是 <var>Dx</var>，和 <var>y</var>，其所在文档是 <var>Dy</var>，如下：</p>
+
+<ul>
+  <li>如果有一个文档 <var>Da</var>，它是 <var>Dx</var> 和 <var>Dy</var> 的公共 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，<var>Lx</var> 是 <var>Da</var> 中第一个链接到 <var>Dx</var> 或 <var>Dx</var> 的 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a> 的导入 <code>link</code> 元素，<var>Ly</var> 是一个单独导入 <var>Dy</var> 的 <code>link</code> 元素。使用文档顺序比较两者，如果 <var>Lx</var> 在前，则元素 <var>x</var> 在前，否则 <var>y</var> 在前。
+
+  <li>如果 <var>Dx</var> 是 <var>Dy</var> 的一个 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，<var>Ly</var> 是 <var>Dx</var> 中第一个链接到 <var>Dy</var> 或 <var>Dy</var> 的 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a> 的导入 <code>link</code> 元素。比较 <var>x</var> 的文档顺序和 <var>Ly</var>，如果 <var>x</var> 在 <var>Ly</var> 前面，那么 <var>x</var> 也在 <var>y</var> 的前面。
+
+  <li>如果 <var>Dy</var> 是 <var>Dx</var> 的一个 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a>，则比较 <var>y</var> 的文档顺序和 <var>Lx</var>。
+</ul>
+
+<div class="informative">
+<p>这是一个导入树的文档顺序演示图。</p>
+<p>在这个示例中，主文档有2个导入 <var>B</var> 的 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a> 的 <var>link</var> 元素。当比较 <var>b1</var> 和 <var>m2</var>，<var>b1</var> 在 <var>m2</var> 前面，因为在主文档中，用于比较的第一个 <code>link</code> 出现在 <var>m2</var> 的前面。</code></p>
+
+  <img src="../../assets/images/import-style-document-order.png">
+  <figcaption>
+    一个导入树中不同文档样式的文档顺序示例。
+  </figcaption>
+
+<p>这个比较使用 <a href="#dfn-import-referrer-ancestor">导入来源祖先</a> 概念来代替 <a href="#dfn-import-import-ancestor">导入祖先</a>。这意味着移动导入 <code>link</code> 改变DOM结构会影响这个顺序。它遵循样式表的 <code>style</code> 元素和 <code>link</code> 元素的工作方式。</p>
+</div>
+
+<p>参见 <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=24756">Bug 24756</a>.</p>
+</div>
+
+<h2 id="events-imports">导入中的事件</h2>
+
+<p><a href="#dfn-import">导入</a> 中的事件被定义为一组 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#events">HTML事件</a> 改变。</p>
+
+<h3 id="additions-to-event-handlers">附加：事件处理器</h3>
+
+<p>
+修改 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#event-handler-content-attributes">事件处理器内容属性</a> 的脚本创建标准，扩展第一段：
+
+<div class="monkeypatch">
+<p>当设置一个事件处理器内容属性时，如果这个元素属于一个在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#browsing-context">浏览上下文</a> 或 <a href="#dfn-import-map">导入映射</a> 中的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">文档</a>，...</p>
+</div>
+
+<h2 id="acknowledgements">鸣谢</h2>
+
+<p><span class="vcard">David Hyatt</span> 开发了 <a href="http://dev.w3.org/2006/xbl2/">XBL 1.0</a>，<span class="vcard">Ian Hickson</span> 参与了 <a href="http://dev.w3.org/2006/xbl2/">XBL 2.0</a> 的编写。这些文献在行为依附问题上提供了巨大而深刻的见解，并极大地影响了本说明书。</p>
+
+<p><span class="vcard">Alex Russell</span> 和他的重要远见引发了新一波围绕行为依附课题的热潮和如何在网络上应用于实践。</p>
+
+<p><span class="vcard">Dominic Cooney</span> 和 <span class="vcard">Roland Steiner</span> 不知疲倦的仔细研究网络平台范围内的问题，为此文档打下了坚实的基础。</p>
+
+<p>编辑还要感谢 <span class="vcard">Alex Komoroske</span>，<span class="vcard">Angelina Fabbro</span>，<span class="vcard">Anne van Kesteren</span>，<span class="vcard">Boris Zbarsky</span>，<span class="vcard">Brian Kardell</span>，<span class="vcard">Daniel Buchner</span>，<span class="vcard">Edward O'Connor</span>，<span class="vcard">Eric Bidelman</span>，<span class="vcard">Erik Arvidsson</span>，<span class="vcard">Elliott Sprehn</span>，<span class="vcard">Gabor Krizsanits</span>，<span class="vcard">Hayato Ito</span>，<span class="vcard">James Simonsen</span>，<span class="vcard">Jonas Sicking</span>，<span class="vcard">Ken Shirriff</span>，<span class="vcard">Neel Goyal</span>，<span class="vcard">Olli Pettay</span>，<span class="vcard">Rafael Weinstein</span>，<span class="vcard">Scott Miles</span>，<span class="vcard">Steve Orvell</span>，<span class="vcard">Tab Atkins</span>，<span class="vcard">William Chan</span>，和 <span class="vcard">William Chen</span>，感谢他们对此说明书的评论和贡献。</p>
+
+<p>这个列表太短了。还有很多工作要做。请通过评审和提交bugs来参与贡献 &mdash; 不要忘了要求编辑添加你的名字到此章节。</p>
+
+</section>
+</body>
+</html>
