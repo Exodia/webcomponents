@@ -947,110 +947,110 @@
     </section>
 
     <section>
-      <h2>User Interaction</h2>
+      <h2>用户交互</h2>
 
       <section class="informative">
-        <h3>Ranges and Selections</h3>
+        <h3>范围 和 选区</h3>
 
         <p>
-          <a>Selection</a> [[!EDITING]] is not defined. Implementation should do their best to do what's best for them. Here's one possible, admittedly naive way:
+          <a>选区</a> [[!EDITING]]([[!可编辑的区域]])是没有被定义的. 选区的开发和实现应该做到最好. 这是一个可能公认的错误的方法:
         </p>
 
-        <p>Since <a title="node">nodes</a> which are in the different <a title="node tree">node trees</a> never have the same <a>root</a>, there may never exist a valid <a title="range">DOM range</a> that spans multiple <a title="node tree">node trees</a>.</p>
+        <p>由于<a title="node">nodes(节点)</a>在不同的<a title="node tree">node(节点)树上</a>绝对不可能拥有相同的<a>根(元素)</a>,它们可能绝对不会存在一个有效的<a title="range">DOM范围内</a>(这个DOM范围包含了多数的<a title="node tree">node(节点)树)</a>.</p>
 
-        <p>Accordingly, <a title="selection">selections</a> may only exist within one <a>node tree</a>, because they are defined by a single <a>range</a>. The <a>selection</a>, returned by the <a><code>window.getSelection()</code></a> method never returns a <a>selection</a> within a <a>shadow tree</a>.</p>
+        <p>因此<a title="selection">选区</a> 是可能存在于唯一一个 <a>node(节点)树</a>里, 因为选区被定义在一个单独的<a>范围里</a>. 通过方法<code><a>window.getSelection()</a></code>返回的<a>选区</a>绝对不会返回一个在<a>shadow(阴影)树</a>里的<a>选区</a>.</p>
 
-        <p>The <code>getSelection()</code> method of the <a>shadow root</a> object returns the current <a>selection</a> in this <a>shadow tree</a>.</p>
+        <p><a>shadow(阴影)根</a>对象的<code>getSelection()</code>方法返回的是当前<a>选区</a>是在当前(上下文)的<a>shadow tree(阴影树)</a>.</p>
       </section>
 
       <section>
-        <h3>Focus Navigation</h3>
+        <h3>引导获取焦点</h3>
 
-        <p>If a <a>node</a> doesn’t <a title="participates">participate</a> in the <a>composed tree</a>, the <a>node</a> <strong>must</strong> be skipped from the <a>navigation order</a> [[!CSS3UI]] sequence.</p>
+        <p>如果一个<a>节点</a>不<a title="participates">加入</a>一个<a>生成树(composed tree)</a>,  <a>此节点</a> <strong>必须</strong>从[[!CSS3UI]]<a>渲染树的顺序</a>中被忽略</p>
 
-        <p>For <a>sequential focus navigation</a>, the <a>navigation order</a> sequence for a given <a>shadow tree</a> <var>A</var> <strong>must</strong> be inserted into the <a>navigation order</a> for other <a>node tree</a> as follow:</p>
+        <p>对于<a>引导获取焦点的时序</a>, <a>此引导顺序</a>的时序对于一个给定的<a>shadow tree(阴影树)</a> <var>A</var> <strong>必须</strong> 被插入到其他<a>node tree(节点树)</a> <a>引导顺序中</a> , 规则规则如下:</p>
         <ol>
-          <li>If <var>A</var> is the <a>youngest shadow tree</a>:
+          <li>如果<var>A</var>是<a>最新的shadow tree(阴影树)</a>:
             <ol>
-              <li>Let <var>HOST</var> be the <a>shadow host</a> which <a>hosts</a> A</li>
-              <li>Let <var>B</var> be the <a>node tree</a> which <var>HOST</var> participates in</li>
-              <li>The <a>navigation order</a> for A <strong>must</strong> be inserted into the <a>navigation order</a> for <var>B</var>:
+              <li>让<var>宿主</var>成为<a>shadow host(阴影宿主)</a>,现在的阴影宿主就是<a>宿主</a>A</li>
+              <li>让<var>B</var>成为<a>node tree(节点树)</a>,<var>让节点树的宿主</var>加入</li>
+              <li>对于A的<a>引导顺序</a> <strong>必须</strong> 将A插入到<var>B</var> <a>的引导顺序</a>:
                 <ol>
-                  <li>immediately after <var>HOST</var>, if <var>HOST</var> is <a>focusable</a>; or</li>
-                  <li>in place of the <var>HOST</var> as if <var>HOST</var> were assigned the value of <a title="nav-index auto"><code>auto</code></a> for determining its position.</li>
+                  <li>立刻插入到<var>宿主</var>之后, 如果<var>宿主</var>是<a>可聚焦的</a>; 或者</li>
+                  <li>取代<var>此宿主</var> ，如果 <var>此宿主</var> 被指定了属性 <a title="nav-index auto"><code>auto</code>这个属性</a>(auto这个属性决定了此宿主的位置)</li>
                 </ol></li>
             </ol></li>
-          <li>Otherwise:
+          <li>如果不是那么:
             <ol>
-              <li>Let <var>B</var> be the <a>younger shadow tree</a> relative to <var>A</var></li>
-              <li>Let <var>SHADOW</var> be the <a>shadow insertion point</a> in <var>B</var></li>
-              <li>If <var>SHADOW</var> exists, the <a>navigation order</a> for <var>A</var> <strong>must</strong> be inserted into the <a>navigation order</a> for <var>B</var> immediately after <var>SHADOW</var> as if <var>SHADOW</var> were assigned the value of <a title="nav-index auto"><code>auto</code></a> for determining its position.</li>
+              <li>让<var>B</var>成为一个<a>优先级较高的shadow tree(阴影树)</a> , 让B关联到<var>A</var></li>
+              <li>让<var>SHADOW(阴影)</var>成为一个<a>shadow(阴影)插入点</a>插入 <var>B</var>中</li>
+              <li>如果<var>SHADOW(阴影)</var> 存在, 在<var>SHADOW(阴影)</var>之后,对于<var>A</var>的<a>引导顺序</a><strong>必须</strong>被插入到<var>B</var>的<a>引导顺序</a>  如果<var>SHADOW(阴影)</var> 被指定了值 <a title="nav-index auto"><code>auto</code></a> 去决定它的位置.</li>
             </ol></li>
         </ol>
 
-        <p>For <a>directional focus navigation</a>, it is up to the user agent to integrate the <a title="navigation order">navigation orders</a> for <a title="shadow tree">shadow trees</a> into the <a>document</a> <a>navigation order</a>.</p>
+        <p>对于<a>有指向性的引导焦点</a>, 它取决于用户代理完整的  <a title="navigation order">引导顺序</a> 中 <a title="shadow tree">shadow trees(阴影树)</a> 在 <a>文本</a>中 <a>引导顺序</a>.</p>
       </section>
 
       <section>
-        <h3>Active Element</h3>
+        <h3>激活的元素</h3>
 
-        <p>To maintain encapsulation, the value of the <a title="Document object">Document</a> object's focus API property <a>activeElement</a> <strong>must</strong> be adjusted. To prevent loss of information when adjusting this value, each <a>shadow root</a> <strong>must</strong> also have an <code>activeElement</code> property to store the value of the focused <a>element</a> in the <a>shadow tree</a>.</p>
+        <p>为了坚持封装性, <a>激活的元素</a>在<a title="Document object">文档</a>  对象的 focus(焦点) API 属性中的值 <strong>必须</strong>被调整的. 为了防止当调整这个值的时候丢失信息, 每一个 <a>shadow root(阴影的根)</a> <strong>必须</strong> 也拥有一个<code>激活元素的</code> 属性用来保存在<a>shadow tree(阴影树)</a>中获取焦点激活<a>元素的</a>属性值</p>
 
-        <p>The <dfn>active <a>element</a> adjustment algorithm</dfn> is used to determine the value of the <a>activeElement</a> property, and it <strong>must</strong> be equivalent to processing the following steps:</p>
+        <p>对于<dfn>激活 <a>元素</a> 的算法调整</dfn> 被用来决定<a>激活元素</a>的属性值,  激活元素<strong>必须</strong>经过如下列步骤一样的等价处理的过程:</p>
 
         <div class="algorithm">
           <dl>
-            <dt>Input</dt>
-            <dd><var>ELEMENT</var>, the focused <a>element</a></dd>
-            <dd><var>ROOT</var>, either a <a>document</a> or a <a>shadow root</a></dd>
-            <dt>Output</dt>
-            <dd><var>ADJUSTED</var>, an adjusted <a>activeElement</a> property of <var>ROOT</var>.</dd>
+            <dt>输入</dt>
+            <dd><var>元素</var>, 得到焦点的<a>元素</a></dd>
+            <dd><var>ROOT(根)</var>, 要么是一个<a>文档</a> 或者是一个 <a>shadow root(阴影根)</a></dd>
+            <dt>输出</dt>
+            <dd><var>校正</var>, 一个已经被校正的<a>激活元素</a>属性的<var>根</var>.</dd>
           </dl>
           <ol>
-            <li>Let <var>PATH</var> be the result of the <a>event path calculation algorithm</a> with <var>ELEMENT</var> and null as input</li>
-            <li>Let <var>ADJUSTED</var> be the result of the <a>retargeting algorithm</a> with <var>PATH</var> and <var>ROOT</var> as input</li>
+            <li>让 <var>路径</var><var>元素和null</var>的<a>事件路径算法结果</a>作为输入</li>
+            <li>让 <var>调整</var>过的<var>路径</var>和<var>根</var>的<a>重定向算法结果</a> 作为输出</li>
           </ol>
         </div>
       </section>
 
       <section>
-        <h3>Editing</h3>
+        <h3>校订</h3>
 
-        <p>The value of the <a><code>contenteditable</code></a> attribute <strong>must not</strong> propagate from <a>shadow host</a> to its <a title="shadow tree">shadow trees</a>.</p>
+        <p><a><code>contenteditable</code>属性的值</a><strong>一定不能通过<a>shadow host(阴影宿主)</a> </strong> 传播到它本身的 <a title="shadow tree">shadow trees(阴影树)</a>上.</p>
       </section>
 
       <section>
-        <h3>Assistive Technology</h3>
+        <h3>辅助技术</h3>
 
-        <p>User agents with assistive technology traverse the <a>composed tree</a>, and thus enable full use of WAI-ARIA [[!WAI-ARIA]] semantics in the <a title="shadow tree">shadow trees</a>.</p>
+        <p>用户代理可以通过辅助技术遍历<a>composed tree(生成树)</a>, 因此可以使完整的WAI-ARIA(可访问的富因特网应用程序) [[!WAI-ARIA]]语义在<a title="shadow tree">shadow trees(阴影树)</a>中使用.</p>
 
       </section>
 
     </section>
 
     <section>
-      <h2>HTML Elements in Shadow Trees</h2>
+      <h2>Shadow Trees(阴影树)中的HTML元素</h2>
 
-      <p>Comparatively, a <a>shadow tree</a> can be seen as somewhere between <em>just part of a <a>document</a></em> and itself being a <a title="interface DocumentFragment">document fragment</a>. Since it is rendered, a <a>shadow tree</a> aims to retain the traits of a typical <a>tree</a> in a <a>document</a>. At the same time, it is an encapsulation abstraction, so it has to avoid affecting the <a>document tree</a>. Thus, the <a>HTML elements</a> <strong>must</strong> behave as specified [[!HTML]] in the <a title="shadow tree">shadow trees</a>, with a few exceptions.</p>
+      <p>相对来说, 一个<a>shadow tree(阴影树)</a>可以看作是存在于<em>部分<a>文档</a></em>和文档本身之间某处的一个<a title="interface DocumentFragment">文档碎片</a>. 当阴影树被渲染的时候, 单个<a>shadow tree(阴影树)</a> 目的是维持它本身在<a>文档</a>的传统<a>树</a>中的标准. 于此同时, 由于阴影树是抽象封装, 阴影树不能影响<a>文档树</a>. 因此, 阴影树中的<a>HTML元素</a> <strong>必须</strong> 表现为指定的 [[!HTML]]的行为在<a title="shadow tree">shadow trees(阴影树)</a>中, 除了少数例外的情况</p>
 
       <section>
-        <h3>Inert HTML Elements</h3>
+        <h3>无效的HTML元素</h3>
 
-        <p>A subset of <a>HTML elements</a> <strong>must</strong> behave as <dfn>inert</dfn>, or not part of the <a>document tree</a>. This is consistent how the <a>HTML elements</a> would behave in a <a title="interface DocumentFragment">document fragment</a>. These <a title="element">elements</a> are:</p>
+        <p><a>HTML元素</a>一个子集合<strong>确定</strong> 行为表现为 <dfn>无效</dfn>, 或者不属于<a>document tree(文档树)</a>. 在这种一致的<a title="interface DocumentFragment">document fragment(文档碎片)</a>中的这种<a>HTML元素</a>如何表现. 这样 <a title="element">elements(元素)</a>有:</p>
         <ul>
           <li><a title="base element"><code>base</code></a></li>
           <li><a title="link element"><code>link</code></a></li>
         </ul>
 
-        <p>All other <a>HTML elements</a> in the <a title="shadow tree">shadow trees</a> <strong>must</strong> behave as if they were part of the <a>document tree</a>.</p>
+        <p>剩下的其他<a>HTML元素</a>在<a title="shadow tree">shadow trees(阴影树)里</a> <strong>必须</strong> 表现为就像它们出现在<a>document tree(文档树)</a>中的表现.</p>
       </section>
 
     </section>
 
     <section>
-      <h2>HTML Elements and Their Shadow Trees</h2>
+      <h2>HTML元素和它们的shadow trees(阴影树)</h2>
 
-      <p>Per <a title="HTML">specification</a>, some <a>HTML elements</a> are designed to either not render their contents or have special requirements in regard to contents rendering. In order to reconcile these differences in rendering behavior with the <a>composed tree</a>, all <a>HTML elements</a> <strong>must</strong> have an <a title="processing equivalence">equivalent</a> of a <a>shadow tree</a> that is created and populated at the time of <a>element</a> instantiation. It is up to a user agent to define the content of these trees. However, all conforming user agents <strong>must</strong> satisfy the following requirements:</p>
+      <p>每一个 <a title="HTML">规范</a>, 针对内容的渲染地方，一些<a>HTM元素</a>不是用来渲染它们的内容或针对特殊的需求所设计的. 是为了标准化HTML元素在<a>composed tree(生成树)</a>中渲染时的不同行为的,在<a>shadow tree(阴影树)</a>被创建和被填充进去的实例化<a>元素</a>的时候,所有的HTML元素<strong>必须</strong>具有<a title="processing equivalence">相同</a>的阴影树.这取决于用户代理定义阴影树.当然, 所有符合标准的用户代理<strong>必须</strong>满足以下的要求:</p>
 
       <table>
         <thead>
@@ -1062,209 +1062,201 @@
         <tbody>
           <tr>
             <td><a title="img element"><code>img</code></a>, <a title="iframe element"><code>iframe</code></a>, <a title="embed element"><code>embed</code></a>, <a title="object element"><code>object</code></a>, <a title="video element"><code>video</code></a>, <a title="audio element"><code>audio</code></a>, <a title="canvas element"><code>canvas</code></a>, <a title="map element"><code>map</code></a>, <a title="input element"><code>input</code></a>, <a title="textarea element"><code>textarea</code></a>, <a title="progress element"><code>progress</code></a>, <a title="meter element"><code>meter</code></a></td>
-            <td>If the <a>element</a> can have <a>fallback content</a>, contains one <a>content insertion point</a>. The <a>matching criteria</a> value is the <a>universal selector</a> only when the <a>element</a> needs to show <a>fallback content</a>. Otherwise, contains no <a title="content insertion point">content insertion points</a> or an <a>content insertion point</a> that matches nothing.</td>
+            <td>如果这些<a>元素</a>可能有<a>回调的内容</a>, 包含一个<a>内容的插入点</a>. 这个(内容的插入点的)<a>匹配条件</a>的值<a>是一个通用的选择器</a>紧紧当这些<a>元素</a>需要展示<a>回调内容</a>时.其它方面, 包含没有<a title="content insertion point">内容插入点</a> 或者一个<a>内容插入点</a>什么都无法匹配.</td>
           </tr>
           <tr>
             <td><a title="fieldset element"><code>fieldset</code></a></td>
-            <td>Contains two <a title="content insertion point">content insertion points</a> with the following <a>matching criteria</a>:
+            <td>包含两个<a title="content insertion point">内容的插入点</a>要符合下列<a>匹配条件</a>:
               <ol>
                 <li><code>legend:first-of-type</code></li>
-                <li><a>universal selector</a></li>
+                <li><a>universal selector(普通选择符)</a></li>
               </ol>
             </td>
           </tr>
           <tr>
             <td><a title="details element"><code>details</code></a></td>
-            <td>Contains two <a title="content insertion point">content insertion points</a> with the following <a>matching criteria</a>:
+            <td>包含两个<a title="content insertion point">内容的插入点</a>要符合下列<a>匹配条件</a>:
               <ol>
                 <li><code>summary:first-of-type</code></li>
-                <li><a>universal selector</a></li>
+                <li><a>universal selector(普通选择符)</a></li>
               </ol>
             </td>
           </tr>
           <tr>
-            <td>All other <a title="element">elements</a></td>
-            <td>Contains one <a>content insertion point</a> with the <a>universal selector</a> as the <a>matching criteria</a></td>
+            <td>剩下所有<a title="element">elements(元素)</a></td>
+            <td>包含一个<a>内容插入点</a>并且有<a>universal selector(普通选择符)</a>作为<a>匹配条件</a></td>
           </tr>
         </tbody>
       </table>
     </section>
 
     <section>
-      <h2>Elements and DOM Objects</h2>
+      <h2>Elements(元素)和DOM Objects(DOM对象)</h2>
 
       <section>
-        <h3><code>ShadowRoot</code> Object</h3>
+        <h3><code>ShadowRoot(阴影根)</code>对象</h3>
 
-        <p>The <code>ShadowRoot</code> object represents the <a>shadow root</a>.</p>
+        <p><code>ShadowRoot(阴影根)</code>对象代表此<a>shadow root(阴影根)</a>.</p>
 
         <dl class="idl" title="interface ShadowRoot : DocumentFragment">
           <dt>HTMLElement getElementById(DOMString elementId)</dt>
           <dd>
-            <strong>Must</strong> behave exactly like <a>document.getElementById</a>, except <a title="scoping constraints">scoped</a> to the <a>shadow tree</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementById</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>内.
           </dd>
 
           <dt>NodeList getElementsByClassName(DOMString className)</dt>
           <dd>
-            <strong>Must</strong> behave exactly like <a>document.getElementsByClassName</a>, except <a title="scoping constraints">scoped</a> to the <a>shadow tree</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementsByClassName</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
           </dd>
 
           <dt>NodeList getElementsByTagName(DOMString tagName)</dt>
           <dd>
-            <strong>Must</strong> behave exactly like <a>document.getElementsByTagName</a>, except <a title="scoping constraints">scoped</a> to the <a>shadow tree</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementsByTagName</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
           </dd>
 
           <dt>NodeList getElementsByTagNameNS(DOMString? namespace, DOMString localName)</dt>
           <dd>
-            <strong>Must</strong> behave exactly like <a>document.getElementsByTagNameNS</a>, except <a title="scoping constraints">scoped</a> to the <a>shadow tree</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementsByTagNameNS</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
           </dd>
 
           <dt>Selection? getSelection()</dt>
           <dd>
-            <p>Returns the current selection in the <a>shadow tree</a>.</p>
-            <p>When invoked, it <strong>must</strong> return the <a>selection</a> in the <a>shadow tree</a>.</p>
+            <p>返回当前在此<a>shadow tree(阴影树)</a>的区域</p>
+            <p>当此方法被调用, 它<strong>必须</strong>返回此<a>shadow tree(阴影树)</a>的<a>selection(区域)</a>.</p>
           </dd>
 
           <dt>Element? elementFromPoint(double x, double y)</dt>
           <dd>
-            <p>Returns an <a>element</a> at specified coordinates.</p>
-            <p class="note">Eventually, this needs to be part of CSSOM View Module specification [[!CSSOM-VIEW]]</p>
+            <p>返回一个<a>element(元素)</a>指定的坐标系.</p>
+            <p class="note">最终, 它需要是CSSOM View Module[[!CSSOM-VIEW]]标准的一部分</p>
             <p>
-              When invoked, it <strong>must</strong> return result of running the following steps:
+              当此方法被调用, 它<strong>必须</strong>返回下列步骤运行后的结果:
             </p>
             <ol>
-              <li>If <a>context object</a> is not a <a><code>ShadowRoot</code></a> instance, throw an <a><code>InvalidNodeTypeError</code></a>.</li>
-              <li>If either argument is negative, <code>x</code> is greater than the <a>viewport</a> width excluding the size of a rendered scroll bar (if any), or if <code>y</code> is greater than the <a>viewport</a> height excluding the size of a rendered scroll bar (if any), return <strong>null</strong>.</li>
-              <li>Let <var>HIT</var> be the <a>element</a> at coordinates <code>x</code> and <code>y</code> in the <a>viewport</a>, determined through hit testing</li>
-              <li>Let <var>PATH</var> be the result of running the <a>event path calculation algorithm</a> with <var>HIT</var> and null as input</li>
-              <li>Return the result of running the <a>retargeting algorithm</a> with <var>PATH</var> and <a>context object</a> as input</li>
+              <li>如果<a>context object(上下文对象)</a>不是一个<a><code>ShadowRoot(阴影根)</code></a>的实例, 那么抛出一个<a><code>InvalidNodeTypeError(无效节点的错误)</code></a>错误.</li>
+              <li>如果其中任意一个参数无效, <code>x</code>大于<a>viewport(视窗)</a>的宽度不包括已经被渲染出来的滚动条(如果有), 或者如果是<code>y</code>大于<a>viewport(视窗)</a>的高度不包括已经被渲染出来的滚动条(如果有), 返回<strong>null</strong>.</li>
+              <li>让<var>HIT</var>这样的方式成为描述<a>element(元素)</a>在<a>viewport(视窗)</a>中<code>X</code>和<code>Y</code>坐标, 这样的方式决定于是否通过打点测试</li>
+              <li>让<var>PATH(路径)</var>在<a>HIT</a>里通过<a>event path calculation algorithm(事件路径计算算法)</a>所得到的结果HRnull作为输入</li>
+              <li>返回通过<a>retargeting algorithm(重定向算法)</a>所得到的结果<var>PATH(路径)</var>和<a>context object(上下文对象)</a>作为输入</li>
             </ol>
           </dd>
 
-          <dt>readonly attribute Element? activeElement</dt>
+          <dt>只读 attribute Element? activeElement</dt>
           <dd>
-            <p>Represents the currently focused <a>element</a> in the <a>shadow tree</a>.</p>
-            <p>On getting, the attribute <strong>must</strong> return the currently focused <a>element</a> in the <a>shadow tree</a> or <code>null</code>, if there is none.</p>
+            <p>表示当前在<a>shadow tree(阴影树)</a>得到焦点的<a>element(元素)</a></p>
+            <p>当读取时, 这个属性<strong>必须</strong>返回在当前在<a>shadow tree(阴影树)</a>中得到焦点的<a>element(元素)</a>的属性或者为<code>null</code>, 如果这个属性不是空的.</p>
           </dd>
 
-          <dt>readonly attribute Element host</dt>
+          <dt>只读 attribute Element host</dt>
           <dd>
-            <p>Represents the <a>shadow host</a> which <a>hosts</a> the <a>context object</a>.</p>
-            <p>On getting, the attribute <strong>must</strong> return the <a>shadow host</a> which <a>hosts</a> the <a>context object</a>.</p>
+            <p>表示此<a>shadow host(阴影宿主)</a>,此<a>hosts(宿主)</a>有此<a>context object(上下文对象)</a>.</p>
+            <p>当读取时, 这个属性<strong>必须</strong>返回此<a>shadow host(宿主)</a>,这个<a>hosts(宿主)</a>有此<a>context object(上下文对象)</a>.</p>
           </dd>
 
-          <dt>readonly attribute ShadowRoot? olderShadowRoot</dt>
+          <dt>只读 attribute ShadowRoot? olderShadowRoot</dt>
           <dd>
-            <p>Represents the <a>older shadow root</a> relative to the <a>context object</a></p>
+            <p>表示此<a>older shadow root(不是最新的阴影根)</a>所关联到此<a>context object(上下文对象)</a></p>
             <p>
-              On getting, the attribute <strong>must</strong> return a result that is <a title="processing equivalence">equivalent</a> to running the following steps:
+              当读取时, 此属性<strong>必须</strong>返回一个<a title="processing equivalence">equivalent(等价)</a>于下列步骤运行后的结果:
             </p>
             <ol>
-              <li>If the <a>context object</a> is the <a>oldest shadow root</a>, return <strong>null</strong>.</li>
-              <li>Return the <a>older shadow root</a> relative to the <a>context object</a>.</li>
+              <li>如果此<a>context object(上下文对象)</a>是在<a>oldest shadow root(最原始的阴影根)</a>, 返回<strong>null</strong>.</li>
+              <li>返回一个<a>older shadow root(不是最新的阴影根)</a>所关联到的<a>context object(上下文对象)</a>.</li>
             </ol>
-            <p>For <a>HTML elements</a>, the <a href="#html-elements-and-their-shadow-trees">UA-provided</a> <a title="shadow tree">shadow trees</a> <strong>must not</strong> be accessible.</p>
+            <p>对于<a>HTML elements(HTML元素)</a>, <a href="#html-elements-and-their-shadow-trees">UA-provided</a> <a title="shadow tree">shadow trees(阴影树)</a> <strong>一定是</strong>不能被使用的.</p>
           </dd>
 
           <dt>attribute DOMString innerHTML</dt>
           <dd>
-            <p>Represents the markup of <a><code>ShadowRoot</code></a>'s contents.</p>
-            <p>On getting, the attribute <strong>must</strong> return the result of running the <a>HTML fragment serialization algorithm</a> with the <a>context object</a> as <a title="shadow host"><code>shadow host</code></a>.</p>
+            <p>表示<a><code>ShadowRoot(阴影根)</code></a>的标记上下文.</p>
+            <p>当读取该属性时, 此属性<strong>必须</strong>返回在此<a>context object(上下文对象)</a>中通过<a>HTML fragment serialization algorithm(HTML文档序列化算法)</a>所处理过的结果作为 <a title="shadow host"><code>shadow host(阴影宿主)</code></a></p>
             <p>
-              On setting, these steps <strong>must</strong> be run:
+              当设置该属性时,<strong>必须</strong>经过以下步骤:
             </p>
             <ol>
-              <li>Let <var>FRAGMENT</var> be the result of invoking the <a title="parse fragment">fragment parsing algorithm</a> [[!DOMPARSING]] with the new value as <var>MARKUP</var>, and the <a>context object</a> as <a title="shadow host"><code>shadow host</code></a></li>
-              <li><a>Replace all</a> with <var>FRAGMENT</var> within the <a>shadow root</a>.</li>
+              <li>让<var>FRAGMENT(片段)</var>经过调用<a title="parse fragment">fragment parsing algorithm(片段解析算法)</a> [[!DOMPARSING]]使新设置的值作为<var>MARKUP(标识)</var>的结果, 并且此<a>context object(上下文对象)</a>作为<a title="shadow host"><code>shadow host(阴影宿主)</code></a></li>
+              <li><a>Replace all(替换所有)</a>在<a>shadow root(阴影根)中的<var>FRAGMENT(片段)</var></a></li>
             </ol>
           </dd>
 
-          <dt>readonly attribute StyleSheetList styleSheets</dt>
+          <dt>只读 attribute StyleSheetList styleSheets</dt>
           <dd>
-            <p>Represents the <a>shadow root style sheets</a>.</p>
-            <p>On getting, the attribute <strong>must</strong> return a <a><code>StyleSheetList</code></a> sequence containing the <a>shadow root style sheets</a>.
+            <p>表示此<a>shadow root(阴影根)的样式列表</a>.</p>
+            <p>当读取该属性事时, 此属性<strong>必须</strong>返回一个<a><code>StyleSheetList(样式表)</code></a>序列包含此<a>shadow root(阴影根)的样式表</a>.
             </p>
           </dd>
         </dl>
 
-        <p>The <a><code>nodeType</code></a> attribute of a <a><code>ShadowRoot</code></a> instance <strong>must</strong> return <a><code>DOCUMENT_FRAGMENT_NODE</code></a>. Accordingly, the <a><code>nodeName</code></a> attribute of a <a><code>ShadowRoot</code></a> instance <strong>must</strong> return <code>"#document-fragment"</code>.</p>
+        <p>一个<a><code>ShadowRoot(阴影根)</code></a> 实例的 <a><code>nodeType(节点类型)</code></a>属性 <strong>必须</strong> 返回 <a><code>DOCUMENT_FRAGMENT_NODE</code></a>. 因此, 一个<a><code>ShadowRoot(阴影根)</code></a>实例的<a><code>nodeName(节点名)</code></a> 属性<strong>必须</strong>返回<code>"#document-fragment"</code>.</p>
 
-        <p>Invoking the <a><code>cloneNode()</code></a> method on a <a><code>ShadowRoot</code></a> instance <strong>must</strong> always throw a <a><code>DATA_CLONE_ERR</code></a> exception.</p>
+        <p>调用方法<a><code>cloneNode()</code></a>方法去复制<a><code>ShadowRoot(阴影根)</code></a> 实例时 <strong>必须</strong>通常会抛出一个 <a><code>DATA_CLONE_ERR</code></a>异常.</p>
 
       </section>
 
       <section>
-        <h3>Extensions to <code>Element</code> Interface</h3>
+        <h3><code>Element(元素)</code>接口的扩展</h3>
 
         <dl class="idl" title="partial interface Element">
-          <dt>ShadowRoot createShadowRoot()</dt>
+          <dt>ShadowRoot(阴影根)方法createShadowRoot()</dt>
           <dd>
-            When invoked, these steps <strong>must</strong> be run:
+            当此方法被调用, <strong>必须经过</strong>以下的步奏:
             <ol>
-              <li>Create a new instance of the <a><code>ShadowRoot</code></a> object</li>
-              <li>Add the <a><code>ShadowRoot</code></a> object to the <a title="shadow roots list">ordered list of shadow roots</a> associated with the <a>context object</a> as the <a>youngest shadow root</a></li>
-              <li>Return <a><code>ShadowRoot</code></a> object.</li>
+              <li>创建一个新的<a><code>ShadowRoot(阴影根)</code></a>对象实例</li>
+              <li>增加此<a><code>ShadowRoot(阴影根)</code></a>对象到一个<a title="shadow roots list">有序的阴影根列表上</a>根关联上的此<a>context object(上下文对象)</a>作为最新的<a>shadow root(阴影根)</a></li>
+              <li>返回一个<a><code>ShadowRoot(阴影根)</code></a>对象.</li>
             </ol>
           </dd>
 
-          <dt>NodeList getDestinationInsertionPoints()</dt>
-          <dd>When invoked, the method <strong>must</strong> return a <a>static</a> <a><code>NodeList</code></a> consisting of <a title="insertion point">insertion points</a> in the <a>destination insertion points</a> of the <a>context object</a>.</dd>
-
-          <dt>readonly attribute ShadowRoot? shadowRoot</dt>
-          <dd>
-            <p>Represents the <a>youngest shadow root</a> that <a>context object</a> <a>hosts</a>.</p>
-            <p>On getting, the attribute <strong>must</strong> return the <a>youngest shadow root</a> that <a>context object</a> <a>hosts</a>, or <strong>null</strong> if no such <a>shadow root</a> is accessible.</p>
-            <p>For <a>HTML elements</a>, the <a href="#html-elements-and-their-shadow-trees">UA-provided</a> <a title="shadow tree">shadow trees</a> <strong>must not</strong> be accessible.</p>
-          </dd>
-        </dl>
+          <dt>NodeList(节点列表) getDestinationInsertionPoints()</dt>
+          <dd>当此方法被调用, 此方法<strong>必须</strong>返回一个<a>static(静态)</a>的<a><code>NodeList(节点列表)</code></a>由在<a>destination insertion points(目标插入点)</a>中的<a title="insertion point">插入点</a>的<a>context object(上下文对象)</a>所组成的.</dd>
       </section>
 
       <section>
-        <h3>The <code>content</code> element</h3>
+        <h3>元素的<code>content(内容)</code></h3>
 
-        <p>The <code><dfn title="content element">content</dfn></code> element represents an <a>insertion point</a> in the <a>shadow tree</a>.</p>
+        <p>元素的<code><dfn title="content element">content(内容)</dfn></code>表示一个在<a>shadow tree(阴影树)</a>中的<a>insertion point(插入点)</a>.</p>
 
-        <p>If a <code>content</code> element does not satisfy the condition of an <a>insertion point</a>, it <strong>must</strong> have the same rendering behavior as the <a><code>HTMLUnknownElement</code></a>.</p>
+        <p>如果一个<code>content(内容)</code>元素不符合<a>insertion point(插入点)</a>的条件, </p>
 
         <dl>
-          <dt>Context</dt>
-          <dd>Where <a>flow content</a> is expected.</dd>
+          <dt>上下文</dt>
+          <dd>预计<a>flow content(流内容)</a>.</dd>
 
-          <dt>Content model</dt>
-          <dd><a>Transparent</a></dd>
+          <dt>内容模块</dt>
+          <dd><a>可见的</a></dd>
 
-          <dt>Children</dt>
-          <dd>Anything as fallback content</dd>
+          <dt>内容的子元素</dt>
+          <dd>一切可以作为回调的内容</dd>
 
-          <dt>Content attributes</dt>
-          <dd><a>Global attributes</a></dd>
+          <dt>内容的属性</dt>
+          <dd><a>全局属性</a></dd>
           <dd>
             <dl>
-              <dt><code><dfn title="content element select">select</dfn></code>, a <a title="comma separated tokens">set of comma-separated tokens</a></dt>
-              <dd>Represents the <a>matching criteria</a> for <a title="distribution">distributing</a> child <a title="node">nodes</a> of the <a>shadow host</a>. Each token <strong>must</strong> be a <a>compound selector</a>.</dd>
+              <dt><code><dfn title="content element select">select(选择)</dfn></code>, 设置一个<a title="comma separated tokens">comma-separated tokens(对于逗号分割的标识)</a></dt>
+              <dd>表示用于<a title="distribution">distributing(分发)</a><a>shadow host(宿主对象)</a>中的子<a title="node">nodes(节点)</a><a>matching criteria(匹配标准)</a>. 每一个标识<strong>必须</strong>是一个<a>compound selector(复合的选择器)</a>.</dd>
             </dl>
           </dd>
 
-          <dt>DOM Interface</dt>
+          <dt>DOM接口</dt>
           <dd>
             <dl class="idl" title="interface HTMLContentElement : HTMLElement">
               <dt>attribute DOMString select</dt>
-              <dd><strong>Must</strong> <a>reflect</a> the <a title="content element select">select</a> attribute.</dd>
+              <dd><strong>必须</strong> <a>显示</a>此<a title="content element select">select(选择)</a>属性.</dd>
 
               <dt>NodeList getDistributedNodes()</dt>
               <dd>
-                When invoked, it <strong>must</strong> return result of running the following steps:
+                当此方法被调用, 它<strong>必须返回</strong>一个经过下列步骤的结果:
                 <ol>
                   <li>
-                    If the <a>context object</a> is a <a>content insertion point</a>:
+                    如果此<a>context object(上下文对象)</a>是一个<a>内容插入点</a>:
                     <ol>
-                      <li>Return a <a>static</a> <a><code>NodeList</code></a> consisting of nodes in the <a>distributed nodes</a> of the <a>context object</a>.</li>
+                      <li>返回一个<a>静态</a>的<a><code>NodeList(节点列表)</code></a>由在<a>context object(上下文对象)</a>中<a>distributed nodes(分布的节点)</a>所组成的</li>
                     </ol>
                   </li>
                   <li>
-                    Otherwise:
+                    其它情况:
                     <ol>
-                      <li>Return an empty <a>static</a> <a><code>NodeList</code></a>.</li>
+                      <li>返回一个空的<a>static(静态)</a> <a><code>NodeList(节点列表)</code></a>对象.</li>
                     </ol>
                   </li>
                 </ol>
@@ -1275,38 +1267,41 @@
       </section>
 
       <section>
-        <h3>The <code>shadow</code> element</h3>
+        <h3><code>shadow(阴影)</code>元素</h3>
 
-        <p>The <code><dfn title="shadow element">shadow</dfn></code> element represents an <a>shadow insertion point</a> in a <a>shadow tree</a>.</p>
-        <p>If a <code>shadow</code> element does not satisfy the condition of an <a>insertion point</a>, it <strong>must</strong> have the same rendering behavior as the <a><code>HTMLUnknownElement</code></a>.</p>
+        <p><code><dfn title="shadow element">shadow(阴影)</dfn></code>元素表示在<a>shadow tree(阴影树)</a>中的一个<a>shadow insertion point(阴影插入点)</a>.</p>
+        <p>如果一个<code>shadow(阴影)</code>元素不满足<a>insertion point(插入点)</a>的条件, 它<strong>必须</strong>就像<a><code>HTMLUnknownElement(未知HTML元素)</code></a>一样的渲染行为.</p>
 
         <dl>
-          <dt>Context</dt>
-          <dd>Where <a>flow content</a> is expected.</dd>
+          <dt>上下文</dt>
+          <dd>预计的<a>流内容</a>.</dd>
 
-          <dt>Content model</dt>
-          <dd><a>Transparent</a></dd>
+          <dt>内容模块</dt>
+          <dd><a>可见的</a></dd>
 
-          <dt>Children</dt>
-          <dd>Anything</dd>
+          <dt>阴影元素的子元素</dt>
+          <dd>可以是一切</dd>
 
-          <dt>DOM Interface</dt>
+          <dt>DOM接口</dt>
           <dd>
-            <dl class="idl" title="interface HTMLShadowElement : HTMLElement">
+            <dl class="idl" title="interface HTMLContentElement : HTMLElement">
+              <dt>attribute DOMString select</dt>
+              <dd><strong>必须</strong> <a>显示</a>此<a title="content element select">select(选择)</a>属性.</dd>
+
               <dt>NodeList getDistributedNodes()</dt>
               <dd>
-                When invoked, it <strong>must</strong> return result of running the following steps:
+                当此方法被调用, 它<strong>必须返回</strong>一个经过下列步骤的结果:
                 <ol>
                   <li>
-                    If the <a>context object</a> is a <a>shadow insertion point</a>:
+                    如果此<a>context object(上下文对象)</a>是一个<a>内容插入点</a>:
                     <ol>
-                      <li>Return a <a>static</a> <a><code>NodeList</code></a> consisting of nodes in the <a>distributed nodes</a> of the <a>context object</a>.</li>
+                      <li>返回一个<a>静态</a>的<a><code>NodeList(节点列表)</code></a>由在<a>context object(上下文对象)</a>中<a>distributed nodes(分布的节点)</a>所组成的</li>
                     </ol>
                   </li>
                   <li>
-                    Otherwise:
+                    其它情况:
                     <ol>
-                      <li>Return an empty <a>static</a> <a><code>NodeList</code></a>.</li>
+                      <li>返回一个空的<a>static(静态)</a> <a><code>NodeList(节点列表)</code></a>对象.</li>
                     </ol>
                   </li>
                 </ol>
@@ -1317,19 +1312,19 @@
       </section>
 
       <section>
-        <h3>Extensions to <code>Event</code> Interface</h3>
+        <h3>异常的<code>Event(事件)的</code>接口</h3>
 
         <dl class="idl" title="partial interface Event">
-          <dt>readonly attribute object path</dt>
+          <dt>只读 attribute object path</dt>
           <dd>
-            <p>Represents the event path.</p>
+            <p>表示此事件对象路径.</p>
             <p>
-              On getting, the attribute <strong>must</strong> create and return a new JavaScript Array object, that is a copy of the event path for the <a>context object</a>.
+              当获取该属性时, 此属性<strong>必须</strong> 创建和返回一个新的JavaScript数组对象, 此数组对象从<a>context object(上下文对象)</a>的事件路径中拷贝而来.
             </p>
             <p class="issue">
-              Use <code>Array</code> as the return type of the <code>path</code> attribute in WebIDL.
-              WebIDL bugs: <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=20020"><code>Array</code> subclassing</a>
-              and <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=23225">class, not interface</a>.
+              使用<code>Array(数组)</code> 作为在WebIDL中返回类型的<code>path(路径)</code>属性.
+              WebIDL的bugs: <a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=20020"><code>Array</code>subclassing</a>
+              和<a href="https://www.w3.org/Bugs/Public/show_bug.cgi?id=23225"> class, not interface</a>.
             </p>
           </dd>
         </dl>
@@ -1338,9 +1333,9 @@
     </section>
 
     <section>
-      <h2>Shadow DOM Example</h2>
+      <h2>Shadow DOM示例</h2>
 
-      <p>Bob was asked to turn a simple list of links into a News Widget, which has links organized into two categories: breaking news and just news. The current document markup for the stories looks like this:</p>
+      <p>Bob被要求在把一个简单的链接列表变成一个消息控件,  消息控件能够连接到2个不同类别的新闻: 突发新闻和最新新闻. 目前新闻报道的文档组成看上去就像这样:</p>
       <pre class="example highlight">
 &lt;ul class=&quot;stories&quot;&gt;
     &lt;li&gt;&lt;a href=&quot;//example.com/stories/1&quot;&gt;A story&lt;/a&gt;&lt;/li&gt;
@@ -1352,7 +1347,7 @@
 &lt;/ul&gt;
       </pre>
 
-      <p>To organize the stories, Bob decides to use <strong>shadow DOM</strong>. Doing so will allow Bob to keep the document markup uncluttered, and harnessing the power of insertion point makes sorting stories by class name a very simple task. After getting another cup of <a href="http://en.wikipedia.org/wiki/List_of_coffee_beverages#Green_Eye">Green Eye</a>, he quickly mocks up the following shadow tree, to be hosted by the <code>ul</code> element:</p>
+      <p>为了管理新闻报道, Bob决定使用<strong>shadow DOM</strong>. 这样做允许Bob保持整个标签的整洁, 拥有可以控制插入点的权会使得通过类名分类新闻的任务变的非常简单. 在得到一杯<a href="http://en.wikipedia.org/wiki/List_of_coffee_beverages#Green_Eye">Green Eye</a>后, 他制作出了如下shadow tree(阴影树),<code>ul</code>元素成为了宿主:</p>
       <pre class="example highlight">
 &lt;div class=&quot;breaking&quot;&gt;
     &lt;ul&gt;
@@ -1365,7 +1360,7 @@
     &lt;/ul&gt;
 &lt;/div&gt;
       </pre>
-      <p>Bob then styles the newborn widget according to comps from the designer by adding this to the shadow tree mockup:</p>
+      <p>Bob接下来根据来自于设计师的要求给新建立的消息控件样式，然后把它加入到shadow tree(阴影树)模型中:</p>
       <pre class="example highlight">
 &lt;style&gt;
     div.breaking {
@@ -1379,7 +1374,7 @@
     }
 &lt;/style&gt;
       </pre>
-      <p>While pondering if his company should start looking for a new designer, Bob converts the mockup to code:</p>
+      <p>他仔细考虑了下他的公司是否应该找一个新的设计师, Bob将模型转化成了代码:</p>
       <pre class="example highlight">
 function createStoryGroup(className, contentSelector)
 {
@@ -1411,11 +1406,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
       </pre>
 
-      <p>Well done, Bob! With the cup of coffee still half-full, the work is complete. Recognizing his awesomeness, Bob returns to teaching n00bs the ways of <a href="http://en.wikipedia.org/wiki/Puyo_Puyo_(series)">Puyo Puyo</a>.</p>
+      <p>干得好, Bob! 在咖啡还有半杯的情况下, 工作完成了. 意识到自己很厉害, Bob将自己的经验通过<a href="http://en.wikipedia.org/wiki/Puyo_Puyo_(series)">Puyo Puyo</a>这样的方式传授给大家.</p>
 
-      <p>A few months pass.</p>
+      <p>几个月过去了.</p>
 
-      <p>It's election time. With Bob at his annual conference, Alice is charged with adding <strong>another</strong>, temporary box to the news widget, filled with election-related stories. Alice studies Bob's code, reads up on the shadow DOM spec and realizes that, thanks to multiple shadow tree support, she doesn't have to touch his code. As usual, her solution is elegant and simple, fitting neatly right under Bob's code:</p>
+      <p>红旗飘飘了！ 在Bob一年一度的研讨会中, Alice 负责增加 <strong>另一个</strong>, 临时的盒子在新闻控件中, 其中有许多关于选举的新闻. Alice阅读学习了Bob's代码, 阅读了shadow DOM的标准并且实现了, 多亏shadow tree(阴影树)复合的支持, 她并没有修改Bob的代码. 就像平常一样, 她的解决方法优雅而简单, 适当的在Bob的代码上做了点巧妙的变化:</p>
       <pre class="example highlight">
 // TODO(alice): BEGIN -- DELETE THIS CODE AFTER ELECTIONS ARE OVER.
 var ELECTION_BOX_REMOVAL_DEADLINE = ...;
@@ -1445,21 +1440,21 @@ if (Date.now() &lt; ELECTION_BOX_REMOVAL_DEADLINE) {
 }
 // TODO(alice): END -- DELETE THIS CODE AFTER ELECTIONS ARE OVER.
       </pre>
-      <p>Using the <code>shadow</code> element allows Alice to compose Bob's widget <strong>inside</strong> of hers&mdash;without having to change a line of production code. Smiling to herself, Alice realizes that Bob may have come up with a way to keep the document markup clean, but <strong>she</strong> is the one who takes the cake for using shadow tree composition in such a cool way.</p>
+      <p>使用<code>shadow(阴影)</code> 元素允许Alice去组合Bob's组件<strong>到自己的组件里</strong>&mdash;在没有改变产品任何一行代码的情况下. 她对自己笑了, Alice意识到Bob已经想出一个方式关于保持文档标签整洁的想法, 但<strong>她</strong>是一个如此早的使用shadow tree(阴影树)组成这种很酷的方式去解决问题的人.</p>
     </section>
 
     <section class="appendix">
-      <h2>Acknowledgements</h2>
+      <h2>致谢</h2>
 
-      <p><span class="vcard">David Hyatt</span> developed <a href="http://dev.w3.org/2006/xbl2/">XBL 1.0</a>, and <span class="vcard">Ian Hickson</span> co-wrote <a href="http://dev.w3.org/2006/xbl2/">XBL 2.0</a>. These documents provided tremendous insight into the problem of functional encapsulation and greatly influenced this specification.</p>
+      <p><span class="vcard">David Hyatt</span> 开发了 <a href="http://dev.w3.org/2006/xbl2/">XBL 1.0</a>, 并且和<span class="vcard">Ian Hickson</span>合写了<a href="http://dev.w3.org/2006/xbl2/">XBL 2.0</a>. 这两篇文档提供了极好的见解在函数闭包的问题并对本规范产生了巨大的影响.</p>
 
-      <p><span class="vcard">Alex Russell</span> and his considerable forethought triggered a new wave of enthusiasm around the subject of shadow DOM and how it can be applied practically on the Web.</p>
+      <p><span class="vcard">Alex Russell</span>和他非常有远见的想法引发了在shadow Dom这个主题上引发了狂热的浪潮和如何在web中实际应用起来.</p>
 
-      <p><span class="vcard">Dominic Cooney</span>, <span class="vcard">Hajime Morrita</span>, and <span class="vcard">Roland Steiner</span> worked tirelessly to scope the problem of functional encapsulation within the confines of the Web platform and provided a solid foundation for this document.</p>
+      <p><span class="vcard">Dominic Cooney</span>, <span class="vcard">Hajime Morrita</span>, and <span class="vcard">Roland Steiner</span>不辞辛劳的工作在web平台范围里去解决函数闭包问题并且为这篇文档提供了稳固的基础.</p>
 
-      <p>The editor would also like to thank <span class="vcard">Alex Komoroske</span>, <span class="vcard">Anne van Kesteren</span>, <span class="vcard">Brandon Payton</span>, <span class="vcard">Brian Kardell</span>, <span class="vcard">Darin Fisher</span>, <span class="vcard">Eric Bidelman</span>, <span class="vcard">Deepak Sherveghar</span>, <span class="vcard">Edward O'Connor</span>, <span class="vcard">Elisée Maurer</span>, <span class="vcard">Elliott Sprehn</span>, <span class="vcard">Erik Arvidsson</span>, <span class="vcard">Glenn Adams</span>, <span class="vcard">Jonas Sicking</span>, <span class="vcard">Malte Ubl</span>, <span class="vcard">Mike Taylor</span>, <span class="vcard">Oliver Nightingale</span>, <span class="vcard">Olli Pettay</span>, <span class="vcard">Rafael Weinstein</span>, <span class="vcard">Richard Bradshaw</span>, <span class="vcard">Ruud Steltenpool</span>, <span class="vcard">Sam Dutton</span>, <span class="vcard">Sergey G. Grekhov</span>, <span class="vcard">Shinya Kawanaka</span>, <span class="vcard">Tab Atkins</span>, <span class="vcard">Takashi Sakamoto</span>, and <span class="vcard">Yoshinori Sano</span> for their comments and contributions to this specification.</p>
+      <p>编者也感谢像<span class="vcard">Alex Komoroske</span>, <span class="vcard">Anne van Kesteren</span>, <span class="vcard">Brandon Payton</span>, <span class="vcard">Brian Kardell</span>, <span class="vcard">Darin Fisher</span>, <span class="vcard">Eric Bidelman</span>, <span class="vcard">Deepak Sherveghar</span>, <span class="vcard">Edward O'Connor</span>, <span class="vcard">Elisée Maurer</span>, <span class="vcard">Elliott Sprehn</span>, <span class="vcard">Erik Arvidsson</span>, <span class="vcard">Glenn Adams</span>, <span class="vcard">Jonas Sicking</span>, <span class="vcard">Malte Ubl</span>, <span class="vcard">Mike Taylor</span>, <span class="vcard">Oliver Nightingale</span>, <span class="vcard">Olli Pettay</span>, <span class="vcard">Rafael Weinstein</span>, <span class="vcard">Richard Bradshaw</span>, <span class="vcard">Ruud Steltenpool</span>, <span class="vcard">Sam Dutton</span>, <span class="vcard">Sergey G. Grekhov</span>, <span class="vcard">Shinya Kawanaka</span>, <span class="vcard">Tab Atkins</span>, <span class="vcard">Takashi Sakamoto</span>, and <span class="vcard">Yoshinori Sano</span>，感谢他们对此标准的意见和协助.</p>
 
-      <p>This list is too short. There's a lot of work left to do. Please contribute by reviewing and filing bugs&mdash;and don't forget to ask the editor to add your name into this section.</p>
+      <p>此标准仍不完善. 还有许多工作需要做. 请通过阅读帮助我们并且记录bugs&mdash;千万不要忘记叫编者将你的名字添加到这里来.</p>
     </section>
 
   </body>
