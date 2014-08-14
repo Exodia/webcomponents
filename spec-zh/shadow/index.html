@@ -384,7 +384,7 @@
                   </ol></li>
                 <li>如果没有分布到 <var>CONTENT</var> 中的<a title="node">结点</a>：
                   <ol>
-                    <li>把每个 <var>CONTENT</var> 的孩子定为 <var>CHILD</var>
+                    <li>把每个 <var>CONTENT</var> 的子女定为 <var>CHILD</var>
                       <ol>
                         <li>把 <var>CHILD</var> <a title="distributes">分布</a>到 <var>CONTENT</var> 中</li>
                       </ol></li>
@@ -423,50 +423,50 @@
     </section>
 
     <section>
-      <h2>Composition</h2>
+      <h2>组合</h2>
 
-      <p>The <dfn>composed tree children calculation algorithm</dfn> <strong>must</strong> be used to determine the child <a title="node">nodes</a> of a <a>node</a> in the <a>composed tree</a> and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+      <p><dfn>组合树子女计算算法</dfn><strong>必须</strong>用来判定一个<a>组合树</a>中<a>结点</a>的子<a title="node">结点</a>，且<strong>必须</strong><a title="processing equivalence">等价</a>于以下处理步骤：</p>
 
       <div class="algorithm">
         <dl>
-          <dt>Input</dt>
-          <dd><var>NODE</var>, a <a>node</a> which participates in a composed tree</dd>
-          <dt>Output</dt>
-          <dd><var>CHILDREN</var>, the child nodes of <var>NODE</var> in the <a>composed tree</a>.</dd>
+          <dt>输入</dt>
+          <dd><var>NODE</var>，一个参与到组合树中的<a>结点</a></dd>
+          <dt>输出</dt>
+          <dd><var>CHILDREN</var>，其<a>组合树</a>中的 <var>NODE</var> 的子节点。</dd>
         </dl>
 
         <ol>
-          <li>Let <var>CHILDREN</var> be an empty ordered list of nodes</li>
-          <li>If <var>NODE</var> is a <a>shadow host</a>:
+          <li>把 <var>CHILDREN</var> 设为空的有序结点列表</li>
+          <li>如果 <var>NODE</var> 是一个 <a>shadow 宿主</a>：
             <ol>
-              <li>Let <var>CHILD-POOL</var> be the children of the <a>youngest shadow root</a> which <var>NODE</var> <a>hosts</a>.</li>
+              <li>把 <var>CHILD-POOL</var> 设为 <var>NODE</var> <a>宿主</a>的<a>最年轻 shadow 根</a>的子女。</li>
             </ol></li>
-          <li>Otherwise:
+          <li>否则：
             <ol>
-              <li>Let <var>CHILD-POOL</var> be the child <a title="node">nodes</a> of NODE</li>
+              <li>把 <var>CHILD-POOL</var> 设为 NODE 的子<a title="node">结点</a></li>
             </ol></li>
-          <li>For each <a>node</a>, <var>CHILD</var>, in <var>CHILD-POOL</var>:
+          <li>对每个 <var>CHILD-POOL</var> 中的<a>结点</a> <var>CHILD</var>：
             <ol>
-              <li>If <var>CHILD</var> is an <a>insertion point</a>:
+              <li>如果 <var>CHILD</var> 是一个<a>插入点</a>：
                 <ol>
-                  <li>For each <a>node</a>, <var>DISTRIBUTED-NODE</var>, in the <a>distributed nodes</a> of the <a>insertion point</a> <var>CHILD</var>:
+                  <li>对其<a>插入点</a> <var>CHILD</var> 的<a>分布结点</a>中的每个<a>结点</a> <var>DISTRIBUTED-NODE</var>:
                     <ol>
-                      <li>If <var>CHILD</var> is the <a>final destination</a> of <var>DISTRIBUTED-NODE</var>, add <var>DISTRIBUTED-NODE</var> to <var>CHILDREN</var></li>
+                      <li>如果 <var>CHILD</var> 是 <var>DISTRIBUTED-NODE</var> 的<a>最终目的</a>，则把 <var>DISTRIBUTED-NODE</var> 添加到 <var>CHILDREN</var> 中</li>
                     </ol></li>
                 </ol></li>
-              <li>Otherwise:
+              <li>否则：
                 <ol>
-                  <li>Add <var>CHILD</var> to <var>CHILDREN</var></li>
+                  <li>把 <var>CHILD</var> 添加到 <var>CHILDREN</var> 中</li>
                 </ol></li>
             </ol></li>
         </ol>
 
       </div>
 
-      <p>For a given <a>tree of trees</a> <var>TREE-OF-TREES</var>, the <a>composed tree</a> constructed from <var>TREE-OF-TREES</var> <strong>must</strong> be <a title="processing equivalence">equivalent</a> to the following tree:</p>
+      <p>对一个给定的<a>树中树</a> <var>TREE-OF-TREES</var> 来说，由 <var>TREE-OF-TREES</var> 构造出的<a>组合树</a><strong>必须</strong><a title="processing equivalence">等价</a>于以下处理步骤：</p>
       <ul>
-        <li>The <a>root</a> <a>node</a> of the <a>composed tree</a> is the <a>root</a> <a>node</a> of the <a>root tree</a> of <var>TREE-OF-TREES</var>.</li>
-        <li>For a given <a>node</a> which <a>participates</a> in the <a>composed tree</a>, the child <a title="node">nodes</a> of the <a>node</a> is the result of the <a>composed tree children calculation algorithm</a> with the <a>node</a> as input.
+        <li><a>组合树</a>的<a>根</a><a>结点</a>是 <var>TREE-OF-TREES</var> 的<a>树根</a>的<a>根</a><a>结点</a>。</li>
+        <li>对于一个<a>参与</a>到<a>组合树</a>中的给定的<a>结点</a>，其子<a title="node">结点</a>是将该<a>结点</a>作为输入执行<a>组合树子女计算算法</a>的结果。
         </li>
       </ul>
     </section>
