@@ -537,10 +537,12 @@
         <li>让 <var>NAME</var> 成为 <var>TYPE</var></li>
     </ol></li>
     <li>让 <var>LIFECYCLE</var> 成为<a href="#dfn-lifecycle-callbacks">生命周期回调函数</a></li>
-    <li><a href="#dfn-transfer-callback">Transfer callback</a> named <a href="#dfn-created-callback"><em>created</em></a> to <var>LIFECYCLE</var> from property named <em>createdCallback</em> on <var>PROTOTYPE</var>从属性中创建生命周期的转换函数在原型上称为生成回调函数</li>
-    <li><a href="#dfn-transfer-callback">Transfer callback</a> named <a href="#dfn-attached-callback"><em>attached</em></a> to <var>LIFECYCLE</var> from property named <em>attachedCallback</em> on <var>PROTOTYPE</var>从属性中绑定的生命周期的转换函数在原型上称为绑定回调函数</li>
-    <li><a href="#dfn-transfer-callback">Transfer callback</a> named <a href="#dfn-detached-callback"><em>detached</em></a> to <var>LIFECYCLE</var> from property named <em>detachedCallback</em> on <var>PROTOTYPE</var>从属性中移除的生命周期的转换函数在原型上称为移除回调函数</li>
-    <li><a href="#dfn-transfer-callback">Transfer callback</a> named <A href="#dfn-attribute-changed-callback"><em>attributeChanged</em></a> to <var>LIFECYCLE</var> from property named <em>attributeChangedCallback</em> on <var>PROTOTYPE</var>从属性中属性改变的生命周期的转换函数在原型上称为性改变回调函数</li>
+    <li>对于<var>生命周期回调函数</var>里的叫做<a href="#dfn-created-callback"><em>被创建的</em></a><a href="#dfn-transfer-callback">传递回调函数</a> ，在<var>原型</var>的属性上叫做
+        <em>生成回调函数</em></li>
+    <li>对于<var>生命周期回调函数</var>里的叫做<a href="#dfn-attached-callback"><em>被绑定的</em></a><a href="#dfn-transfer-callback">传递回调函数</a>，在<var>原型</var>的属性上叫做 <em>绑定回调函数</em></li>
+    <li>对于<var>生命周期回调函数</var>里的叫做<a href="#dfn-detached-callback"><em>被移除的</em></a><a href="#dfn-transfer-callback">传递回调函数</a>，
+        在<var>原型</var>的属性上叫做<em>移除回调函数</em></li>
+    <li>对于<var>生命周期回调函数</var>里的叫做 <A href="#dfn-attribute-changed-callback"><em>属性被改变的</em></a><a href="#dfn-transfer-callback">传递回调函数</a> ，在<var>原型</var>的属性上叫<em>属性改变回调函数</em></li>
     <li>让<var>DEFINITION</var> 成为一个<a href="#dfn-element-definition">元素定义</a> ， <a href="#dfn-custom-element-type">自定义元素类型</a> 设置到<var>TYPE</var>, <a href="http://dom.spec.whatwg.org/#concept-element-local-name">本地命名</a> 设置到<var>NAME</var>, <a href="http://dom.spec.whatwg.org/#concept-element-namespace">命名空间</a> 设置到 <var>NAMESPACE</var>, <a href="#dfn-custom-element-prototype">自定义元素原型</a> 设置到 <var>PROTOTYPE</var>, 且 <a href="#dfn-lifecycle-callbacks">生命周期回调函数</a> 设置到 <var>LIFECYCLE</var>.</li>
 </ol>
 </div>
