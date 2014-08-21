@@ -472,14 +472,14 @@
     </section>
 
     <section>
-      <h2>Events</h2>
+      <h2>事件</h2>
 
-      <p>When an <a>event</a> is <a title="event dispatch">dispatched</a> in a <a>shadow tree</a>, its path either crosses the <a title="shadow tree">shadow trees</a> or is terminated at the <a>shadow root</a>. One exception are the <a title="mutation event">mutation events</a>. The <a title="mutation event">mutation event types</a> <strong>must</strong> never be dispatched in a <a>shadow tree</a>.</p>
-
+      <p>当一个<a>Event(事件)在<a>shadow tree(阴影树)</a>中</a>被<a title="event dispatch">dispatched(分发)</a>时, 事件的路径要么穿过<a title="shadow tree">shadow trees(阴影树)</a>要么在<a>shadow root(阴影根)</a>被终止. 其中一个例外情况就是<a title="mutation event">mutation events(突发事件)</a>. <a title="mutation event">mutation event types(突发事件)</a> <strong>一定</strong> 不能在<a>shadow tree(阴影树)</a>中被分发.</p>
+    </section>
       <section>
-        <h3>Events that are Always Stopped</h3>
+        <h3>通常会被阻止的事件</h3>
 
-        <p>The <dfn title="events-always-stopped">following events</dfn> <strong>must</strong> always be stopped at the <a>root</a> <a>node</a> of the <a>node tree</a>:</p>
+        <p><dfn title="events-always-stopped">following events(以下事件)</dfn> <strong>一定</strong>是通常会在<a>node tree(节点树)</a>的<a>root(根)</a> <a>node(节点)</a>被阻止:</p>
         <ul>
           <li><code>abort</code></li>
           <li><code>error</code></li>
@@ -494,57 +494,57 @@
       </section>
 
       <section>
-        <h3>Event Paths</h3>
+        <h3>事件路径</h3>
 
-        <p>The <dfn>event path calculation algorithm</dfn> must be used to determine event path and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+        <p><dfn>event path calculation algorithm(事件路径算法)</dfn>一定是被用来决定事件路径并且<strong>一定</strong>要通过下列步骤<a title="processing equivalence">(相当于以下的步骤的过程)</a>:</p>
 
         <div class="algorithm">
           <dl>
-            <dt>Input</dt>
-            <dd><var>NODE</var>, a node</dd>
-            <dd><var>EVENT</var>, an event</dd>
-            <dt>Output</dt>
-            <dd><var>PATH</var>, an event path, a ordered list of an event target</dd>
+            <dt>输入</dt>
+            <dd><var>NODE(节点)</var>, 一个节点</dd>
+            <dd><var>EVENT(事件)</var>, 一个事件</dd>
+            <dt>输出</dt>
+            <dd><var>PATH(路径)</var>, 一个事件的路径, 一个事件目标的顺序列表</dd>
           </dl>
           <ol>
-            <li>Let <var>PATH</var> be the empty ordered list of nodes</li>
-            <li>Let <var>CURRENT</var> be <var>NODE</var></li>
-            <li>Add <var>CURRENT</var> to <var>PATH</var></li>
-            <li>Repeat while <var>CURRENT</var> exists:
+            <li>让<var>PATH(路径)</var>成为一个暂时为空的节点列表(有顺序的)</li>
+            <li>让<var>CURRENT(当前的事件目标)</var>作为<var>NODE(节点)</var></li>
+            <li>增加<var>CURRENT(当前的事件目标)</var>的节点到<var>PATH(路径)</var>中</li>
+            <li>如果存在<var>CURRENT(当前的事件目标)</var>则重复:
               <ol>
-                <li>If the <a>destination insertion points</a> of <var>CURRENT</var> is not empty:
+                <li>如果<var>CURRENT(当前)</var>的<a>目标插入点</a>不为空:
                   <ol>
-                    <li>For each <a>insertion point</a>, <var>INSERTION-POINT</var>, in the <a>destination insertion points</a> of <var>CURRENT</var>:
+                    <li>对于每一个<a>insertion point(插入点)</a>, <var>INSERTION-POINT(插入点)</var>, 在<var>CURRENT(当前的)</var><a>destination insertion points(目标插入点)</a>:
                       <ol>
-                        <li>If <var>INSERTION-POINT</var> is a <a>shadow insertion point</a>:
+                        <li>如果<var>INSERTION-POINT(插入点)</var>是一个<a>shadow insertion point(阴影插入点)</a>:
                           <ol>
-                            <li>Let <var>SHADOW-ROOT</var> be the <a>root</a> <a>node</a> of <var>INSERTION-POINT</var></li>
-                            <li>If <var>SHADOW-ROOT</var> is not the <a>oldest shadow root</a>:
+                            <li>让<var>SHADOW-ROOT(阴影根)</var>作为<var>INSERTION-POINT(插入点)</var>的<a>root(根)</a> <a>node(节点)</a></li>
+                            <li>如果<var>SHADOW-ROOT(阴影根)</var>不是最<a>oldest shadow root(外层的阴影根)</a>:
                               <ol>
-                                <li>Add the <a>older shadow root</a> relative to <var>SHADOW-ROOT</var> to <var>PATH</var></li>
+                                <li>增加比此根<a>older shadow root(更外层的阴影根)</a>相对于<var>SHADOW-ROOT(阴影根)</var><var>PATH(路径)</var></li>
                               </ol></li>
                           </ol></li>
-                        <li>Add <var>INSERTION-POINT</var> to <var>PATH</var></li>
+                        <li>增加<var>INSERTION-POINT(插入点)</var>到<var>PATH(路径中)</var></li>
                       </ol></li>
-                    <li>Let <var>CURRENT</var> be the <a>final destination</a> of <var>CURRENT</var></li>
+                    <li>让<var>CURRENT(当前的事件目标)</var>作为<var>CURRENT(当前的事件目标)</var>的<a>final destination(最终目标)</a></li>
                   </ol></li>
-                <li>Otherwise:
+                <li>否则:
                   <ol>
-                    <li>If <var>CURRENT</var> is a <a>shadow root</a>:
+                    <li>如果<var>CURRENT(当前事件目标)</var>是一个<a>shadow root(阴影根)</a>:
                       <ol>
-                        <li>If <var>NODE</var> and <var>CURRENT</var> are in the same <a>node tree</a> and <var>EVENT</var> is one of the <a title="events-always-stopped">events which must be stopped</a>:
+                        <li>如果<var>NODE(节点)</var>和<var>CURRENT(当前事件的目标)</var>在同一个<a>node tree(节点树中)</a>并且<var>EVENT(事件)</var>是需要 <a title="events-always-stopped">被阻止的事件</a>:
                           <ol>
-                            <li>Stop this algorithm</li>
+                            <li>停止使用此算法</li>
                           </ol></li>
-                        <li>Let <var>CURRENT</var> be the <a>shadow host</a> which <a>hosts</a> <var>CURRENT</var></li>
-                        <li>Add <var>CURRENT</var> to <var>PATH</var></li>
+                        <li>让<var>CURRENT(当前事件的目标)</var>成为<a>shadow host(阴影宿主)</a>,<a>承载</a><var>CURRENT(当前事件的目标)</var></li>
+                        <li>增加<var>CURRENT(当前事件的目标)</var>到<var>PATH(路径中)</var></li>
                       </ol></li>
-                    <li>Otherwise:
+                    <li>否则:
                       <ol>
-                        <li>Let <var>CURRENT</var> be the <a>parent</a> <a>node</a> of <var>CURRENT</var></li>
-                        <li>If <var>CURRENT</var> exists:
+                        <li>让<var>CURRENT(当前的事件目标)</var>作为<var>CURRENT(当前事件的目标)</var>的<a>parent(父)</a> <a>node(节点)</a></li>
+                        <li>如果<var>CURRENT(当前的事件目标)</var>存在:
                           <ol>
-                            <li>Add <var>CURRENT</var> to <var>PATH</var></li>
+                            <li>增加<var>CURRENT(当前的事件目标)</var>到<var>PATH(路径)</var>中</li>
                           </ol></li>
                       </ol></li>
                   </ol></li>
@@ -555,82 +555,82 @@
       </section>
 
       <section class="informative">
-        <h3>Event Paths Example</h3>
+        <h3>事件路径的示例</h3>
 
         <p>
-          Suppose we have the following tree of trees:
+          假设我们现在下列一个树:
         </p>
 
         <figure>
           <object data="../../assets/images/event-path-tree-of-trees.svg" width="301" height="1074"></object>
-          <figcaption>An example tree of trees. Nodes which are not involved in the example event path, which is explained later, are omitted.</figcaption>
+          <figcaption>一个示例树. 树的节点并没有关联到事件路径的示例中, 我们下面会解释, 目前先忽略这些树的节点.</figcaption>
         </figure>
 
         <ul>
           <li>
-            <code>A</code> is a <a>document</a>.
+            <code>A</code> is a <a>document(文档)</a>.
           </li>
           <li>
-            <code>E</code>, <code>J</code>, <code>N</code>, <code>Q</code>, <code>S</code> and <code>V</code> are <a title="shadow root">shadow roots</a>.
+            <code>E</code>, <code>J</code>, <code>N</code>, <code>Q</code>, <code>S</code>和<code>V</code> 是 <a title="shadow root">shadow roots(阴影根)</a>.
           </li>
           <li>
-            <code>I</code>, <code>M</code>, <code>P</code>, <code>R</code> and <code>U</code> are <a title="content insertion point">content insertion points</a>.
+            <code>I</code>, <code>M</code>, <code>P</code>, <code>R</code>和 <code>U</code> 是 <a title="content insertion point">content insertion points(内容的插入点)</a>.
           </li>
           <li>
-            <code>X</code> is a <a>shadow insertion point</a>.
+            <code>X</code> 是一个 <a>shadow insertion point(阴影插入点)</a>.
           </li>
         </ul>
 
         <p>
-          This <a>tree of trees</a> has the following seven <a title="node tree">node trees</a>, one <a>document tree</a> and six <a title="shadow tree">shadow trees</a>:
+          这颗<a>tree of trees(树)</a>拥有以下的7棵<a title="node tree">node trees(节点树)</a>, 一棵<a>document tree(文档树)</a>和 6棵 <a title="shadow tree">shadow trees(阴影树)</a>:
         </p>
 
         <ul>
           <li>
-            The <var>document tree 1</var>. Node <code>A</code>, <code>B</code>, <code>C</code> and <code>D</code> participate in that.
+            <var>document tree(文档树) 1</var>. 节点<code>A</code>, <code>B</code>, <code>C</code> 和 <code>D</code>这些节点在文档树中.
           </li>
           <li>
-            The <var>shadow tree 2</var> hosted by <code>B</code>. Node <code>E</code>, <code>F</code>, <code>G</code>, <code>H</code> and <code>I</code> participate in that.
+            <var>shadow tree(阴影树) 2</var> 托管给了<code>B</code>. 节点<code>E</code>, <code>F</code>, <code>G</code>, <code>H</code>和<code>I</code>这些节点在阴影树2中.
           </li>
           <li>
-            The <var>shadow tree 3</var> hosted by <code>H</code>. Node <code>J</code>, <code>K</code>, <code>L</code> and <code>M</code> participate in that.
+            <var>shadow tree(阴影树) 3</var> 托管给了<code>H</code>. 节点 <code>J</code>, <code>K</code>, <code>L</code> 和 <code>M</code>这些节点在阴影树3中.
           </li>
           <li>
-            The <var>shadow tree 4</var> hosted by <code>K</code>. Node <code>N</code>, <code>O</code> and <code>P</code> participate in that.
+            <var>shadow tree(阴影树) 4</var> 托管给了<code>K</code>. 节点 <code>N</code>, <code>O</code> 和 <code>P</code> 这些节点在阴影树4中.
           </li>
           <li>
-            The <var>shadow tree 5</var> hosted by <code>O</code>. Node <code>Q</code> and <code>R</code> participate in that.
+            <var>shadow tree(阴影树) 5</var> 托管给了<code>O</code>. 节点 <code>Q</code> 和 <code>R</code> 这些节点在阴影树5中.
           </li>
           <li>
-            The <var>shadow tree 6</var> hosted by <code>F</code>. Node <code>S</code>, <code>T</code> and <code>U</code> participate in that.
+            <var>shadow tree(阴影树) 6</var> 托管给了<code>F</code>. 节点 <code>S</code>, <code>T</code> 和 <code>U</code> 这些节点在阴影树6中.
           </li>
           <li>
-            The <var>shadow tree 7</var> hosted by <code>B</code>. Node <code>V</code>, <code>W</code> and <code>X</code> participate in that.
-            This <a>shadow tree</a> is younger than the <var>shadow tree 2</var>.
+            <var>shadow tree(阴影树) 7</var> 托管给了<code>B</code>. 节点 <code>V</code>, <code>W</code> 和 <code>X</code> 这些节点在阴影树7中.
+            <a>shadow tree(阴影树)</a> 7是比<var>shadow tree(阴影树) 2</var>更早生成的.
           </li>
         </ul>
 
         <p>
-          Let's assume that the <a>distribution result</a> of this <a>tree of trees</a> is:
+          让我们假设这颗<a>tree of trees(树)</a>的 <a>分布结果</a>是:
         </p>
 
         <ul>
           <li>
-            The <a>destination insertion points</a> of <code>C</code> are <code>[I, M]</code> (<code>C</code> is re-distributed)
+            <code>C</code><a>destination insertion points(目标插入点)</a>是 <code>[I, M]</code> (<code>C</code>是被重新分布的)
           </li>
           <li>
-            The <a>destination insertion points</a> of <code>L</code> are <code>[P, R]</code> (<code>L</code> is re-distributed)
+            <code>L</code><a>destination insertion points(目标插入点)</a>是 <code>[P, R]</code> (<code>L</code>是被重新分布的)
           </li>
           <li>
-            The <a>destination insertion points</a> of <code>G</code> are <code>[U]</code>
+            <code>G</code><a>destination insertion points(目标插入点)</a>是 <code>[U]</code>
           </li>
           <li>
-            The <a>destination insertion points</a> of <code>F</code> are <code>[X]</code>
+            <code>F</code><a>destination insertion points(目标插入点)</a>是 <code>[X]</code>
           </li>
         </ul>
 
         <p>
-          In this case, if an event is dispatched on node <code>D</code>, the event path will be:
+          在这种情况下, 如果一个事件在被分发到<code>D</code>上, 这个事件路径是:
         </p>
         <p>
           <code>
@@ -639,135 +639,135 @@
         </p>
 
         <p>
-          Note that the <a>event path calculation algorithm</a> is designed to achieve the following goals:
+          记录<a>event path calculation algorithm(事件路径的算法)</a> 是被设计用来实现以下目标:
         </p>
 
         <ol>
           <li>
-            If there is a node, <var>CHILD</var>, in the event path and <var>CHILD</var> has a parent node, <var>PARENT</var>, in the node tree, the event path also includes <var>PARENT</var>.
-            <var>PARENT</var> always appears somewhere after <var>CHILD</var> in the event path.
+            如果这里有节点, <var>CHILD(子节点)</var>在事件路径中并且<var>CHILD(子节点)</var>拥有父节点, <var>PARENT(父节点)</var>在节点树中, 事件路径也应该包括 <var>PARENT(父节点)</var>.
+            <var>PARENT(父节点)</var>在事件路径中通常出现在<var>CHILD(子节点)</var>之后.
           </li>
           <li>
-            Nodes in the event path form a <em>linear ancestor chain</em> in each <a>node tree</a>. There are no <em>branch points</em> in each <a>node tree</a>.
+            在每一个<a>node tree(节点树)</a>中节点的事件路径来自于一个<em>直系祖先</em>. 在每一个<a>node tree(节点树)</a>中是没有<em>branch points(分支点)</em>的.
           </li>
         </ol>
 
         <figure>
           <object data="../../assets/images/event-path-node-trees.svg" width="884" height="473">></object>
           <figcaption>
-            The relationship between an event path and node trees. In the figure, a number shown in a left-side of each node represents a zero-based position of each node in the event path.
-            A parent node always have a larger number than that of its child node in each node tree.
+            一个事件路径和节点树的关系. 在图中, 在每个节点被展示出来的左分支代表在事件路径中每一个节点最初起始的位置.
+            在一个节点树中,一个父节点通常有大量比自身子元素更多的事件路径的起始位置.
           </figcaption>
         </figure>
 
         <p>
-          That means if we focus on one <a>node tree</a> and forget all other <a title="node tree">node trees</a>,
-          the event path would be seen as if the event happened only on the <a>node tree</a> which we are focused on.
-          This is an important aspect in a sense that hosting shadow trees doesn't have any effect to the event path <em>within</em> the <a>node tree</a> the <a>shadow host</a> participate in
-          as long as the event is not stopped somewhere in the <a title="descendant tree">descendant trees</a>.
+          这意味着如果我们获取一个<a>node tree(节点树)</a>的焦点并且忽视掉其他所有的 <a title="node tree">node trees(节点树)</a>,
+          事件路径将似乎看上就好像事件发生在我们所获取焦点的<a>node tree(节点树)</a>上.
+          这是一个非常重要的方面从某种意义上来说进行托管的阴影树在<em>包含</em><a>node tree(节点树)</a><a>shadow host(阴影树)</a>其中的情况下对于事件路径不具有任何影响
+          只要这个事件没有在<a title="descendant tree">descendant trees(子树)</a>上被阻止.
         </p>
 
         <p>
-          For example, from the view of the <var>document tree 1</var>, the event path would be seen as <code>[D, C, B, A]</code>.
-          From the view of the <var>shadow tree 2</var>, the event path would be seen as <code>[I, H, G, F, E]</code>.
-          The similar things also apply to other <a title="node tree">node trees</a>.
+          举个例子, 通过<var>document tree(文档树) 1</var>的视图, 事件路径看上去将会是<code>[D, C, B, A]</code>.
+          通过<var>shadow tree(阴影树) 2</var>的视图, 事件路径看上去将会是<code>[I, H, G, F, E]</code>.
+          这种相似情况同样会应用于 <a title="node tree">node trees(节点树)</a>.
         </p>
 
         <p>
-          It is also worth pointing out that if we exclude all <a title="insertion point">insertion points</a> and <a title="shadow root">shadow roots</a> from an event path,
-          the result would be equivalent to the inclusive ancestors of the node on which the event is dispatched, in the composed tree.
+          这也是值得我们指出的一种情况如果我们从事件路径中排除全部<a title="insertion point">insertion points(插入点)</a>和<a title="shadow root">shadow roots(阴影根)</a>,
+          这种结果等价于包括所有的祖先节点在生成树中分发事件.
         </p>
 
         <figure>
           <object data="../../assets/images/event-path-and-composed-tree.svg" width="217" height="1723"></object>
           <figcaption>
-            The relationship between an event path and the <a>composed tree</a>. The event path used in the example is shown in the left-hand side and the <a>composed tree</a> is shown in the right-hand side.
-            If we exclude all <a title="insertion point">insertion points</a> and <a title="shadow root">shadow roots</a> from the event path,
-            the result would be equivalent to the inclusive ancestors of the node, <code>D</code>, in the <a>composed tree</a>.
+            一个事件路径和<a>composed tree(生成树)</a>的关系. 事件路径使用了此例子中在左分支上个被展示出的节点同时<a>composed tree(生成树)</a>展示了右分支的节点.
+            如果我们从事件路上上排除所有<a title="insertion point">insertion points(插入点)</a>和<a title="shadow root">shadow roots(阴影根)</a>,
+            这种情况等价于在<a>composed tree(生成树)</a>中包含所有有祖先的节点, <code>D</code>.
           </figcaption>
         </figure>
 
       </section>
 
       <section>
-        <h3>Event Retargeting</h3>
+        <h3>事件的重定向</h3>
 
-        <p>In the cases where event path is across multiple node trees, the event's information about the target of the event is adjusted in order to maintain <a href="#encapsulation">encapsulation</a>. Event <dfn>retargeting</dfn> is a process of computing relative targets for each ancestor of the <a>node</a> at which the event is dispatched. A <dfn>relative target</dfn> is a <a>node</a> that most accurately represents the target of a dispatched event at a given ancestor while maintaining the encapsulation.</p>
+        <p>在事件路径穿过大多数节点树的情况下, 事件信息包括事件的目标是被调整过的为了维持<a href="#encapsulation">encapsulation(封装性)</a>. 事件<dfn>retargeting(重定向)</dfn>是一个当事件在每一个有祖先的<a>节点</a>上被分发时去计算相关联的目标. 一个<dfn>relative target(相关联的目标)</dfn>是一个<a>node(节点)</a>,此给定了父元素的节点能最准确代表当前被分发事件的目标当保持封装性的时.</p>
 
-        <p>The <dfn>retargeting algorithm</dfn> is used to determine relative targets, and it <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+        <p><dfn>retargeting algorithm(重定向算法)</dfn>被用来决定相关联的元素, 它<strong>must(必须)</strong> <a title="processing equivalence">equivalent(等价)</a>于经过下列的步奏:</p>
 
         <div class="algorithm">
           <dl>
-            <dt>Input</dt>
-            <dd><var>EVENT-PATH</var>, an event path</dd>
-            <dd><var>CURRENT-TARGET</var>, a <a>node</a> where the event listener is invoked.</dd>
+            <dt>输入</dt>
+            <dd><var>EVENT-PATH(事件路径)</var>, an event path(一个事件路径)</dd>
+            <dd><var>CURRENT-TARGET(当前的目标)</var>, 在某个地方是被事件监听所关联的一个<a>node(节点)</a>.</dd>
             <dt>Output</dt>
-            <dd><var>RELATIVE-TARGET</var>, adjusted target</dd>
+            <dd><var>RELATIVE-TARGET(相关联的目标)</var>, 调整后的目标</dd>
           </dl>
           <ol>
-            <li>Let <var>CURRENT-TARGET-TREE</var> be the <a>node tree</a> which <var>CURRENT-TARGET</var> <a>participates</a> in</li>
-            <li>Let <var>ORIGINAL-TARGET</var> be the first item in <var>EVENT-PATH</var></li>
-            <li>Let <var>ORIGINAL-TARGET-TREE</var> be the <a>node tree</a> which <var>ORIGINAL-TARGET</var> <a>participates</a> in</li>
-            <li>Let <var>RELATIVE-TARGET-TREE</var> be the lowest common <a>inclusive ancestor tree</a> of <var>CURRENT-TARGET-TREE</var> and <var>ORIGINAL-TARGET-TREE</var></li>
-            <li>Let <var>RELATIVE-TARGET</var> be the first <a>node</a> in <var>EVENT-PATH</var> which satisfies the following condition:
+            <li>让<var>CURRENT-TARGET-TREE(当前目标树)</var>成为<a>node tree(节点树)</a>,<var>CURRENT-TARGET(当前目标)</var>在<a>其中</a></li>
+            <li>让<var>ORIGINAL-TARGET(源目标)</var>成为<var>EVENT-PATH(路径)</var>中的第一项</li>
+            <li>让<var>ORIGINAL-TARGET-TREE(源目标树)</var>成为<a>node tree(节点树)</a>,<var>ORIGINAL-TARGET(源目标)</var>在<a>其中</a></li>
+            <li>让<var>RELATIVE-TARGET-TREE(相关联的目标树)</var>最小(<var>CURRENT-TARGET-TREE(当前目标树)</var>和<var>ORIGINAL-TARGET-TREE(源目标树)</var>之间拥有共同的<a>inclusive ancestor tree(包括祖先的元素)</a></li>
+            <li>让<var>RELATIVE-TARGET(相关联的目标)</var> 成为第一个在<var>EVENT-PATH(事件路径)</var>中<a>node(节点)</a>,此节点需要满足以下条件:
               <ol>
-                <li>The <a>node</a> <a>participates</a> in <var>RELATIVE-TARGET-TREE</var></li>
+                <li>此<a>node(节点)</a>必须<a>在</a><var>RELATIVE-TARGET-TREE(相关联的树)</var>中</li>
               </ol>
             </li>
           </ol>
         </div>
 
-        <p>The retargeting process <strong>must</strong> occur prior to dispatch of an event.</p>
+        <p>重定向过程<strong>必须</strong>发送在一个事件被分发之前.</p>
       </section>
 
       <section>
-        <h3>Retargeting <code>relatedTarget</code></h3>
+        <h3>重定向的 <code>关系目标</code></h3>
 
-        <p>Some events have a <a><code>relatedTarget</code></a> [[!DOM-Level-3-Events]] property, which holds a <a>node</a> that's not the event's target, but is related to the event.</p>
+        <p>一些事件有一个<a><code>relatedTarget(关联目标)</code></a> [[!DOM-Level-3-Events]]属性,  这个属性是一个不是事件目标的<a>node(节点)</a>, 但是和事件有关系.</p>
 
-        <p>For instance, a <code>mouseover</code> event's <a><code>relatedTarget</code></a> may hold the <a>node</a> from which the mouse has moved to event's <code>target</code>. In the case where <code>relatedTarget</code> is in a <a>shadow tree</a>, the conforming UAs <strong>must</strong> not leak its actual value outside of this tree. In cases where both <code>relatedTarget</code> and <code>target</code> are part of the same <a>shadow tree</a>, the conforming UAs <strong>must</strong> <em>stop</em> events at the shadow root to avoid the appearance of spurious <code>mouseover</code> and <code>mouseout</code> events firing from the same node.</p>
+        <p>举个实例, 一个<code>mouseover</code>事件的<a><code>relatedTarget(关联目标)</code></a>可能拥有一个<a>node(节点)</a>来自于鼠标被移动到事件<code>target(目标)</code>.在<code>relatedTarget(相关联目标)</code>是一个<a>shadow tree(阴影树)</a>的情况下, 符合标准的UAs <strong>必须</strong>不能把真是的值泄露出这颗树. 在<code>relatedTarget(相关联目标)</code>和<code>target(目标)</code>都属于相同<a>shadow tree(阴影树)</a>的一部分, 符合标准的UAs <strong>必须</strong> <em>阻止</em>在阴影根上的事件去避免出现在<code>mouseover</code> 和 <code>mouseout</code>事件触发来自于于同一节点的错误.</p>
 
-        <p>Thus, if an event has a <code>relatedTarget</code>, its value and extent of event dispatch <strong>must</strong> be adjusted. In general:</p>
+        <p>因此, 如果一个事件有 <code>relatedTarget(相关联目标)</code>, 它的值和事件分发的范围 <strong>必须</strong>被调整. 通常来说:</p>
         <ol>
-          <li>For a given node, the <code>relatedTarget</code> <strong>must</strong> be changed to its ancestor (or self) that is in the same <a>shadow tree</a> as the node</li>
-          <li>Event listeners <strong>must not</strong> be invoked on a <a>node</a> for which the <code>target</code> and <code>relatedTarget</code> are the same.</li>
+          <li>对于给定的一个节点, <code>relatedTarget(相关联的目标)</code> <strong>必须</strong>改为它的祖先 (或者它本身) 作为一个节点在同一个<a>shadow tree(阴影树)</a>中</li>
+          <li>事件监听<strong>一定不能够</strong>在一个<a>node(节点)</a>上被调用,此时节点的<code>target(目标)</code>和<code>relatedTarget(相关联的目标)</code>是相同的.</li>
         </ol>
 
-        <p>The <dfn>related target resolution algorithm</dfn> <strong>must</strong> be used to determine the value of the <a><code>relatedTarget</code></a> property and <strong>must</strong> be <a title="processing equivalence">equivalent</a> to processing the following steps:</p>
+        <p><dfn>related target resolution algorithm(相关联目标分辨算法)</dfn> <strong>必须</strong>必须用来决定<a><code>relatedTarget(相关联目标)</code></a>属性的值并且<strong>必须</strong><a title="processing equivalence">equivalent(等价)</a>于经过下列步骤的处理:</p>
 
         <div class="algorithm">
           <dl>
-            <dt>Input</dt>
-            <dd><var>EVENT</var>, an event</dd>
-            <dd><var>CURRENT-TARGET</var>, the <a>node</a> on which event listeners would be invoked</dd>
-            <dd><var>RELATED-TARGET</var>, the related target for the event</dd>
-            <dt>Output</dt>
-            <dd><var>ADJUSTED-RELATED-TARGET</var>, the <dfn>adjusted related target</dfn> for <var>CURRENT-TARGET</var></dd>
+            <dt>输入</dt>
+            <dd><var>EVENT(事件)</var>, 一个事件</dd>
+            <dd><var>CURRENT-TARGET(当前的目标)</var>, 一个被事件监听所调用的<a>node(节点)</a></dd>
+            <dd><var>RELATED-TARGET(相关联的目标)</var>, 被事件所关联到的目标</dd>
+            <dt>输出</dt>
+            <dd><var>ADJUSTED-RELATED-TARGET(调整过的相关联的目标)</var>, 相对于<var>CURRENT-TARGET(当前目标)</var><dfn>adjusted related target(调整后的目标)</dfn></dd>
           </dl>
           <ol>
-            <li>Let <var>CURRENT-TARGET-TREE</var> be the <a>node tree</a> which <var>CURRENT-TARGET</var> <a>participates</a> in</li>
-            <li>Let <var>RELATED-TARGET-TREE</var> be the <a>node tree</a> which <var>RELATED-TARGET</var> <a>participates</a> in</li>
-            <li>Let <var>RELATED-TARGET-EVENT-PATH</var> be the result of the <a>event path calculation algorithm</a> with <var>RELATED-TARGET</var> and <var>EVENT</var> as input</li>
-            <li>If <var>CURRENT-TARGET-TREE</var> and <var>RELATED-TARGET-TREE</var> participate in the same <a>tree of trees</a>:
+            <li>让<var>CURRENT-TARGET-TREE(当前目标树)</var>成为一个包含<var>CURRENT-TARGET(当前目标)</var>的<a>node tree(节点树)</a></li>
+            <li>让<var>RELATED-TARGET-TREE(关联目标树)</var>成为一个包含<var>RELATED-TARGET(关联目标)</var>的<a>node tree(节点树)</a></li>
+            <li>让<var>RELATED-TARGET-EVENT-PATH(相关目标事件路径)</var>在<var>RELATED-TARGET(关联目标)</var>和<var>EVENT(事件)</var>中通过<a>event path calculation algorithm(事件路径计算算法)</a>的结果输出</li>
+            <li>如果<var>CURRENT-TARGET-TREE(当前目标树)</var>和<var>RELATED-TARGET-TREE(关联目标树)</var>都在同一个<a>tree of trees(树)</a>:
               <ol>
-                <li>Let <var>LOWEST-COMMON-ANCESTOR-TREE</var> be the lowest common <a>inclusive ancestor tree</a> of <var>CURRENT-TARGET-TREE</var> and <var>RELATED-TARGET-TREE</var></li>
+                <li>让<var>LOWEST-COMMON-ANCESTOR-TREE(共有度最高的祖先树)</var>成为<var>CURRENT-TARGET-TREE(当前目标树)</var>和<var>RELATED-TARGET-TREE(关联目标树)</var>中<a>inclusive ancestor tree(包含的祖先树)</a>中共有度最高的 </li>
               </ol>
             </li>
-            <li>Otherwise:
+            <li>否则:
               <ol>
-                <li>Let <var>LOWEST-COMMON-ANCESTOR-TREE</var> be the <a>root tree</a> of <var>RELATED-TARGET-TREE</var></li>
+                <li>让<var>LOWEST-COMMON-ANCESTOR-TREE(共有度最高的祖先树)</var>成为<var>RELATED-TARGET-TREE(相关联目标树)</var>的<a>root tree(根树)</a></li>
               </ol>
             </li>
-            <li>For each <a>inclusive ancestor tree</a>, <var>COMMON-ANCESTOR-TREE</var>, of the <var>LOWEST-COMMON-ANCESTOR-TREE</var>, in ascending order:
+            <li>对于每一个<a>inclusive ancestor tree(包含祖先的树)</a>, <var>COMMON-ANCESTOR-TREE(共有祖先的树)</var>, <var>LOWEST-COMMON-ANCESTOR-TREE(共有度最高的祖先树)</var>, 在递增的顺序上:
               <ol>
-                <li>Let <var>ADJUSTED-RELATED-TARGET</var> be the first <a>node</a> in <var>RELATED-TARGET-EVENT-PATH</var> which satisfies the following condition:
+                <li>让<var>ADJUSTED-RELATED-TARGET(调整后的相关的目标)</var>成为<var>RELATED-TARGET-EVENT-PATH(相关目标事件路径)</var>中的第一个<a>node(节点)</a>只要符合以下的条件:
                   <ol>
-                    <li>The <a>node</a> <a>participates</a> in <var>COMMON-ANCESTOR-TREE</var></li>
+                    <li><a>node(节点)</a> <a>包含在</a><var>COMMON-ANCESTOR-TREE(共同的祖先树)</var>中</li>
                   </ol>
                 </li>
-                <li>If such a <var>ADJUSTED-RELATED-TARGET</var> exists:
+                <li>如果<var>ADJUSTED-RELATED-TARGET(调整后的相关的目标)</var>存在:
                   <ol>
-                    <li>Stops this algorithm</li>
+                    <li>停止使用此算法</li>
                   </ol>
                 </li>
               </ol>
@@ -775,50 +775,50 @@
           </ol>
         </div>
 
-        <p class="note">The result of the related target resolution algorithm is not always null. Unless that, you should file a bug for this specification.</p>
+        <p class="note">相关目标分辨算法的返回结果不总为null. 如果发生这种情况, 你需要对本标准提出bug并反馈给我们.</p>
 
-        <p>The relatedTarget retargeting process <strong>must</strong> occur prior to dispatch of an event.</p>
+        <p>相关目标重定向的过程<strong>必须</strong>必须发生在一个事件分发之前.</p>
       </section>
 
       <section>
-        <h3>Retargeting Touch Events</h3>
+        <h3>重定向触摸事件</h3>
 
-        <p>The <a><code>Touch</code></a> <a title="Touch target"><code>target</code></a> [[!TOUCH-EVENTS]] attribute must be adjusted in the same way as an event with a <a><code>relatedTarget</code></a>. Each <a><code>Touch</code></a> <a title="Touch target"><code>target</code></a> in the <a><code>TouchList</code></a> returned from <a><code>TouchEvent</code></a> <a title="touches"><code>touches()</code></a>, <a title="changedTouches"><code>changedTouches()</code></a> and <a title="targetTouches"><code>targetTouches()</code></a> must be the result of <a>related target resolution algorithm</a>, given <var>NODE</var> and <a><code>Touch</code></a> <a title="Touch target"><code>target</code></a> as arguments.</p>
+        <p><a><code>Touch(触摸)</code></a> <a title="Touch target"><code>target(目标)</code></a> [[!TOUCH-EVENTS]] 属性必须被调整就像一个<a><code>relatedTarget(相关目标)</code></a>的一个事件. 每一个<a><code>Touch(触摸)</code></a> <a title="Touch target"><code>target(目标)</code></a>在<a><code>TouchList(触摸列表)</code></a>的返回结果来自于<a><code>TouchEvent(触摸事件)</code></a>的<a title="touches"><code>touches()</code></a>, <a title="changedTouches"><code>changedTouches()</code></a> 和<a title="targetTouches"><code>targetTouches()</code></a>的结果一定是经过<a>related target resolution algorithm(相关目标解析算法)</a>, 指定一个<var>NODE(节点)</var>和<a><code>Touch(触摸)</code></a> <a title="Touch target"><code>target(目标)</code></a>作为参数.</p>
       </section>
 
       <section>
-        <h3>Retargeting Focus Events</h3>
+        <h3>重定向得到焦点事件</h3>
 
-        <p>The <code>focus</code>, <code>DOMFocusIn</code>, <code>blur</code>, and <code>DOMFocusOut</code> events <strong>must</strong> be treated in the same way as events with a <code>relatedTarget</code>, where the corresponding <a>node</a> that is losing focus as a result of <code>target</code> gaining focus or the <a>node</a> that is gaining focus, and thus causing the blurring of <code>target</code> acts as the related target.</p>
+        <p><code>focus(得到焦点)</code>, <code>DOMFocusIn</code>, <code>blur(失去焦点)</code>, 和<code>DOMFocusOut</code> 事件 <strong>必须</strong>被认为是和带有<code>relatedTarget(相关)</code>的事件是同一种方式的, 符合的<a>node(节点)</a>的相关联的目标是在<a>target(目标)</a>得到焦点时又失去焦点时使用失去焦点时的结果或者 <a>node(节点)</a>获得焦点, 同时又造成它失去焦点<code>target(目标)</code> 行为的节点作为相关联的目标.</p>
       </section>
 
       <section>
-        <h3>Event Dispatch</h3>
+        <h3>事件分发</h3>
 
-        <p>At the time of event dispatch:</p>
+        <p>在分发事件的时候:</p>
         <ul>
-          <li>The <a><code>Event</code></a> <a><code>target</code></a> and <a><code>currentTarget</code></a> attributes <strong>must</strong> return the <a>relative target</a> for the <a>node</a> on which event listeners are <a title="event listener invoke">invoked</a></li>
-          <li>The <a><code>MouseEvent</code></a> <a><code>relatedTarget</code></a> attribute <strong>must</strong> return the <a>adjusted related target</a></li>
-          <li>The <a><code>MouseEvent</code></a> <a><code>offsetX</code></a> and <a><code>offsetY</code></a> attributes <strong>must</strong> return the coordinates relative to the origin of the <a>padding edge</a> of the <a>relative target</a></li>
-          <li>The <a><code>Touch</code></a> <a title="Touch target"><code>target</code></a> attribute <strong>must</strong> return the <a>adjusted related target</a></li>
-          <li>If the <a><code>relatedTarget</code></a> and <a><code>target</code></a> are the same for a given node, its the event listeners <strong>must not</strong> be invoked. <a><code>TouchEvent</code></a> is not subject to this rule.</li>
-          <li>When <em>capturing</em>, which entails processing step 6 of the <a title="event dispatch">event dispatch algorithm</a>, the event listeners <strong>must not</strong> be <a title="event listener invoke">invoked</a> on a <a>node</a> <strong>if</strong> it is the same as its <a>relative target</a></li>
-          <li>When <em>bubbling</em>, which entails processing step 9 of the <a title="event dispatch">event dispatch algorithm</a>, the <a><code>Event</code></a> <a>eventPhase</a> attribute <strong>must</strong> return <a>AT_TARGET</a> <strong>if</strong> the <a>relative target</a> is same as the <a>node</a> on which event listeners are <a title="event listener invoke">invoked</a></li>
-          <li>If the event's <a><code>bubbles</code></a> attribute value is <strong>false</strong>, run these substeps:
+          <li><a><code>Event(事件)</code></a> <a><code>target(目标)</code></a> 和 <a><code>currentTarget(当前目标)</code></a>的属性 <strong>必须</strong>返回一个<a>relative target(相关联的目标)</a>给<a>node(节点)</a>当节点的事件监听<a title="event listener invoke">invoked(被触发)</a></li>
+          <li><a><code>MouseEvent(鼠标事件)</code></a>的<a><code>relatedTarget(相关目标)</code></a> 属性 <strong>必须</strong>返回一个<a>调整后的相关目标</a></li>
+          <li><a><code>MouseEvent(鼠标事件)</code></a>的<a><code>offsetX</code></a> 和 <a><code>offsetY</code></a> 属性 <strong>必须</strong> 返回一个相对定位于坐标系初始<a>padding edge(边距边缘)</a>的<a>relative target(相关元素)</a>的坐标</li>
+          <li><a><code>Touch(触摸)</code></a> <a title="Touch target"><code>target(目标)</code></a> 属性 <strong>必须</strong> 返回一个 <a>调整后的相关目标</a></li>
+          <li>如果<a><code>relatedTarget(相关目标)</code></a>和<a><code>target(目标)</code></a>都指向同一个节点, 节点本身的事件监听<strong>一定不能</strong>被调用. <a><code>TouchEvent(触摸事件)</code></a>在这个规则上没有问题.</li>
+          <li>当<em>capturing(事件捕获)</em>, 事件捕获必须要有<a title="event dispatch">event dispatch algorithm(事件分发算法)</a>步骤6的过程, 事件监听<strong>一定不能</strong>在<a>relative target(相关目标)</a>是自己本身节点的时候被<a title="event listener invoke">调用</a></li>
+          <li>当<em>bubbling(事件冒泡)</em>, 事件冒泡必须要有<a title="event dispatch">event dispatch algorithm(事件分发算法)</a>步骤9的过程, <a><code>Event(事件)</code></a> <a>eventPhase(解析)</a> 属性 <strong>必须</strong> 返回一个 <a>AT_TARGET</a> <strong>如果</strong>是<a>relative target(相关元素)</a> 同<a>node(节点)</a>一样当事件监听<a title="event listener invoke">被调用</a></li>
+          <li>如果事件<a><code>bubbles(冒泡)</code></a>的属性值是<strong>false</strong>, 必须经过以下步骤:
             <ol>
-              <li>Reverse the order of <em>event path</em></li>
-              <li>Initialize event's <a><code>eventPhase</code></a> attribute to <a><code>AT_TARGET</code></a></li>
-              <li>For each object in <em>event path</em> where the <a>relative target</a> is same as the object, <a title="event listener invoke">invoke</a> its <a title="event listener">event listeners</a>, with event <em>event</em>, as long as <em>event</em>'s <a>stop propagation flag</a> is unset</li>
+              <li>将<em>event path(事件路径)</em>的顺序倒序</li>
+              <li>初始化事件的<a><code>eventPhase(事件解析)</code></a> 属性<a><code>AT_TARGET</code></a></li>
+              <li>对于<em>event path(事件路径中)</em>的每一个对象，当<a>relative target(关联目标)</a>和对象相同, <a title="event listener invoke">调用</a>它自身的<a title="event listener">event listeners(事件监听)</a>, 在事件<em>处理</em>时, 只要<em>event(事件)</em>的 <a>停止冒泡的</a>没有设置</li>
             </ol></li>
         </ul>
 
-        <p>Upon completion of the event dispatch, the <a><code>Event</code></a> object's <a><code>target</code></a> and <a><code>currentTarget</code></a> <strong>must</strong> be to the highest ancestor's <a>relative target</a>. Since it is possible for a script to hold on to the <code>Event</code> object past the scope of event dispatch, this step is necessary to avoid revealing the <a title="node">nodes</a> in <a title="shadow tree">shadow trees</a>.</p>
+        <p>在事件分发完成之上, <a><code>Event(事件)</code></a>对象 <a><code>target(目标)</code></a>和<a><code>currentTarget(当前目标)</code></a> <strong>一定</strong> 必须应该是最顶层的祖先<a>relative target(相关目标)</a>. 只要一段script可能控制了<code>Event</code>对象在事件分发的范围内的传递, 这个步骤需要去避免暴露在<a title="shadow tree">shadow trees(阴影树)</a>上的 <a title="node">nodes(节点)</a>.</p>
       </section>
 
       <section class="informative">
-        <h3>Event Retargeting Example</h3>
+        <h3>事件重定向的示例</h3>
 
-        <p>Suppose we have a user interface for a media controller, represented by this tree, composed of both <a>document tree</a> and the <a title="shadow tree">shadow trees</a>. In this example, we will assume that selectors are allowed to cross the shadow boundaries and we will use these selectors to identify the <a title="element">elements</a>. Also, we will invent a fictional <code>shadow-root</code> <a>element</a> to demarcate the shadow boundaries and represent <a title="shadow root">shadow roots</a>:</p>
+        <p>假设我们现在有一个媒体控件的用户实例, 通过下列这个树来描述它, 由<a>document tree(文档树)</a>和<a title="shadow tree">shadow trees(阴影树)</a>两部分组成. 在这个例子中, 我们将假设选择器被允许穿过阴影的边界并且我们将使用这些选择器去定义找到这些<a title="element">elements(元素)</a>. 当然, 我们也将创建一个虚构的<code>shadow-root(阴影根)</code> <a>element(元素)</a> 去划分阴影边界并且 表现出 <a title="shadow root">shadow roots(阴影根)</a>:</p>
         <pre class="example">
 &lt;div id=&quot;player&quot;&gt;
     <span class=shadow-boundary>&lt;shadow-root id=&quot;player-shadow-root&quot;&gt;</span>
@@ -841,9 +841,9 @@
 &lt;/div&gt;
         </pre>
 
-        <p>Let's have a user position their pointing device over the volume slider's thumb (<code>#volume-slider-thumb</code>), thus triggering a <code>mouseover</code> event on that node. For this event, let's pretend it has no associated <code>relatedTarget</code>.</p>
+        <p>让我们通过一个选择器the volume slider's thumb (<code>#volume-slider-thumb</code>)去指出控件的位置, 由此 在这个节点上去触发 一个<code>mouseover</code> 事件. 对于这个事件, 让我们假装认为没有<code>relatedTarget(相关联的目标)</code>.</p>
 
-        <p>Per the <a>retargeting algorithm</a>, we should have the following set of ancestors and relative targets:</p>
+        <p>每一个<a>retargeting algorithm(重定向算法)</a>, 我们都需要设置以下的祖先和相关联的目标:</p>
         <table>
           <thead>
             <tr>
@@ -883,10 +883,10 @@
           </tbody>
         </table>
 
-        <p>After we dispatch the <code>mouseover</code> event using these newly computed relative targets, the user decides to move their pointing device over the thumb of the timeline
-          (<code>#timeline-slider-thumb</code>). This triggers both a <code>mouseout</code> event for the volume slider thumb and the <code>mouseover</code> event for the timeline thumb.</p>
+        <p>在我们分发 <code>mouseover</code>这个事件之后 使用 它们新计算出来的相关联目标, 用户决定去通过拇指去移动设备的时间线的位置
+          (<code>#timeline-slider-thumb</code>). 这次触发有一次<code>mouseout</code>事件对于the volume slider thumb 和一次<code>mouseover</code> 事件 对于 the timeline thumb.</p>
 
-        <p>Let's see how the <code>relatedTarget</code> value of the volume thumb's <code>mouseout</code> event is affected. For this event, the <code>relatedTarget</code> is the timeline thumb (<code>#timeline-slider-thumb</code>). Per the <a>related target resolution algorithm</a>, we should have the following set of ancestors and adjusted related targets:</p>
+        <p>让我们看看the volume thumb's的<code>relatedTarget(相关联目标)</code>的值是如何被  <code>mouseout</code>事件所影响的. 对于这次事件, <code>relatedTarget(相关联事件)</code>是the timeline thumb (<code>#timeline-slider-thumb</code>). 每一次的<a>related target resolution algorithm(关联目标解析算法)</a>, 我们都应该设置以下的祖先和调整关联的目标:</p>
 
         <table>
           <thead>
@@ -935,7 +935,7 @@
           </tbody>
         </table>
 
-        <p>The node, <code>#player</code>, has both <code>target</code> and <code>relatedTarget</code> being the same value (<code>#player</code>), which means that we do not dispatch the event on this <a>node</a> and its ancestors.</p>
+        <p>节点, <code>#player</code>, <code>target(目标)</code> 和 <code>relatedTarget(关联目标)</code> 同时都有相同的值 (<code>#player</code>), 这意味着它们并没有分发 <a>node(节点)</a>和它们的祖先上分发事件.</p>
       </section>
 
     </section>
