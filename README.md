@@ -26,22 +26,22 @@ This is the repository in which W3C editor's drafts of the Web Components specs 
 ```
 webcomponents
 ├─┬ explainer
-│ ├── index.html
+│ └── index.html
 ├─┬ explainer-zh
-│ ├── index.html 新的 web components 介绍的翻译
+│ └── index.html 新的 web components 介绍的翻译
 ├─┬ spec
-│ ├── custom
-│ │ ├── index.html
-│ ├── imports
-│ │ ├── index.html
-│ ├── shadow
-│ │ ├── index.html
+│ ├─┬ custom
+│ │ └── index.html
+│ ├─┬ imports
+│ │ └── index.html
+│ └─┬ shadow
+│   └── index.html
 └─┬ spec-zh
-  ├── custom
-  │ ├── index.html 新的 custom elements 的翻译
-  ├── imports
-  │ ├── index.html 新的 html imports 的翻译
-  └── shadow
+  ├─┬ custom
+  │ └── index.html 新的 custom elements 的翻译
+  ├─┬ imports
+  │ └── index.html 新的 html imports 的翻译
+  └─┬ shadow
     └── index.html 新的 shadow dom 的翻译
 ```
 
