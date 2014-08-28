@@ -36,13 +36,13 @@ webcomponents
 │ │ ├── index.html
 │ ├── shadow
 │ │ ├── index.html
-├─┬ spec-zh
-│ ├── custom
-│ │ ├── index.html 新的 custom elements 的翻译
-│ ├── imports
-│ │ ├── index.html 新的 html imports 的翻译
-│ ├── shadow
-│ │ ├── index.html 新的 shadow dom 的翻译
+└─┬ spec-zh
+  ├── custom
+  │ ├── index.html 新的 custom elements 的翻译
+  ├── imports
+  │ ├── index.html 新的 html imports 的翻译
+  └── shadow
+    └── index.html 新的 shadow dom 的翻译
 ```
 
 ### 后续维护
