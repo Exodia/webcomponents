@@ -47,5 +47,7 @@ webcomponents
 
 ### 后续维护
 
-由于 web components 规范还在不断的迭代完善之中。所以今后我们会不定期把官方 [github](https://github.com/w3c/webcomponents) 的改动合并到我们的 `zh` 分支，同时用 `diff` 工具找出版本之间的差异，再把这些收集到的差异体现在翻译上，生成新的翻译的版本。
+每次翻译更新/结束之后，给版本打一个 tag，并合并到 `gh-pages` 分支。
+
+由于 web components 规范还在不断的迭代完善之中。所以今后我们会不定期把官方 [github](https://github.com/w3c/webcomponents) 的改动合并到我们的 `zh` 分支 (由于我们不修改原有的文件，只产生新的翻译文件，所以除了 `README.md` 文件本身是不可能有冲突的)，同时用 `diff` 工具找出版本之间的差异，再把这些收集到的差异体现在翻译上，生成新的翻译的版本。
 
