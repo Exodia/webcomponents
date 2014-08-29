@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset='utf-8'/>
     <title>Shadow DOM 中文规范</title>
@@ -185,7 +185,6 @@
               <li>D 的<a title="child tree">子树</a>的有序列表是 [E]。</li>
               <li>E 的<a title="child tree">子树</a>的有序列表是 []。</li>
             </ul>
-          </p>
         </section>
 
       </section>
@@ -474,8 +473,8 @@
     <section>
       <h2>事件</h2>
 
-      <p>当一个<a>Event(事件)在<a>shadow tree(阴影树)</a>中</a>被<a title="event dispatch">dispatched(分发)</a>时, 事件的路径要么穿过<a title="shadow tree">shadow trees(阴影树)</a>要么在<a>shadow root(阴影根)</a>被终止. 其中一个例外情况就是<a title="mutation event">mutation events(突发事件)</a>. <a title="mutation event">mutation event types(突发事件)</a> <strong>一定</strong> 不能在<a>shadow tree(阴影树)</a>中被分发.</p>
-    </section>
+      <p>当一个<a>Event(事件)在<a>shadow tree</a>中</a>被<a title="event dispatch">dispatched(分发)</a>时, 事件的路径要么穿过<a title="shadow tree">shadow trees</a>要么在<a>shadow root</a>被终止. 其中一个例外情况就是<a title="mutation event">mutation events(突发事件)</a>. <a title="mutation event">mutation event types(突发事件)</a> <strong>一定</strong> 不能在<a>shadow tree</a>中被分发.</p>
+
       <section>
         <h3>通常会被阻止的事件</h3>
 
@@ -518,10 +517,10 @@
                       <ol>
                         <li>如果<var>INSERTION-POINT(插入点)</var>是一个<a>shadow insertion point(阴影插入点)</a>:
                           <ol>
-                            <li>让<var>SHADOW-ROOT(阴影根)</var>作为<var>INSERTION-POINT(插入点)</var>的<a>root(根)</a> <a>node(节点)</a></li>
-                            <li>如果<var>SHADOW-ROOT(阴影根)</var>不是最<a>oldest shadow root(外层的阴影根)</a>:
+                            <li>让<var>SHADOW-ROOT</var>作为<var>INSERTION-POINT(插入点)</var>的<a>root(根)</a> <a>node(节点)</a></li>
+                            <li>如果<var>SHADOW-ROOT</var>不是最<a>oldest shadow root(外层的阴影根)</a>:
                               <ol>
-                                <li>增加比此根<a>older shadow root(更外层的阴影根)</a>相对于<var>SHADOW-ROOT(阴影根)</var><var>PATH(路径)</var></li>
+                                <li>增加比此根<a>older shadow root(更外层的阴影根)</a>相对于<var>SHADOW-ROOT</var><var>PATH(路径)</var></li>
                               </ol></li>
                           </ol></li>
                         <li>增加<var>INSERTION-POINT(插入点)</var>到<var>PATH(路径中)</var></li>
@@ -530,7 +529,7 @@
                   </ol></li>
                 <li>否则:
                   <ol>
-                    <li>如果<var>CURRENT(当前事件目标)</var>是一个<a>shadow root(阴影根)</a>:
+                    <li>如果<var>CURRENT(当前事件目标)</var>是一个<a>shadow root</a>:
                       <ol>
                         <li>如果<var>NODE(节点)</var>和<var>CURRENT(当前事件的目标)</var>在同一个<a>node tree(节点树中)</a>并且<var>EVENT(事件)</var>是需要 <a title="events-always-stopped">被阻止的事件</a>:
                           <ol>
@@ -571,7 +570,7 @@
             <code>A</code> is a <a>document(文档)</a>.
           </li>
           <li>
-            <code>E</code>, <code>J</code>, <code>N</code>, <code>Q</code>, <code>S</code>和<code>V</code> 是 <a title="shadow root">shadow roots(阴影根)</a>.
+            <code>E</code>, <code>J</code>, <code>N</code>, <code>Q</code>, <code>S</code>和<code>V</code> 是 <a title="shadow root">shadow roots</a>.
           </li>
           <li>
             <code>I</code>, <code>M</code>, <code>P</code>, <code>R</code>和 <code>U</code> 是 <a title="content insertion point">content insertion points(内容的插入点)</a>.
@@ -582,7 +581,7 @@
         </ul>
 
         <p>
-          这颗<a>tree of trees(树)</a>拥有以下的7棵<a title="node tree">node trees(节点树)</a>, 一棵<a>document tree(文档树)</a>和 6棵 <a title="shadow tree">shadow trees(阴影树)</a>:
+          这颗<a>tree of trees(树)</a>拥有以下的7棵<a title="node tree">node trees(节点树)</a>, 一棵<a>document tree(文档树)</a>和 6棵 <a title="shadow tree">shadow trees</a>:
         </p>
 
         <ul>
@@ -590,23 +589,23 @@
             <var>document tree(文档树) 1</var>. 节点<code>A</code>, <code>B</code>, <code>C</code> 和 <code>D</code>这些节点在文档树中.
           </li>
           <li>
-            <var>shadow tree(阴影树) 2</var> 托管给了<code>B</code>. 节点<code>E</code>, <code>F</code>, <code>G</code>, <code>H</code>和<code>I</code>这些节点在阴影树2中.
+            <var>shadow tree 2</var> 托管给了<code>B</code>. 节点<code>E</code>, <code>F</code>, <code>G</code>, <code>H</code>和<code>I</code>这些节点在阴影树2中.
           </li>
           <li>
-            <var>shadow tree(阴影树) 3</var> 托管给了<code>H</code>. 节点 <code>J</code>, <code>K</code>, <code>L</code> 和 <code>M</code>这些节点在阴影树3中.
+            <var>shadow tree 3</var> 托管给了<code>H</code>. 节点 <code>J</code>, <code>K</code>, <code>L</code> 和 <code>M</code>这些节点在阴影树3中.
           </li>
           <li>
-            <var>shadow tree(阴影树) 4</var> 托管给了<code>K</code>. 节点 <code>N</code>, <code>O</code> 和 <code>P</code> 这些节点在阴影树4中.
+            <var>shadow tree 4</var> 托管给了<code>K</code>. 节点 <code>N</code>, <code>O</code> 和 <code>P</code> 这些节点在阴影树4中.
           </li>
           <li>
-            <var>shadow tree(阴影树) 5</var> 托管给了<code>O</code>. 节点 <code>Q</code> 和 <code>R</code> 这些节点在阴影树5中.
+            <var>shadow tree 5</var> 托管给了<code>O</code>. 节点 <code>Q</code> 和 <code>R</code> 这些节点在阴影树5中.
           </li>
           <li>
-            <var>shadow tree(阴影树) 6</var> 托管给了<code>F</code>. 节点 <code>S</code>, <code>T</code> 和 <code>U</code> 这些节点在阴影树6中.
+            <var>shadow tree 6</var> 托管给了<code>F</code>. 节点 <code>S</code>, <code>T</code> 和 <code>U</code> 这些节点在阴影树6中.
           </li>
           <li>
-            <var>shadow tree(阴影树) 7</var> 托管给了<code>B</code>. 节点 <code>V</code>, <code>W</code> 和 <code>X</code> 这些节点在阴影树7中.
-            <a>shadow tree(阴影树)</a> 7是比<var>shadow tree(阴影树) 2</var>更早生成的.
+            <var>shadow tree 7</var> 托管给了<code>B</code>. 节点 <code>V</code>, <code>W</code> 和 <code>X</code> 这些节点在阴影树7中.
+            <a>shadow tree</a> 7是比<var>shadow tree 2</var>更早生成的.
           </li>
         </ul>
 
@@ -663,18 +662,18 @@
         <p>
           这意味着如果我们获取一个<a>node tree(节点树)</a>的焦点并且忽视掉其他所有的 <a title="node tree">node trees(节点树)</a>,
           事件路径将似乎看上就好像事件发生在我们所获取焦点的<a>node tree(节点树)</a>上.
-          这是一个非常重要的方面从某种意义上来说进行托管的阴影树在<em>包含</em><a>node tree(节点树)</a><a>shadow host(阴影树)</a>其中的情况下对于事件路径不具有任何影响
+          这是一个非常重要的方面从某种意义上来说进行托管的阴影树在<em>包含</em><a>node tree(节点树)</a><a>shadow host</a>其中的情况下对于事件路径不具有任何影响
           只要这个事件没有在<a title="descendant tree">descendant trees(子树)</a>上被阻止.
         </p>
 
         <p>
           举个例子, 通过<var>document tree(文档树) 1</var>的视图, 事件路径看上去将会是<code>[D, C, B, A]</code>.
-          通过<var>shadow tree(阴影树) 2</var>的视图, 事件路径看上去将会是<code>[I, H, G, F, E]</code>.
+          通过<var>shadow tree 2</var>的视图, 事件路径看上去将会是<code>[I, H, G, F, E]</code>.
           这种相似情况同样会应用于 <a title="node tree">node trees(节点树)</a>.
         </p>
 
         <p>
-          这也是值得我们指出的一种情况如果我们从事件路径中排除全部<a title="insertion point">insertion points(插入点)</a>和<a title="shadow root">shadow roots(阴影根)</a>,
+          这也是值得我们指出的一种情况如果我们从事件路径中排除全部<a title="insertion point">insertion points(插入点)</a>和<a title="shadow root">shadow roots</a>,
           这种结果等价于包括所有的祖先节点在生成树中分发事件.
         </p>
 
@@ -682,7 +681,7 @@
           <object data="../../assets/images/event-path-and-composed-tree.svg" width="217" height="1723"></object>
           <figcaption>
             一个事件路径和<a>composed tree(生成树)</a>的关系. 事件路径使用了此例子中在左分支上个被展示出的节点同时<a>composed tree(生成树)</a>展示了右分支的节点.
-            如果我们从事件路上上排除所有<a title="insertion point">insertion points(插入点)</a>和<a title="shadow root">shadow roots(阴影根)</a>,
+            如果我们从事件路上上排除所有<a title="insertion point">insertion points(插入点)</a>和<a title="shadow root">shadow roots</a>,
             这种情况等价于在<a>composed tree(生成树)</a>中包含所有有祖先的节点, <code>D</code>.
           </figcaption>
         </figure>
@@ -725,11 +724,11 @@
 
         <p>一些事件有一个<a><code>relatedTarget(关联目标)</code></a> [[!DOM-Level-3-Events]]属性,  这个属性是一个不是事件目标的<a>node(节点)</a>, 但是和事件有关系.</p>
 
-        <p>举个实例, 一个<code>mouseover</code>事件的<a><code>relatedTarget(关联目标)</code></a>可能拥有一个<a>node(节点)</a>来自于鼠标被移动到事件<code>target(目标)</code>.在<code>relatedTarget(相关联目标)</code>是一个<a>shadow tree(阴影树)</a>的情况下, 符合标准的UAs <strong>必须</strong>不能把真是的值泄露出这颗树. 在<code>relatedTarget(相关联目标)</code>和<code>target(目标)</code>都属于相同<a>shadow tree(阴影树)</a>的一部分, 符合标准的UAs <strong>必须</strong> <em>阻止</em>在阴影根上的事件去避免出现在<code>mouseover</code> 和 <code>mouseout</code>事件触发来自于于同一节点的错误.</p>
+        <p>举个实例, 一个<code>mouseover</code>事件的<a><code>relatedTarget(关联目标)</code></a>可能拥有一个<a>node(节点)</a>来自于鼠标被移动到事件<code>target(目标)</code>.在<code>relatedTarget(相关联目标)</code>是一个<a>shadow tree</a>的情况下, 符合标准的UAs <strong>必须</strong>不能把真是的值泄露出这颗树. 在<code>relatedTarget(相关联目标)</code>和<code>target(目标)</code>都属于相同<a>shadow tree</a>的一部分, 符合标准的UAs <strong>必须</strong> <em>阻止</em>在阴影根上的事件去避免出现在<code>mouseover</code> 和 <code>mouseout</code>事件触发来自于于同一节点的错误.</p>
 
         <p>因此, 如果一个事件有 <code>relatedTarget(相关联目标)</code>, 它的值和事件分发的范围 <strong>必须</strong>被调整. 通常来说:</p>
         <ol>
-          <li>对于给定的一个节点, <code>relatedTarget(相关联的目标)</code> <strong>必须</strong>改为它的祖先 (或者它本身) 作为一个节点在同一个<a>shadow tree(阴影树)</a>中</li>
+          <li>对于给定的一个节点, <code>relatedTarget(相关联的目标)</code> <strong>必须</strong>改为它的祖先 (或者它本身) 作为一个节点在同一个<a>shadow tree</a>中</li>
           <li>事件监听<strong>一定不能够</strong>在一个<a>node(节点)</a>上被调用,此时节点的<code>target(目标)</code>和<code>relatedTarget(相关联的目标)</code>是相同的.</li>
         </ol>
 
@@ -812,13 +811,13 @@
             </ol></li>
         </ul>
 
-        <p>在事件分发完成之上, <a><code>Event(事件)</code></a>对象 <a><code>target(目标)</code></a>和<a><code>currentTarget(当前目标)</code></a> <strong>一定</strong> 必须应该是最顶层的祖先<a>relative target(相关目标)</a>. 只要一段script可能控制了<code>Event</code>对象在事件分发的范围内的传递, 这个步骤需要去避免暴露在<a title="shadow tree">shadow trees(阴影树)</a>上的 <a title="node">nodes(节点)</a>.</p>
+        <p>在事件分发完成之上, <a><code>Event(事件)</code></a>对象 <a><code>target(目标)</code></a>和<a><code>currentTarget(当前目标)</code></a> <strong>一定</strong> 必须应该是最顶层的祖先<a>relative target(相关目标)</a>. 只要一段script可能控制了<code>Event</code>对象在事件分发的范围内的传递, 这个步骤需要去避免暴露在<a title="shadow tree">shadow trees</a>上的 <a title="node">nodes(节点)</a>.</p>
       </section>
 
       <section class="informative">
         <h3>事件重定向的示例</h3>
 
-        <p>假设我们现在有一个媒体控件的用户实例, 通过下列这个树来描述它, 由<a>document tree(文档树)</a>和<a title="shadow tree">shadow trees(阴影树)</a>两部分组成. 在这个例子中, 我们将假设选择器被允许穿过阴影的边界并且我们将使用这些选择器去定义找到这些<a title="element">elements(元素)</a>. 当然, 我们也将创建一个虚构的<code>shadow-root(阴影根)</code> <a>element(元素)</a> 去划分阴影边界并且 表现出 <a title="shadow root">shadow roots(阴影根)</a>:</p>
+        <p>假设我们现在有一个媒体控件的用户实例, 通过下列这个树来描述它, 由<a>document tree(文档树)</a>和<a title="shadow tree">shadow trees</a>两部分组成. 在这个例子中, 我们将假设选择器被允许穿过阴影的边界并且我们将使用这些选择器去定义找到这些<a title="element">elements(元素)</a>. 当然, 我们也将创建一个虚构的<code>shadow-root</code> <a>element(元素)</a> 去划分阴影边界并且 表现出 <a title="shadow root">shadow roots</a>:</p>
         <pre class="example">
 &lt;div id=&quot;player&quot;&gt;
     <span class=shadow-boundary>&lt;shadow-root id=&quot;player-shadow-root&quot;&gt;</span>
@@ -937,9 +936,7 @@
 
         <p>节点, <code>#player</code>, <code>target(目标)</code> 和 <code>relatedTarget(关联目标)</code> 同时都有相同的值 (<code>#player</code>), 这意味着它们并没有分发 <a>node(节点)</a>和它们的祖先上分发事件.</p>
       </section>
-
     </section>
-
     <section>
       <h2>用户交互</h2>
 
@@ -952,9 +949,9 @@
 
         <p>由于<a title="node">nodes(节点)</a>在不同的<a title="node tree">node(节点)树上</a>绝对不可能拥有相同的<a>根(元素)</a>,它们可能绝对不会存在一个有效的<a title="range">DOM范围内</a>(这个DOM范围包含了多数的<a title="node tree">node(节点)树)</a>.</p>
 
-        <p>因此<a title="selection">选区</a> 是可能存在于唯一一个 <a>node(节点)树</a>里, 因为选区被定义在一个单独的<a>范围里</a>. 通过方法<code><a>window.getSelection()</a></code>返回的<a>选区</a>绝对不会返回一个在<a>shadow(阴影)树</a>里的<a>选区</a>.</p>
+        <p>因此<a title="selection">选区</a> 是可能存在于唯一一个 <a>node(节点)树</a>里, 因为选区被定义在一个单独的<a>范围里</a>. 通过方法<code><a>window.getSelection()</a></code>返回的<a>选区</a>绝对不会返回一个在<a>shadow树</a>里的<a>选区</a>.</p>
 
-        <p><a>shadow(阴影)根</a>对象的<code>getSelection()</code>方法返回的是当前<a>选区</a>是在当前(上下文)的<a>shadow tree(阴影树)</a>.</p>
+        <p><a>shadow根</a>对象的<code>getSelection()</code>方法返回的是当前<a>选区</a>是在当前(上下文)的<a>shadow tree</a>.</p>
       </section>
 
       <section>
@@ -962,9 +959,9 @@
 
         <p>如果一个<a>节点</a>不<a title="participates">加入</a>一个<a>生成树(composed tree)</a>,  <a>此节点</a> <strong>必须</strong>从[[!CSS3UI]]<a>渲染树的顺序</a>中被忽略</p>
 
-        <p>对于<a>引导获取焦点的时序</a>, <a>此引导顺序</a>的时序对于一个给定的<a>shadow tree(阴影树)</a> <var>A</var> <strong>必须</strong> 被插入到其他<a>node tree(节点树)</a> <a>引导顺序中</a> , 规则规则如下:</p>
+        <p>对于<a>引导获取焦点的时序</a>, <a>此引导顺序</a>的时序对于一个给定的<a>shadow tree</a> <var>A</var> <strong>必须</strong> 被插入到其他<a>node tree(节点树)</a> <a>引导顺序中</a> , 规则规则如下:</p>
         <ol>
-          <li>如果<var>A</var>是<a>最新的shadow tree(阴影树)</a>:
+          <li>如果<var>A</var>是<a>最新的shadow tree</a>:
             <ol>
               <li>让<var>宿主</var>成为<a>shadow host(阴影宿主)</a>,现在的阴影宿主就是<a>宿主</a>A</li>
               <li>让<var>B</var>成为<a>node tree(节点树)</a>,<var>让节点树的宿主</var>加入</li>
@@ -976,19 +973,19 @@
             </ol></li>
           <li>如果不是那么:
             <ol>
-              <li>让<var>B</var>成为一个<a>优先级较高的shadow tree(阴影树)</a> , 让B关联到<var>A</var></li>
-              <li>让<var>SHADOW(阴影)</var>成为一个<a>shadow(阴影)插入点</a>插入 <var>B</var>中</li>
-              <li>如果<var>SHADOW(阴影)</var> 存在, 在<var>SHADOW(阴影)</var>之后,对于<var>A</var>的<a>引导顺序</a><strong>必须</strong>被插入到<var>B</var>的<a>引导顺序</a>  如果<var>SHADOW(阴影)</var> 被指定了值 <a title="nav-index auto"><code>auto</code></a> 去决定它的位置.</li>
+              <li>让<var>B</var>成为一个<a>优先级较高的shadow tree</a> , 让B关联到<var>A</var></li>
+              <li>让<var>SHADOW</var>成为一个<a>shadow插入点</a>插入 <var>B</var>中</li>
+              <li>如果<var>SHADOW</var> 存在, 在<var>SHADOW</var>之后,对于<var>A</var>的<a>引导顺序</a><strong>必须</strong>被插入到<var>B</var>的<a>引导顺序</a>  如果<var>SHADOW</var> 被指定了值 <a title="nav-index auto"><code>auto</code></a> 去决定它的位置.</li>
             </ol></li>
         </ol>
 
-        <p>对于<a>有指向性的引导焦点</a>, 它取决于用户代理完整的  <a title="navigation order">引导顺序</a> 中 <a title="shadow tree">shadow trees(阴影树)</a> 在 <a>文本</a>中 <a>引导顺序</a>.</p>
+        <p>对于<a>有指向性的引导焦点</a>, 它取决于用户代理完整的  <a title="navigation order">引导顺序</a> 中 <a title="shadow tree">shadow trees</a> 在 <a>文本</a>中 <a>引导顺序</a>.</p>
       </section>
 
       <section>
         <h3>激活的元素</h3>
 
-        <p>为了坚持封装性, <a>激活的元素</a>在<a title="Document object">文档</a>  对象的 focus(焦点) API 属性中的值 <strong>必须</strong>被调整的. 为了防止当调整这个值的时候丢失信息, 每一个 <a>shadow root(阴影的根)</a> <strong>必须</strong> 也拥有一个<code>激活元素的</code> 属性用来保存在<a>shadow tree(阴影树)</a>中获取焦点激活<a>元素的</a>属性值</p>
+        <p>为了坚持封装性, <a>激活的元素</a>在<a title="Document object">文档</a>  对象的 focus(焦点) API 属性中的值 <strong>必须</strong>被调整的. 为了防止当调整这个值的时候丢失信息, 每一个 <a>shadow root(阴影的根)</a> <strong>必须</strong> 也拥有一个<code>激活元素的</code> 属性用来保存在<a>shadow tree</a>中获取焦点激活<a>元素的</a>属性值</p>
 
         <p>对于<dfn>激活 <a>元素</a> 的算法调整</dfn> 被用来决定<a>激活元素</a>的属性值,  激活元素<strong>必须</strong>经过如下列步骤一样的等价处理的过程:</p>
 
@@ -996,7 +993,7 @@
           <dl>
             <dt>输入</dt>
             <dd><var>元素</var>, 得到焦点的<a>元素</a></dd>
-            <dd><var>ROOT(根)</var>, 要么是一个<a>文档</a> 或者是一个 <a>shadow root(阴影根)</a></dd>
+            <dd><var>ROOT(根)</var>, 要么是一个<a>文档</a> 或者是一个 <a>shadow root</a></dd>
             <dt>输出</dt>
             <dd><var>校正</var>, 一个已经被校正的<a>激活元素</a>属性的<var>根</var>.</dd>
           </dl>
@@ -1010,22 +1007,22 @@
       <section>
         <h3>校订</h3>
 
-        <p><a><code>contenteditable</code>属性的值</a><strong>一定不能通过<a>shadow host(阴影宿主)</a> </strong> 传播到它本身的 <a title="shadow tree">shadow trees(阴影树)</a>上.</p>
+        <p><a><code>contenteditable</code>属性的值</a><strong>一定不能通过<a>shadow host(阴影宿主)</a> </strong> 传播到它本身的 <a title="shadow tree">shadow trees</a>上.</p>
       </section>
 
       <section>
         <h3>辅助技术</h3>
 
-        <p>用户代理可以通过辅助技术遍历<a>composed tree(生成树)</a>, 因此可以使完整的WAI-ARIA(可访问的富因特网应用程序) [[!WAI-ARIA]]语义在<a title="shadow tree">shadow trees(阴影树)</a>中使用.</p>
+        <p>用户代理可以通过辅助技术遍历<a>composed tree(生成树)</a>, 因此可以使完整的WAI-ARIA(可访问的富因特网应用程序) [[!WAI-ARIA]]语义在<a title="shadow tree">shadow trees</a>中使用.</p>
 
       </section>
 
     </section>
 
     <section>
-      <h2>Shadow Trees(阴影树)中的HTML元素</h2>
+      <h2>Shadow Trees中的HTML元素</h2>
 
-      <p>相对来说, 一个<a>shadow tree(阴影树)</a>可以看作是存在于<em>部分<a>文档</a></em>和文档本身之间某处的一个<a title="interface DocumentFragment">文档碎片</a>. 当阴影树被渲染的时候, 单个<a>shadow tree(阴影树)</a> 目的是维持它本身在<a>文档</a>的传统<a>树</a>中的标准. 于此同时, 由于阴影树是抽象封装, 阴影树不能影响<a>文档树</a>. 因此, 阴影树中的<a>HTML元素</a> <strong>必须</strong> 表现为指定的 [[!HTML]]的行为在<a title="shadow tree">shadow trees(阴影树)</a>中, 除了少数例外的情况</p>
+      <p>相对来说, 一个<a>shadow tree</a>可以看作是存在于<em>部分<a>文档</a></em>和文档本身之间某处的一个<a title="interface DocumentFragment">文档碎片</a>. 当阴影树被渲染的时候, 单个<a>shadow tree</a> 目的是维持它本身在<a>文档</a>的传统<a>树</a>中的标准. 于此同时, 由于阴影树是抽象封装, 阴影树不能影响<a>文档树</a>. 因此, 阴影树中的<a>HTML元素</a> <strong>必须</strong> 表现为指定的 [[!HTML]]的行为在<a title="shadow tree">shadow trees</a>中, 除了少数例外的情况</p>
 
       <section>
         <h3>无效的HTML元素</h3>
@@ -1036,15 +1033,15 @@
           <li><a title="link element"><code>link</code></a></li>
         </ul>
 
-        <p>剩下的其他<a>HTML元素</a>在<a title="shadow tree">shadow trees(阴影树)里</a> <strong>必须</strong> 表现为就像它们出现在<a>document tree(文档树)</a>中的表现.</p>
+        <p>剩下的其他<a>HTML元素</a>在<a title="shadow tree">shadow trees里</a> <strong>必须</strong> 表现为就像它们出现在<a>document tree(文档树)</a>中的表现.</p>
       </section>
 
     </section>
 
     <section>
-      <h2>HTML元素和它们的shadow trees(阴影树)</h2>
+      <h2>HTML元素和它们的shadow trees</h2>
 
-      <p>每一个 <a title="HTML">规范</a>, 针对内容的渲染地方，一些<a>HTM元素</a>不是用来渲染它们的内容或针对特殊的需求所设计的. 是为了标准化HTML元素在<a>composed tree(生成树)</a>中渲染时的不同行为的,在<a>shadow tree(阴影树)</a>被创建和被填充进去的实例化<a>元素</a>的时候,所有的HTML元素<strong>必须</strong>具有<a title="processing equivalence">相同</a>的阴影树.这取决于用户代理定义阴影树.当然, 所有符合标准的用户代理<strong>必须</strong>满足以下的要求:</p>
+      <p>每一个 <a title="HTML">规范</a>, 针对内容的渲染地方，一些<a>HTM元素</a>不是用来渲染它们的内容或针对特殊的需求所设计的. 是为了标准化HTML元素在<a>composed tree(生成树)</a>中渲染时的不同行为的,在<a>shadow tree</a>被创建和被填充进去的实例化<a>元素</a>的时候,所有的HTML元素<strong>必须</strong>具有<a title="processing equivalence">相同</a>的阴影树.这取决于用户代理定义阴影树.当然, 所有符合标准的用户代理<strong>必须</strong>满足以下的要求:</p>
 
       <table>
         <thead>
@@ -1088,35 +1085,35 @@
       <h2>Elements(元素)和DOM Objects(DOM对象)</h2>
 
       <section>
-        <h3><code>ShadowRoot(阴影根)</code>对象</h3>
+        <h3><code>ShadowRoot</code>对象</h3>
 
-        <p><code>ShadowRoot(阴影根)</code>对象代表此<a>shadow root(阴影根)</a>.</p>
+        <p><code>ShadowRoot</code>对象代表此<a>shadow root</a>.</p>
 
         <dl class="idl" title="interface ShadowRoot : DocumentFragment">
           <dt>HTMLElement getElementById(DOMString elementId)</dt>
           <dd>
-            <strong>必须</strong>行为完全就像<a>document.getElementById</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>内.
+            <strong>必须</strong>行为完全就像<a>document.getElementById</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree</a>内.
           </dd>
 
           <dt>NodeList getElementsByClassName(DOMString className)</dt>
           <dd>
-            <strong>必须</strong>行为完全就像<a>document.getElementsByClassName</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementsByClassName</a>一样, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree</a>.
           </dd>
 
           <dt>NodeList getElementsByTagName(DOMString tagName)</dt>
           <dd>
-            <strong>必须</strong>行为完全就像<a>document.getElementsByTagName</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementsByTagName</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree</a>.
           </dd>
 
           <dt>NodeList getElementsByTagNameNS(DOMString? namespace, DOMString localName)</dt>
           <dd>
-            <strong>必须</strong>行为完全就像<a>document.getElementsByTagNameNS</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree(阴影树)</a>.
+            <strong>必须</strong>行为完全就像<a>document.getElementsByTagNameNS</a>, 除了<a title="scoping constraints">scoped(作用域)</a>范围是在此<a>shadow tree</a>.
           </dd>
 
           <dt>Selection? getSelection()</dt>
           <dd>
-            <p>返回当前在此<a>shadow tree(阴影树)</a>的区域</p>
-            <p>当此方法被调用, 它<strong>必须</strong>返回此<a>shadow tree(阴影树)</a>的<a>selection(区域)</a>.</p>
+            <p>返回当前在此<a>shadow tree</a>的区域</p>
+            <p>当此方法被调用, 它<strong>必须</strong>返回此<a>shadow tree</a>的<a>selection(区域)</a>.</p>
           </dd>
 
           <dt>Element? elementFromPoint(double x, double y)</dt>
@@ -1127,7 +1124,7 @@
               当此方法被调用, 它<strong>必须</strong>返回下列步骤运行后的结果:
             </p>
             <ol>
-              <li>如果<a>context object(上下文对象)</a>不是一个<a><code>ShadowRoot(阴影根)</code></a>的实例, 那么抛出一个<a><code>InvalidNodeTypeError(无效节点的错误)</code></a>错误.</li>
+              <li>如果<a>context object(上下文对象)</a>不是一个<a><code>ShadowRoot</code></a>的实例, 那么抛出一个<a><code>InvalidNodeTypeError(无效节点的错误)</code></a>错误.</li>
               <li>如果其中任意一个参数无效, <code>x</code>大于<a>viewport(视窗)</a>的宽度不包括已经被渲染出来的滚动条(如果有), 或者如果是<code>y</code>大于<a>viewport(视窗)</a>的高度不包括已经被渲染出来的滚动条(如果有), 返回<strong>null</strong>.</li>
               <li>让<var>HIT</var>这样的方式成为描述<a>element(元素)</a>在<a>viewport(视窗)</a>中<code>X</code>和<code>Y</code>坐标, 这样的方式决定于是否通过打点测试</li>
               <li>让<var>PATH(路径)</var>在<a>HIT</a>里通过<a>event path calculation algorithm(事件路径计算算法)</a>所得到的结果HRnull作为输入</li>
@@ -1137,8 +1134,8 @@
 
           <dt>只读 attribute Element? activeElement</dt>
           <dd>
-            <p>表示当前在<a>shadow tree(阴影树)</a>得到焦点的<a>element(元素)</a></p>
-            <p>当读取时, 这个属性<strong>必须</strong>返回在当前在<a>shadow tree(阴影树)</a>中得到焦点的<a>element(元素)</a>的属性或者为<code>null</code>, 如果这个属性不是空的.</p>
+            <p>表示当前在<a>shadow tree</a>得到焦点的<a>element(元素)</a></p>
+            <p>当读取时, 这个属性<strong>必须</strong>返回在当前在<a>shadow tree</a>中得到焦点的<a>element(元素)</a>的属性或者为<code>null</code>, 如果这个属性不是空的.</p>
           </dd>
 
           <dt>只读 attribute Element host</dt>
@@ -1157,33 +1154,33 @@
               <li>如果此<a>context object(上下文对象)</a>是在<a>oldest shadow root(最原始的阴影根)</a>, 返回<strong>null</strong>.</li>
               <li>返回一个<a>older shadow root(不是最新的阴影根)</a>所关联到的<a>context object(上下文对象)</a>.</li>
             </ol>
-            <p>对于<a>HTML elements(HTML元素)</a>, <a href="#html-elements-and-their-shadow-trees">UA-provided</a> <a title="shadow tree">shadow trees(阴影树)</a> <strong>一定是</strong>不能被使用的.</p>
+            <p>对于<a>HTML elements(HTML元素)</a>, <a href="#html-elements-and-their-shadow-trees">UA-provided</a> <a title="shadow tree">shadow trees</a> <strong>一定是</strong>不能被使用的.</p>
           </dd>
 
           <dt>attribute DOMString innerHTML</dt>
           <dd>
-            <p>表示<a><code>ShadowRoot(阴影根)</code></a>的标记上下文.</p>
+            <p>表示<a><code>ShadowRoot</code></a>的标记上下文.</p>
             <p>当读取该属性时, 此属性<strong>必须</strong>返回在此<a>context object(上下文对象)</a>中通过<a>HTML fragment serialization algorithm(HTML文档序列化算法)</a>所处理过的结果作为 <a title="shadow host"><code>shadow host(阴影宿主)</code></a></p>
             <p>
               当设置该属性时,<strong>必须</strong>经过以下步骤:
             </p>
             <ol>
               <li>让<var>FRAGMENT(片段)</var>经过调用<a title="parse fragment">fragment parsing algorithm(片段解析算法)</a> [[!DOMPARSING]]使新设置的值作为<var>MARKUP(标识)</var>的结果, 并且此<a>context object(上下文对象)</a>作为<a title="shadow host"><code>shadow host(阴影宿主)</code></a></li>
-              <li><a>Replace all(替换所有)</a>在<a>shadow root(阴影根)中的<var>FRAGMENT(片段)</var></a></li>
+              <li><a>Replace all(替换所有)</a>在<a>shadow root中的<var>FRAGMENT(片段)</var></a></li>
             </ol>
           </dd>
 
           <dt>只读 attribute StyleSheetList styleSheets</dt>
           <dd>
-            <p>表示此<a>shadow root(阴影根)的样式列表</a>.</p>
-            <p>当读取该属性事时, 此属性<strong>必须</strong>返回一个<a><code>StyleSheetList(样式表)</code></a>序列包含此<a>shadow root(阴影根)的样式表</a>.
+            <p>表示此<a>shadow root的样式列表</a>.</p>
+            <p>当读取该属性事时, 此属性<strong>必须</strong>返回一个<a><code>StyleSheetList(样式表)</code></a>序列包含此<a>shadow root的样式表</a>.
             </p>
           </dd>
         </dl>
 
-        <p>一个<a><code>ShadowRoot(阴影根)</code></a> 实例的 <a><code>nodeType(节点类型)</code></a>属性 <strong>必须</strong> 返回 <a><code>DOCUMENT_FRAGMENT_NODE</code></a>. 因此, 一个<a><code>ShadowRoot(阴影根)</code></a>实例的<a><code>nodeName(节点名)</code></a> 属性<strong>必须</strong>返回<code>"#document-fragment"</code>.</p>
+        <p>一个<a><code>ShadowRoot</code></a> 实例的 <a><code>nodeType(节点类型)</code></a>属性 <strong>必须</strong> 返回 <a><code>DOCUMENT_FRAGMENT_NODE</code></a>. 因此, 一个<a><code>ShadowRoot</code></a>实例的<a><code>nodeName(节点名)</code></a> 属性<strong>必须</strong>返回<code>"#document-fragment"</code>.</p>
 
-        <p>调用方法<a><code>cloneNode()</code></a>方法去复制<a><code>ShadowRoot(阴影根)</code></a> 实例时 <strong>必须</strong>通常会抛出一个 <a><code>DATA_CLONE_ERR</code></a>异常.</p>
+        <p>调用方法<a><code>cloneNode()</code></a>方法去复制<a><code>ShadowRoot</code></a> 实例时 <strong>必须</strong>通常会抛出一个 <a><code>DATA_CLONE_ERR</code></a>异常.</p>
 
       </section>
 
@@ -1191,24 +1188,25 @@
         <h3><code>Element(元素)</code>接口的扩展</h3>
 
         <dl class="idl" title="partial interface Element">
-          <dt>ShadowRoot(阴影根)方法createShadowRoot()</dt>
+          <dt>ShadowRoot方法createShadowRoot()</dt>
           <dd>
             当此方法被调用, <strong>必须经过</strong>以下的步奏:
             <ol>
-              <li>创建一个新的<a><code>ShadowRoot(阴影根)</code></a>对象实例</li>
-              <li>增加此<a><code>ShadowRoot(阴影根)</code></a>对象到一个<a title="shadow roots list">有序的阴影根列表上</a>根关联上的此<a>context object(上下文对象)</a>作为最新的<a>shadow root(阴影根)</a></li>
-              <li>返回一个<a><code>ShadowRoot(阴影根)</code></a>对象.</li>
+              <li>创建一个新的<a><code>ShadowRoot</code></a>对象实例</li>
+              <li>增加此<a><code>ShadowRoot</code></a>对象到一个<a title="shadow roots list">有序的阴影根列表上</a>根关联上的此<a>context object(上下文对象)</a>作为最新的<a>shadow root</a></li>
+              <li>返回一个<a><code>ShadowRoot</code></a>对象.</li>
             </ol>
           </dd>
 
           <dt>NodeList(节点列表) getDestinationInsertionPoints()</dt>
           <dd>当此方法被调用, 此方法<strong>必须</strong>返回一个<a>static(静态)</a>的<a><code>NodeList(节点列表)</code></a>由在<a>destination insertion points(目标插入点)</a>中的<a title="insertion point">插入点</a>的<a>context object(上下文对象)</a>所组成的.</dd>
+            </dl>
       </section>
 
       <section>
         <h3>元素的<code>content(内容)</code></h3>
 
-        <p>元素的<code><dfn title="content element">content(内容)</dfn></code>表示一个在<a>shadow tree(阴影树)</a>中的<a>insertion point(插入点)</a>.</p>
+        <p>元素的<code><dfn title="content element">content(内容)</dfn></code>表示一个在<a>shadow tree</a>中的<a>insertion point(插入点)</a>.</p>
 
         <p>如果一个<code>content(内容)</code>元素不符合<a>insertion point(插入点)</a>的条件, </p>
 
@@ -1261,10 +1259,10 @@
       </section>
 
       <section>
-        <h3><code>shadow(阴影)</code>元素</h3>
+        <h3><code>shadow</code>元素</h3>
 
-        <p><code><dfn title="shadow element">shadow(阴影)</dfn></code>元素表示在<a>shadow tree(阴影树)</a>中的一个<a>shadow insertion point(阴影插入点)</a>.</p>
-        <p>如果一个<code>shadow(阴影)</code>元素不满足<a>insertion point(插入点)</a>的条件, 它<strong>必须</strong>就像<a><code>HTMLUnknownElement(未知HTML元素)</code></a>一样的渲染行为.</p>
+        <p><code><dfn title="shadow element">shadow</dfn></code>元素表示在<a>shadow tree</a>中的一个<a>shadow insertion point(阴影插入点)</a>.</p>
+        <p>如果一个<code>shadow</code>元素不满足<a>insertion point(插入点)</a>的条件, 它<strong>必须</strong>就像<a><code>HTMLUnknownElement(未知HTML元素)</code></a>一样的渲染行为.</p>
 
         <dl>
           <dt>上下文</dt>
@@ -1341,7 +1339,7 @@
 &lt;/ul&gt;
       </pre>
 
-      <p>为了管理新闻报道, Bob决定使用<strong>shadow DOM</strong>. 这样做允许Bob保持整个标签的整洁, 拥有可以控制插入点的权会使得通过类名分类新闻的任务变的非常简单. 在得到一杯<a href="http://en.wikipedia.org/wiki/List_of_coffee_beverages#Green_Eye">Green Eye</a>后, 他制作出了如下shadow tree(阴影树),<code>ul</code>元素成为了宿主:</p>
+      <p>为了管理新闻报道, Bob决定使用<strong>shadow DOM</strong>. 这样做允许Bob保持整个标签的整洁, 拥有可以控制插入点的权会使得通过类名分类新闻的任务变的非常简单. 在得到一杯<a href="http://en.wikipedia.org/wiki/List_of_coffee_beverages#Green_Eye">Green Eye</a>后, 他制作出了如下shadow tree,<code>ul</code>元素成为了宿主:</p>
       <pre class="example highlight">
 &lt;div class=&quot;breaking&quot;&gt;
     &lt;ul&gt;
@@ -1354,7 +1352,7 @@
     &lt;/ul&gt;
 &lt;/div&gt;
       </pre>
-      <p>Bob接下来根据来自于设计师的要求给新建立的消息控件样式，然后把它加入到shadow tree(阴影树)模型中:</p>
+      <p>Bob接下来根据来自于设计师的要求给新建立的消息控件样式，然后把它加入到shadow tree模型中:</p>
       <pre class="example highlight">
 &lt;style&gt;
     div.breaking {
@@ -1404,7 +1402,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       <p>几个月过去了.</p>
 
-      <p>红旗飘飘了！ 在Bob一年一度的研讨会中, Alice 负责增加 <strong>另一个</strong>, 临时的盒子在新闻控件中, 其中有许多关于选举的新闻. Alice阅读学习了Bob's代码, 阅读了shadow DOM的标准并且实现了, 多亏shadow tree(阴影树)复合的支持, 她并没有修改Bob的代码. 就像平常一样, 她的解决方法优雅而简单, 适当的在Bob的代码上做了点巧妙的变化:</p>
+      <p>红旗飘飘了！ 在Bob一年一度的研讨会中, Alice 负责增加 <strong>另一个</strong>, 临时的盒子在新闻控件中, 其中有许多关于选举的新闻. Alice阅读学习了Bob's代码, 阅读了shadow DOM的标准并且实现了, 多亏shadow tree复合的支持, 她并没有修改Bob的代码. 就像平常一样, 她的解决方法优雅而简单, 适当的在Bob的代码上做了点巧妙的变化:</p>
       <pre class="example highlight">
 // TODO(alice): BEGIN -- DELETE THIS CODE AFTER ELECTIONS ARE OVER.
 var ELECTION_BOX_REMOVAL_DEADLINE = ...;
@@ -1434,7 +1432,7 @@ if (Date.now() &lt; ELECTION_BOX_REMOVAL_DEADLINE) {
 }
 // TODO(alice): END -- DELETE THIS CODE AFTER ELECTIONS ARE OVER.
       </pre>
-      <p>使用<code>shadow(阴影)</code> 元素允许Alice去组合Bob's组件<strong>到自己的组件里</strong>&mdash;在没有改变产品任何一行代码的情况下. 她对自己笑了, Alice意识到Bob已经想出一个方式关于保持文档标签整洁的想法, 但<strong>她</strong>是一个如此早的使用shadow tree(阴影树)组成这种很酷的方式去解决问题的人.</p>
+      <p>使用<code>shadow</code> 元素允许Alice去组合Bob's组件<strong>到自己的组件里</strong>&mdash;在没有改变产品任何一行代码的情况下. 她对自己笑了, Alice意识到Bob已经想出一个方式关于保持文档标签整洁的想法, 但<strong>她</strong>是一个如此早的使用shadow tree组成这种很酷的方式去解决问题的人.</p>
     </section>
 
     <section class="appendix">
