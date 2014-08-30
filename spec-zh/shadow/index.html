@@ -384,7 +384,7 @@
                   </ol></li>
                 <li>如果没有分布到 <var>CONTENT</var> 中的<a title="node">结点</a>：
                   <ol>
-                    <li>把每个 <var>CONTENT</var> 的子女定为 <var>CHILD</var>
+                    <li>把每个 <var>CONTENT</var> 的子节点定为 <var>CHILD</var>
                       <ol>
                         <li>把 <var>CHILD</var> <a title="distributes">分布</a>到 <var>CONTENT</var> 中</li>
                       </ol></li>
@@ -425,7 +425,7 @@
     <section>
       <h2>组合</h2>
 
-      <p><dfn>组合树子女计算算法</dfn><strong>必须</strong>用来判定一个<a>组合树</a>中<a>结点</a>的子<a title="node">结点</a>，且<strong>必须</strong><a title="processing equivalence">等价</a>于以下处理步骤：</p>
+      <p><dfn>组合树子节点算法</dfn><strong>必须</strong>用来判定一个<a>组合树</a>中<a>结点</a>的子<a title="node">结点</a>，且<strong>必须</strong><a title="processing equivalence">等价</a>于以下处理步骤：</p>
 
       <div class="algorithm">
         <dl>
@@ -439,7 +439,7 @@
           <li>把 <var>CHILDREN</var> 设为空的有序结点列表</li>
           <li>如果 <var>NODE</var> 是一个 <a>shadow 宿主</a>：
             <ol>
-              <li>把 <var>CHILD-POOL</var> 设为 <var>NODE</var> <a>宿主</a>的<a>最年轻 shadow 根</a>的子女。</li>
+              <li>把 <var>CHILD-POOL</var> 设为 <var>NODE</var> <a>宿主</a>的<a>最年轻 shadow 根</a>的子节点。</li>
             </ol></li>
           <li>否则：
             <ol>
@@ -466,7 +466,7 @@
       <p>对一个给定的<a>树中树</a> <var>TREE-OF-TREES</var> 来说，由 <var>TREE-OF-TREES</var> 构造出的<a>组合树</a><strong>必须</strong><a title="processing equivalence">等价</a>于以下处理步骤：</p>
       <ul>
         <li><a>组合树</a>的<a>根</a><a>结点</a>是 <var>TREE-OF-TREES</var> 的<a>树根</a>的<a>根</a><a>结点</a>。</li>
-        <li>对于一个<a>参与</a>到<a>组合树</a>中的给定的<a>结点</a>，其子<a title="node">结点</a>是将该<a>结点</a>作为输入执行<a>组合树子女计算算法</a>的结果。
+        <li>对于一个<a>参与</a>到<a>组合树</a>中的给定的<a>结点</a>，其子<a title="node">结点</a>是将该<a>结点</a>作为输入执行<a>组合树子节点算法</a>的结果。
         </li>
       </ul>
     </section>
@@ -747,7 +747,7 @@
           <ol>
             <li>让<var>CURRENT-TARGET-TREE(当前目标树)</var>成为一个包含<var>CURRENT-TARGET(当前目标)</var>的<a>node tree(节点树)</a></li>
             <li>让<var>RELATED-TARGET-TREE(关联目标树)</var>成为一个包含<var>RELATED-TARGET(关联目标)</var>的<a>node tree(节点树)</a></li>
-            <li>让<var>RELATED-TARGET-EVENT-PATH(相关目标事件路径)</var>在<var>RELATED-TARGET(关联目标)</var>和<var>EVENT(事件)</var>中通过<a>event path calculation algorithm(事件路径计算算法)</a>的结果输出</li>
+            <li>让<var>RELATED-TARGET-EVENT-PATH(相关目标事件路径)</var>在<var>RELATED-TARGET(关联目标)</var>和<var>EVENT(事件)</var>中通过<a>event path calculation algorithm(事件路径算法)</a>的结果输出</li>
             <li>如果<var>CURRENT-TARGET-TREE(当前目标树)</var>和<var>RELATED-TARGET-TREE(关联目标树)</var>都在同一个<a>tree of trees(树)</a>:
               <ol>
                 <li>让<var>LOWEST-COMMON-ANCESTOR-TREE(共有度最高的祖先树)</var>成为<var>CURRENT-TARGET-TREE(当前目标树)</var>和<var>RELATED-TARGET-TREE(关联目标树)</var>中<a>inclusive ancestor tree(包含的祖先树)</a>中共有度最高的 </li>
@@ -1130,7 +1130,7 @@
               <li>如果<a>context object(上下文对象)</a>不是一个<a><code>ShadowRoot(阴影根)</code></a>的实例, 那么抛出一个<a><code>InvalidNodeTypeError(无效节点的错误)</code></a>错误.</li>
               <li>如果其中任意一个参数无效, <code>x</code>大于<a>viewport(视窗)</a>的宽度不包括已经被渲染出来的滚动条(如果有), 或者如果是<code>y</code>大于<a>viewport(视窗)</a>的高度不包括已经被渲染出来的滚动条(如果有), 返回<strong>null</strong>.</li>
               <li>让<var>HIT</var>这样的方式成为描述<a>element(元素)</a>在<a>viewport(视窗)</a>中<code>X</code>和<code>Y</code>坐标, 这样的方式决定于是否通过打点测试</li>
-              <li>让<var>PATH(路径)</var>在<a>HIT</a>里通过<a>event path calculation algorithm(事件路径计算算法)</a>所得到的结果HRnull作为输入</li>
+              <li>让<var>PATH(路径)</var>在<a>HIT</a>里通过<a>event path calculation algorithm(事件路径算法)</a>所得到的结果HRnull作为输入</li>
               <li>返回通过<a>retargeting algorithm(重定向算法)</a>所得到的结果<var>PATH(路径)</var>和<a>context object(上下文对象)</a>作为输入</li>
             </ol>
           </dd>
