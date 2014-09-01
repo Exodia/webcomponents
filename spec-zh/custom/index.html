@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,18 +85,18 @@
     <li><a href="#concepts">概念</a></li>
     <li><a href="#custom-element-lifecycle">自定义元素生命周期</a>
     <ol>
-        <li><a href="#enqueuing-and-invoking-callbacks">入栈和调用回调</a></li>
-        <li><a href="#types-of-callbacks">回调类型</a></li>
+        <li><a href="#enqueuing-and-invoking-callbacks">入栈和调用回调函数</a></li>
+        <li><a href="#types-of-callbacks">回调函数类型</a></li>
     </ol></li>
     <li><a href="#creating-and-passing-registries">创建和传递注册</a></li>
     <li><a href="#registering-custom-elements">注册自定义元素</a>
     <ol>
-        <li><a href="#extensions-to-document-interface-to-register">扩展<code>文档</code> 接口</a></li>
+        <li><a href="#extensions-to-document-interface-to-register">扩展<code>文档</code>接口</a></li>
         <li><a href="#unresolved-element-pseudoclass">Unresolved伪类元素</a></li>
     </ol></li>
     <li><a href="#instantiating-custom-elements">实例化自定义元素</a>
     <ol>
-        <li><a href="#extensions-to-document-interface-to-instantiate">扩展<code>文档</code> 接口</a></li>
+        <li><a href="#extensions-to-document-interface-to-instantiate">扩展<code>文档</code>接口</a></li>
     </ol>
     </li>
     <li><a href="#parsing">解析自定义元素</a></li>
@@ -114,8 +115,8 @@
     <p>所有图表，示例，备注，以及明确标记为非规范的部分都是非规范的。其他内容都是规范的。</p>
 
 
-    <p>在本文档的规范部分中的关键字 "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",
-        "MAY", 和 "OPTIONAL" 在 <a href="http://dev.w3.org/2006/xbl2/#refsRFC2119">RFC2119</a>
+    <p>在本文档的规范部分中的关键字 "必须", "禁止", "要求", "会", "不会", "应该", "不应该", "推荐",
+        "可以", 和 "可选" 在 <a href="http://dev.w3.org/2006/xbl2/#refsRFC2119">RFC2119</a>
         的描述中有解释。为了方便阅读，这些词语不会以全部大写字母出现在本规范。</p>
 
 
@@ -160,9 +161,9 @@
         href="#dfn-custom-element">自定元素</a>的<a href="http://www.w3.org/TR/WebIDL/#dfn-interface">接口</a>的<a href="http://www.w3.org/TR/WebIDL/#interface-prototype-object">接口原型对象</a>被称为
     <dfn id="dfn-custom-element-prototype">自定义元素原型</dfn>。</p>
 
-<p><dfn id="dfn-custom-element-type">自定义元素类型</dfn> 标识一个<a href="#dfn-custom-element">自定义元素</a> <a href="http://www.w3.org/TR/WebIDL/#dfn-interface">接口</a>
+<p><dfn id="dfn-custom-element-type">自定义元素类型</dfn> 标识一个<a href="#dfn-custom-element">自定义元素</a><a href="http://www.w3.org/TR/WebIDL/#dfn-interface">接口</a>
     <strong>必须</strong>和<a href="http://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-NCName">NCName</a>
-    产生方式相匹配的字符串，<strong>必须</strong>包含一个<var>U+002D连字符号</var>字符, 且<strong>不能</strong>包含任何<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/common-microsyntaxes.html#uppercase-ascii-letters">ASCII大写字母</a>. <a href="#dfn-custom-element-type">自定义元素类型</a><strong>不能</strong>是下面的任何一种:</p>
+    产生方式相匹配的字符串，<strong>必须</strong>包含一个<var>U+002D连字符号</var>字符, 且<strong>不能</strong>包含任何<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/common-microsyntaxes.html#uppercase-ascii-letters">ASCII大写字母</a>. <a href="#dfn-custom-element-type">自定义元素类型</a><strong>禁止</strong>是下面的任何一种:</p>
 <ul>
     <li><code>annotation-xml</code></li>
     <li><code>color-profile</code></li>
@@ -184,13 +185,13 @@
     <li><a href="http://dom.spec.whatwg.org/#concept-element-local-name">本地名</a>,</li>
     <li><a href="http://dom.spec.whatwg.org/#concept-element-namespace">命名空间</a>,</li>
     <li><a href="#dfn-custom-element-prototype">自定义元素原型</a>, 和 </li>
-    <li><a href="#dfn-lifecycle-callbacks">生命周期回调</a>.</li>
+    <li><a href="#dfn-lifecycle-callbacks">生命周期回调函数</a>。</li>
 </ul>
 
 <p>在创建时， <a href="http://dom.spec.whatwg.org/#concept-document">文档</a>可以和一个<a href="#dfn-registry">注册表</a>关联。<dfn id="dfn-registry">注册表</dfn>是<a
         href="#dfn-element-definition">元素定义</a>的<a href="http://en.wikipedia.org/wiki/Set_(computer_science)">集合</a>。</p>
 
-<p><dfn id="dfn-element-registration">元素注册</dfn>是一个添加<a href="#dfn-element-definition">元素定义</a>到一个<a href="#dfn-registry">注册表</a>的过程. 一个<a href="#dfn-element-definition">元素定义</a>只能被<a href="#dfn-element-registration">注册</a>到一个<a href="#dfn-registry">注册表</a>.</p>
+<p><dfn id="dfn-element-registration">元素注册</dfn>是一个添加<a href="#dfn-element-definition">元素定义</a>到一个<a href="#dfn-registry">注册表</a>的过程。 一个<a href="#dfn-element-definition">元素定义</a>只能被<a href="#dfn-element-registration">注册</a>到一个<a href="#dfn-registry">注册表</a>.</p>
 
 <p>如果一个<a href="http://dom.spec.whatwg.org/#concept-document">文档</a> 有一个与之关联的 <a href="#dfn-registry">注册</a> ，
     那么这个 <a href="http://dom.spec.whatwg.org/#concept-document">文档</a> 和在这个 <a href="#dfn-registry">注册表</a>特定的 <a
@@ -215,18 +216,17 @@
 
 <p>一个 <a href="#dfn-custom-element">自定义元素</a> 可以在它的生命周期贯穿这些改变:</p>
 <ul>
-    <li><a href="#dfn-custom-element">自定义元素</a> 被创建之前，它的<a href="#dfn-custom-element">定义</a>先被<a href="#dfn-element-registration">注册</a></li>
-    <li><a href="#dfn-custom-element">自定义元素</a> 的<a href="#dfn-element-definition">Definition</a>被<a href="#dfn-element-registration">注册</a></li>
+    <li><a href="#dfn-custom-element">自定义元素</a> 被创建早于它的<a href="#dfn-custom-element">定义</a>被<a href="#dfn-element-registration">注册</a></li>
+    <li><a href="#dfn-custom-element">自定义元素</a> 的<a href="#dfn-element-definition">定义</a>被<a href="#dfn-element-registration">注册</a></li>
     <li><a href="#dfn-custom-element">自定义元素</a> 实例被创建后于<a href="#dfn-element-definition">定义</a>的<a href="#dfn-element-registration">注册</a></li>
     <li><a href="#dfn-custom-element">自定义元素</a>被 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#insert-an-element-into-a-document">插入到当前文档</a></li>
     <li><a href="#dfn-custom-element">自定义元素</a><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#remove-an-element-from-a-document">从当前文档被移除</a></li>
     <li><a href="#dfn-custom-element">自定义元素</a>的 <a href="http://dom.spec.whatwg.org/#concept-attribute">属性</a> 被创建, 移除, 或修改。</li>
 </ul>
 
-<p>各种回调函数被调用当一个<a href="#dfn-custom-element">自定义元素</a> 贯穿其中的一些变化。这些回调函数在内部以<a
-        href="http://en.wikipedia.org/wiki/Associative_array">建-值对</a>的集合存储，被称为<dfn id="dfn-lifecycle-callbacks">生命周期回调</dfn>。</p>
-                                                                                         从一个被称作属性的对象属性转移到生命周期
-<p><dfn id="dfn-transfer-callback"> 把一个被称作 <em>名称 </em> 的回调从一个被称作 <em>属性</em>的对象属性</dfn>转移到 <a href="#dfn-lifecycle-callbacks">生命周期回调</a>,用户 <strong>必须</strong> 执行以下步骤：</p>
+<p>各种回调函数被调用当一个<a href="#dfn-custom-element">自定义元素</a> 贯穿这些变化。这些回调函数在内部以<a
+        href="http://en.wikipedia.org/wiki/Associative_array">建-值对</a>的集合存储，被称为<dfn id="dfn-lifecycle-callbacks">生命周期回调函数</dfn>。</p>
+<p><dfn id="dfn-transfer-callback"> 把一个被称作 <em>name</em> 的回调函数从一个被称作<em>property</em>的对象属性</dfn>转移到 <a href="#dfn-lifecycle-callbacks">生命周期回调</a>,用户代理 <strong>必须</strong> 执行以下步骤：</p>
 <div class="algorithm">
 <dl>
 <dt>输入</dt>
@@ -245,15 +245,15 @@
 </ol>
 </div>
 
-<h3 id="enqueuing-and-invoking-callbacks">入栈和调用回调</h3>
+<h3 id="enqueuing-and-invoking-callbacks">入栈和调用回调函数</h3>
 
 <p>为了方便调用回调函数， <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#unit-of-related-similar-origin-browsing-contexts">相关的类似浏览上下文的每个单元</a> 有一个<dfn id="dfn-processing-stack">处理堆栈</dfn>,
-    最初是空的。堆栈的每一项是一个<dfn id="dfn-element-queue">元素队列</dfn>,最初也是空的. <a href="#dfn-element-queue">元素队列</a>的每一项是一个 <a href="#dfn-custom-element">自定义元素</a>.</p>
+    最初是空的。堆栈的每一项是一个<dfn id="dfn-element-queue">元素队列</dfn>,最初也是空的。<a href="#dfn-element-queue">元素队列</a>的每一项是一个 <a href="#dfn-custom-element">自定义元素</a>。</p>
 
 <p>每个 <a href="#dfn-custom-element">自定义元素</a>有一个相关的<dfn id="dfn-callback-queue">回调队列</dfn>和一个<dfn id="dfn-element-is-being-created-flag">元素被创建成为</dfn>
     标志。标志最初设置为 <strong>false</strong> 以及 <a href="#dfn-callback-queue">回调队列</a> 最初是空的。在队列中的每项包含回调本身和零个或多个被用作回调参数的字符串值。</p>
 
-<p>在一个 <a href="#dfn-element-queue">元素队列</a><dfn id="dfn-invoke-callbacks-in-element-queue">调用回调函数</dfn>, 用户<strong>必须</strong>
+<p>在一个 <a href="#dfn-element-queue">元素队列</a><dfn id="dfn-invoke-callbacks-in-element-queue">调用回调函数</dfn>, 用户代理<strong>必须</strong>
     执行这些步骤或<a href="#dfn-processing-equivalence">类似</a>:</p>
 
 <div class="algorithm">
@@ -265,8 +265,8 @@
 <ol>
     <li>在 <var>队列</var>中<var>每个元素</var>的<a href="#dfn-custom-element">自定义元素</a> </a>:
     <ol>
-        <li>让 <var>回调函数</var> 成为 <var>元素</var>的<a href="#dfn-callback-queue">回调队列</a></li>
-        <li>重复直到<var>回调函数</var>是空的:
+        <li>让 <var>CALLBACKS</var> 成为 <var>元素</var>的<a href="#dfn-callback-queue">回调队列</a></li>
+        <li>重复直到<var>CALLBACKS</var>是空的:
         <ol>
             <li>从<var>CALLBACKS</var>移除第一项，让 <var>CALLBACK</var>成为这一项</li>
             <li>用<var>ELEMENT</var>作为<a href="http://dev.w3.org/2006/webapi/WebIDL/#dfn-callback-this-value">回调函数的值 </a>去调用 <var>CALLBACK</var>, 如果存在，在
@@ -276,21 +276,21 @@
 </ol>
 </div>
 
-<p>任何时候，一个脚本调用一个方法，读取或设置由用户实现的一个属性，下面的操作<strong>必须</strong>出现：
+<p>任何时候，一个脚本调用一个方法，读取或设置属性由用户代理执行，下面的操作<strong>必须</strong>出现：
 <ul>
-    <li>当脚本转换成用户代码，压入一个新的 <a href="#dfn-element-queue">元素队列</a> 到 <a href="#dfn-processing-stack">处理栈</a></li>
-    <li>当用户代码转换成脚本，从<a href="#dfn-processing-stack">处理栈</a>弹出<a href="#dfn-element-queue">元素队列</a> 并 <a href="#dfn-invoke-callbacks-in-element-queue">调用回调函数</a>在队列里.</li>
+    <li>当脚本转换成用户代理代码，压入一个新的 <a href="#dfn-element-queue">元素队列</a> 到 <a href="#dfn-processing-stack">处理栈</a></li>
+    <li>当用户代理代码转换成脚本，从<a href="#dfn-processing-stack">处理栈</a>弹出<a href="#dfn-element-queue">元素队列</a> 并 <a href="#dfn-invoke-callbacks-in-element-queue">调用回调函数</a>在队列里.</li>
 </ul>
 </p>
 
-<div class="informative">如上所述，这些行为包含每个用户代理实现的方法或属性访问。预期的效果是任何生命周期回调， 排队运行这些方法或访问器的结果是把控制权返回给脚本调用。如果一个方法或访问被永不排队生命周期回调所知，用户可以选择不把它包装成一个性能优化。</div>
+<div class="informative">如上所述，这些行为包含每个用户代理实现的方法或属性访问。预期的效果是任何生命周期回调， 排队运行这些方法或访问器的结果是把控制权返回给脚本调用。如果一个方法或访问被永不排队生命周期回调所知，用户代理可以选择不把它包装成一个性能优化。</div>
 
-<p>除了一个<a href="#dfn-element-queue">元素队列</a>, 也有一个<dfn id="dfn-sorted-element-queue">排队的元素队列</dfn>. <a href="#dfn-custom-element">自定义元素</a>被保存在增加
+<p>除了一个<a href="#dfn-element-queue">元素队列</a>, 也有一个<dfn id="dfn-sorted-element-queue">排队的元素队列</dfn>。 <a href="#dfn-custom-element">自定义元素</a>被保存在增加
     <a href="#dfn-custom-element-order">自定义元素顺序</a>的顺序中。</p>
 
 <p><dfn id="dfn-custom-element-order">自定义元素顺序</dfn> 是<a href="#dfn-document-custom-element-order">文档自定义元素顺序</a>和 <a
         href="#dfn-import-tree-order">输入树顺序</a>的总和, 其中 <a href="#dfn-import-tree-order">输入树顺序</a>
-    被缩放以使它的最低值总是比<a href="#dfn-document-custom-element-order">文档自定义元素顺序</a>的最高可能值要大。</p>
+    被控制以使它的最低值总是比<a href="#dfn-document-custom-element-order">文档自定义元素顺序</a>的最高可能值要大。</p>
 
 
 <p><dfn id="dfn-document-custom-element-order">文档自定义元素顺序</dfn>是一个数值，与每一个<a href="#dfn-custom-element">自定义元素</a>相关。
@@ -299,7 +299,7 @@
     <a href="#dfn-custom-element">自定义元素</a> 作为它的 <a
             href="#dfn-custom-element-order">自定义元素顺序</a> 每当发生以下情况的结果:</p>
 <ul>
-    <li>一个<a href="#dfn-custom-element">自定义元素</a> 从 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#stack-of-open-elements">开发元素堆栈</a>中弹出</li>
+    <li>一个<a href="#dfn-custom-element">自定义元素</a> 从 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/parsing.html#stack-of-open-elements">开放元素堆栈</a>中弹出</li>
     <li>一个 <a href="#dfn-custom-element">自定义元素</a>被创建用其他解析方法</li>
 </ul>
 
@@ -312,7 +312,7 @@
             href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html#dfn-imported-document">输入文档</a>的内容来替换的<a
             href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html#dfn-import-tree">输入树</a>的<a href="http://dom.spec.whatwg.org/#concept-tree-order">树顺序</a>决定。</p>
 
-<p><dfn id="dfn-highest-stable-order">最稳定的顺序</dfn> 是紧接着前面的一个<a href="#dfn-custom-element">元素</a>第一次 <a
+<p><dfn id="dfn-highest-stable-order">最稳定的顺序</dfn> 是紧接着前面的一个<a href="#dfn-custom-element">元素</a>在第一个入口的 <a
         href="#dfn-custom-element-order">自定义元素顺序</a>的值，在<a href="http://dom.spec.whatwg.org/#concept-tree-order">树顺序</a>，
      其 <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html#dfn-import-ready-flag">准备好的标志
        </a> 尚未设定。
@@ -341,7 +341,7 @@
 
 <p>每一个 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#unit-of-related-similar-origin-browsing-contexts">与浏览器上下文相关的单元</a>有一个最初为空的<a href="#dfn-sorted-element-queue">存储元素队列</a>, 被成为 <dfn id="dfn-base-element-queue">基本元素队列</dfn>.</p>
 
-<p>作为<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#perform-a-microtask-checkpoint">microtask checkpoint</a>的一部分, 用户 <strong>必须</strong> <a href="#dfn-process-base-element-queue">处理基础元素队列</a><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#unit-of-related-similar-origin-browsing-contexts">与浏览器上下文相关的单元</a>到 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#script's-browsing-context">脚本浏览上下文</a>。</p>
+<p>作为<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#perform-a-microtask-checkpoint">microtask checkpoint</a>的一部分, 用户代理 <strong>必须</strong> <a href="#dfn-process-base-element-queue">处理基础元素队列</a><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#unit-of-related-similar-origin-browsing-contexts">与浏览器上下文相关的单元</a>到 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#script's-browsing-context">脚本浏览上下文</a>。</p>
 
 <p>为了阻止重写，当 <a href="#dfn-process-base-element-queue">处理基础元素队列</a>时，每一个 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#unit-of-related-similar-origin-browsing-contexts">与浏览器上下文相关的单元</a>有一个<dfn id="dfn-processing-base-element-queue">处理基础元素队列</dfn>
     标志, <strong>必须</strong> 初始化为<strong>false</strong>.</p>
@@ -353,7 +353,7 @@
     microtask checkpoint ，确保用尽microtasks的各种类型步骤。
 </div>
 
-<p>为了<dfn id="dfn-process-base-element-queue">处理基本元素队列</dfn>, 用户<strong>必须</strong> 执行以下步骤或 <a href="#dfn-processing-equivalence">同等</a>：</p>
+<p>为了<dfn id="dfn-process-base-element-queue">处理基本元素队列</dfn>, 用户代理<strong>必须</strong> 执行以下步骤或 <a href="#dfn-processing-equivalence">同等</a>：</p>
 
 <div class="algorithm">
 <dl>
@@ -375,7 +375,7 @@
     <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#unit-of-related-similar-origin-browsing-contexts">与浏览器上下文相关的单元</a> , <dfn id="dfn-current-element-queue">当前元素队列</dfn>是
     <a href="#dfn-processing-stack">处理堆栈</a> 的顶部的<a href="#dfn-element-queue">元素队列</a>，或是<a href="#dfn-base-element-queue">基本元素队列</a> 如果 <a href="#dfn-processing-stack">处理堆栈</a> 为空。</p>
 
-要<dfn id="dfn-enqueue-lifecycle-callback">排队一个生命周期回调</dfn>, 用户必须运行以下步骤或<a href="#dfn-processing-equivalence">等同</a>:</p>
+要<dfn id="dfn-enqueue-lifecycle-callback">排队一个生命周期回调</dfn>, 用户代理必须运行以下步骤或<a href="#dfn-processing-equivalence">等同</a>:</p>
 
 <div class="algorithm">
 <dt>输入</dt>
@@ -395,7 +395,7 @@
 </ol>
 </div>
 
-<h3 id="types-of-callbacks">回调类型</h3>
+<h3 id="types-of-callbacks">回调函数类型</h3>
 
 <p>下面的回调确认：</p>
 <dl>
@@ -405,24 +405,24 @@
     <dd>回到函数调用期间，<a href="#dfn-element-is-being-created-flag">被创建的元素</a> 标志 <strong>必须</strong> 设置为 <strong>true</strong>。 在所有情况下，标志 <strong>必须</strong> 被设为 <strong>false</strong>。</dd>
     <dd>如果被 <a href="#dfn-created-callback">创建</a> 的回调存在于一个元素，所有回调 <strong>不能</strong>被排队直到 <a href="#dfn-created-callback">被创建</a> 回调的调用开始。</dd>
 <dt><dfn id="dfn-attached-callback">attachedCallback</dfn></dt>
-    <dd>除非另有规定，回调 <strong>必须</strong>被 <a href="#dfn-enqueue-lifecycle-callback">排队</a> 无论何时 <a href="#dfn-custom-element">自定义元素</a> 被 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#insert-an-element-into-a-document">插入一个文档</a> <em>且</em> 这个 <a href="http://dom.spec.whatwg.org/#concept-document">文档</a>有一个<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#browsing-context">浏览上下文</a>。</dd>
+    <dd>除非另有规定，回调 <strong>必须</strong>被 <a href="#dfn-enqueue-lifecycle-callback">入队</a> 当 <a href="#dfn-custom-element">自定义元素</a> 被 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#insert-an-element-into-a-document">插入一个文档</a> <em>且</em> 这个 <a href="http://dom.spec.whatwg.org/#concept-document">文档</a>有一个<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#browsing-context">浏览上下文</a>。</dd>
 <dt><dfn id="dfn-detached-callback">detachedCallback</dfn></dt>
-    <dd>除非另有规定， 回调 <strong>必须</strong>被 <a href="#dfn-enqueue-lifecycle-callback">排队</a> 无论何时 <a href="#dfn-custom-element">自定义元素</a> 被 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#remove-an-element-from-a-document">从文档移除</a> <em>且</em> 这个 <a href="http://dom.spec.whatwg.org/#concept-document">文档</a>
+    <dd>除非另有规定， 回调 <strong>必须</strong>被 <a href="#dfn-enqueue-lifecycle-callback">入队</a> 当 <a href="#dfn-custom-element">自定义元素</a> 被 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/infrastructure.html#remove-an-element-from-a-document">从文档移除</a> <em>且</em> 这个 <a href="http://dom.spec.whatwg.org/#concept-document">文档</a>
         有一个 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/browsers.html#browsing-context">浏览上下文</a>。</dd>
 <dt><dfn id="dfn-attribute-changed-callback">attributeChangedCallback</dfn></dt>
-    <dd>除非另有规定， 回调 <strong>必须</strong>被 <a href="#dfn-enqueue-lifecycle-callback">排队</a>无论何时 <a href="#dfn-custom-element">自定义元素</a>的<a href="http://dom.spec.whatwg.org/#concept-attribute">属性</a> 被 <a href="http://dom.spec.whatwg.org/#attribute-is-added">添加</a>, <a href="http://dom.spec.whatwg.org/#attribute-is-changed">修改</a> 或是 <a href="http://dom.spec.whatwg.org/#attribute-is-removed">移除</a>。根据 <a href="http://dom.spec.whatwg.org/#concept-attribute">属性</a> 修改类型，
+    <dd>除非另有规定， 回调 <strong>必须</strong>被 <a href="#dfn-enqueue-lifecycle-callback">入队</a>当 <a href="#dfn-custom-element">自定义元素</a>的<a href="http://dom.spec.whatwg.org/#concept-attribute">属性</a> 被 <a href="http://dom.spec.whatwg.org/#attribute-is-added">添加</a>, <a href="http://dom.spec.whatwg.org/#attribute-is-changed">修改</a> 或是 <a href="http://dom.spec.whatwg.org/#attribute-is-removed">移除</a>。根据 <a href="http://dom.spec.whatwg.org/#concept-attribute">属性</a> 修改类型，
         下列额外的字符串被添加到队列项中：
     <dl>
-    <dt><a href="http://dom.spec.whatwg.org/#attribute-is-added">attribute is set</a></dt>
+    <dt><a href="http://dom.spec.whatwg.org/#attribute-is-added">属性被设置</a></dt>
         <dd><a href="http://dom.spec.whatwg.org/#concept-attribute-name">属性名</a>, <strong>null</strong>, 新 <a href="http://dom.spec.whatwg.org/#concept-attribute-value">属性值</a>, 和 <a href="http://dom.spec.whatwg.org/#concept-attribute-namespace">属性命名空间</a>。</dd>
-    <dt><a href="http://dom.spec.whatwg.org/#attribute-is-changed">attribute is changed</a></dt>
+    <dt><a href="http://dom.spec.whatwg.org/#attribute-is-changed">属性被改变</a></dt>
         <dd><a href="http://dom.spec.whatwg.org/#concept-attribute-name">属性名</a>, 旧 <a href="http://dom.spec.whatwg.org/#concept-attribute-value">属性值</a>, 新 <a href="http://dom.spec.whatwg.org/#concept-attribute-value">属性值</a>, 和 <a href="http://dom.spec.whatwg.org/#concept-attribute-namespace">属性命名空间</a>。</dd>
-    <dt><a href="http://dom.spec.whatwg.org/#attribute-is-removed">attribute is removed</a>
+    <dt><a href="http://dom.spec.whatwg.org/#attribute-is-removed">属性被移除</a>
         <dd><a href="http://dom.spec.whatwg.org/#concept-attribute-name">属性名</a>, 旧 <a href="http://dom.spec.whatwg.org/#concept-attribute-value">属性值</a>, <strong>null</strong>, 和 <a href="http://dom.spec.whatwg.org/#concept-attribute-namespace">属性命名空间</a>。</dd>
     </dl>
 </dl>
 
-<p>要在<a href="#dfn-custom-element">自定义元素</a>上 <dfn id="dfn-set-prototype">设置自定义元素的原型</dfn>， 用户 <strong>必须</strong> 执行以下步骤或 <a href="#dfn-processing-equivalence">同等</a>：</p>
+<p>要在<a href="#dfn-custom-element">自定义元素</a>上 <dfn id="dfn-set-prototype">设置自定义元素的原型</dfn>， 用户代理 <strong>必须</strong> 执行以下步骤或 <a href="#dfn-processing-equivalence">同等</a>：</p>
 
 <div class="algorithm">
 <dl>
@@ -451,7 +451,7 @@
     <li>当 <a href="http://dom.spec.whatwg.org/#interface-domimplementation"><code>DOMImplementation</code></a>的 <a href="http://dom.spec.whatwg.org/#dom-domimplementation-createdocument"><code>createDocument</code></a> 方法被调用<em>命名空间</em> 设置为 <a href="http://www.w3.org/1999/xhtml/">HTML Namespace</a> 或者当 <a href="http://dom.spec.whatwg.org/#dom-domimplementation-createhtmldocument"><code>createHTMLDocument</code></a> 方法被调用, 使用与实例关联的<a
             href="http://dom.spec.whatwg.org/#concept-document">document</a>的<a href="#dfn-registry">注册</a></li>
     <li>当创建一个<a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html#dfn-import">输入</a>， 使用 <a href="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/spec/imports/index.html#dfn-master-document">主文档</a>的
-        <a href="#dfn-registry">registry</a>。</li>
+        <a href="#dfn-registry">注册</a>。</li>
     <li>当创建一个<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#appropriate-template-contents-owner-document">模板内容所有者的文档</a>, 使用一个新的空的 <a href="#dfn-registry">注册</a>。</li>
 </ul>
 
@@ -537,12 +537,16 @@
         <li>让 <var>NAME</var> 成为 <var>TYPE</var></li>
     </ol></li>
     <li>让 <var>LIFECYCLE</var> 成为<a href="#dfn-lifecycle-callbacks">生命周期回调函数</a></li>
-    <li>对于<var>生命周期回调函数</var>里的叫做<a href="#dfn-created-callback"><em>被创建的</em></a><a href="#dfn-transfer-callback">传递回调函数</a> ，在<var>原型</var>的属性上叫做
-        <em>生成回调函数</em></li>
-    <li>对于<var>生命周期回调函数</var>里的叫做<a href="#dfn-attached-callback"><em>被绑定的</em></a><a href="#dfn-transfer-callback">传递回调函数</a>，在<var>原型</var>的属性上叫做 <em>绑定回调函数</em></li>
-    <li>对于<var>生命周期回调函数</var>里的叫做<a href="#dfn-detached-callback"><em>被移除的</em></a><a href="#dfn-transfer-callback">传递回调函数</a>，
-        在<var>原型</var>的属性上叫做<em>移除回调函数</em></li>
-    <li>对于<var>生命周期回调函数</var>里的叫做 <A href="#dfn-attribute-changed-callback"><em>属性被改变的</em></a><a href="#dfn-transfer-callback">传递回调函数</a> ，在<var>原型</var>的属性上叫<em>属性改变回调函数</em></li>
+
+    <li>从<var>PROTOTYPE</var>上称为<em>createdCallback</em>的属性<a href="#dfn-transfer-callback">传递回调函数</a>被称为<a
+                href="#dfn-created-callback"><em>created</em></a> 到<var>LIFECYCLE</var></li>
+
+    <li>从<var>PROTOTYPE</var>上称为<em>attachedCallback</em>的属性<a href="#dfn-transfer-callback">传递回调函数</a>被称为<a href="#dfn-attached-callback"><em>attached</em></a> 到<var>LIFECYCLE</var>
+    </li>
+    <li>从<var>PROTOTYPE</var>上称为<em>detachedCallback</em>的属性<a href="#dfn-transfer-callback">传递回调函数</a>被称为<a href="#dfn-detached-callback"><em>detached</em></a> 到<var>LIFECYCLE</var>
+    </li>
+    <li>从<var>PROTOTYPE</var>上称为<em>attributeChangedCallback</em>的属性<a href="#dfn-transfer-callback">传递回调函数</a>被称为<A href="#dfn-attribute-changed-callback"><em>attributeChanged</em></a> 到<var>LIFECYCLE</var>
+       </li>
     <li>让<var>DEFINITION</var> 成为一个<a href="#dfn-element-definition">元素定义</a> ， <a href="#dfn-custom-element-type">自定义元素类型</a> 设置到<var>TYPE</var>, <a href="http://dom.spec.whatwg.org/#concept-element-local-name">本地命名</a> 设置到<var>NAME</var>, <a href="http://dom.spec.whatwg.org/#concept-element-namespace">命名空间</a> 设置到 <var>NAMESPACE</var>, <a href="#dfn-custom-element-prototype">自定义元素原型</a> 设置到 <var>PROTOTYPE</var>, 且 <a href="#dfn-lifecycle-callbacks">生命周期回调函数</a> 设置到 <var>LIFECYCLE</var>.</li>
 </ol>
 </div>
@@ -563,13 +567,13 @@
     <li>让 <var>CANDIDATES</var> 成为<var>TYPE</var> 和 <var>NAMESPACE</var> 的<a href="#dfn-sorted-element-queue">存储元素队列</a> 在 <var>MAP</var>里</li>
     <li>对于每一项 <var>ELEMENT</var> 在 <var>CANDIDATES</var>里:
     <ol>
-        <li><a href="#dfn-enqueue-lifecycle-callback">队列</a> <a href="#dfn-created-callback"><em>创建</em></a>回调给 <var>ELEMENT</var></li>
+        <li><a href="#dfn-enqueue-lifecycle-callback">队列</a> <a href="#dfn-created-callback"><em>created </em></a>回调给 <var>ELEMENT</var></li>
     </ol></li>
     <li>设置 <var>CANDIDATES</var> 到空的<a href="#dfn-sorted-element-queue">存储元素队列</a>。</li>
 </ol>
 </div>
 
-<h3 id="extensions-to-document-interface-to-register">扩展<a href="http://dom.spec.whatwg.org/#document"><code>文档</code></a> 接口</h3>
+<h3 id="extensions-to-document-interface-to-register">扩展<a href="http://dom.spec.whatwg.org/#document"><code>文档</code></a>接口</h3>
 
 <p><a href="http://dom.spec.whatwg.org/#document">文档</a> 接口的 <dfn id="dfn-document-registerElement"><code>注册元素</code></dfn> 方法提供了一种
     <a href="#dfn-element-registration">注册 和 返回它的 <a href="#dfn-custom-element-constructor">自定义元素构造函数</a>的方法。</p>
@@ -692,7 +696,7 @@ var foo = document.createElement('p', 'x-foo');
         <li>设置 <var>ELEMENT</var>的<a href="http://dom.spec.whatwg.org/#concept-element-local-name">本地命名</a> 到<var>NAME</var>, <a href="http://dom.spec.whatwg.org/#concept-element-namespace">命名空间</a> 设置到 <var>NAMESPACE</var>, 和<a href="http://dom.spec.whatwg.org/#concept-node-document">节点文档</a> 设置到 <var>DOCUMENT</var></li>
         <li>如果 <var>TYPE</var> 是不一样的<var>NAME</var>, 设置 <var>ELEMENT</var>的<a
                 href="http://dom.spec.whatwg.org/#concept-named-attribute">属性</a>值 <code>为</code> 为<var>TYPE</var></li>
-        <li><a href="#dfn-enqueue-lifecycle-callback">排队</a> <a href="#dfn-created-callback"><em>创建</em></a> 回调函数给  <var>ELEMENT</var></li>
+        <li><a href="#dfn-enqueue-lifecycle-callback">排队</a> <a href="#dfn-created-callback"><em>created </em></a> 回调函数给  <var>ELEMENT</var></li>
         <li>返回 <var>ELEMENT</var></li>
     </ol></li>
 </ol>
@@ -724,13 +728,13 @@ partial interface <a href="http://dom.spec.whatwg.org/#document">Document</a> {
     <em>之前</em>：</p>
 <ol>
     <li>如果 <var>TYPE</var> 是不一样的<em>本地命名</em>, 设置<var>ELEMENT</var><code>的</code> <a href="http://dom.spec.whatwg.org/#concept-named-attribute">属性</a> 值为 <var>TYPE</var></li>
-    <li><a href="#dfn-enqueue-lifecycle-callback">排队</a> <a href="#dfn-created-callback"><em>创建</em></a> 回调函数给 <var>ELEMENT</var></li>
+    <li><a href="#dfn-enqueue-lifecycle-callback">排队</a> <a href="#dfn-created-callback"><em>created </em></a> 回调函数给 <var>ELEMENT</var></li>
 </ol>
 </div>
 
 <h2 id="parsing">解析自定义元素</h2>
 
-<p>在<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#tree-construction">树构造函数</a>期间启用实例化 <a href="#dfn-custom-element">自定义元素</a> , 一个符合标准的 UA <strong>必须</strong> 执行 <a href="#dfn-enqueue-lifecycle-callback">排队</a> <a href="#dfn-created-callback"><em>创建</em></a> 回调函数无论何时 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#create-an-element-for-the-token">创建</a> 一个<a href="#dfn-custom-element">自定义元素</a>。</p>
+<p>在<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#tree-construction">树构造函数</a>期间启用实例化 <a href="#dfn-custom-element">自定义元素</a> , 一个符合标准的 UA <strong>必须</strong> 执行 <a href="#dfn-enqueue-lifecycle-callback">排队</a> <a href="#dfn-created-callback"><em>created </em></a> 回调函数无论何时 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#create-an-element-for-the-token">创建</a> 一个<a href="#dfn-custom-element">自定义元素</a>。</p>
 
 <div class="informative">
 <p>对于 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#tree-construction">树构造函数</a>的 修改有被创建的<a
@@ -744,9 +748,9 @@ partial interface <a href="http://dom.spec.whatwg.org/#document">Document</a> {
 <div class="informative">
 <p>一旦 ECMAScript标准版6被发布，这部分将纳入该规范的各个区域。 在此之前，这里是ECMAScript 6和自定义元素是如何整合的概述。</p>
 
-<p>如果用户实现了<a href="http://people.mozilla.org/~jorendorff/es6-draft.html#sec-well-known-symbols"><code>@@create</code></a> 方法, 本规范将会停止处理 <code>ElementRegistrationOptions 选项</code> 在 <code><a href="#dfn-document-registerElement">registerElement</a></code>作为一个词典的争议 ,相反把它看做是一个 <a href="#dfn-custom-element-constructor">自定义元素构造函数</a>。</p>
+<p>如果用户代理实现了<a href="http://people.mozilla.org/~jorendorff/es6-draft.html#sec-well-known-symbols"><code>@@create</code></a> 方法, 本规范将会停止处理 <code>ElementRegistrationOptions 选项</code> 在 <code><a href="#dfn-document-registerElement">registerElement</a></code>作为一个词典的争议 ,相反把它看做是一个 <a href="#dfn-custom-element-constructor">自定义元素构造函数</a>。</p>
 
-<p>用户将会用一个新的<a
+<p>用户代理将会用一个新的<a
         href="http://people.mozilla.org/~jorendorff/es6-draft.html#sec-well-known-symbols"><code>@@create</code></a>方法创建一个新的元素对象改变这种争议，而不是用一个构造函数去创建。
     </p>
     由于registerElement的第二个参数现在是一个构造函数，该元素定义应改为持有的构造函数，而不是自定义元素的原型。
