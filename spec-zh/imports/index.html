@@ -402,11 +402,12 @@ var pulse = heart.querySelector('div.pulse');
 当此算法完成，如果 <var>IMPORT</var> 不为null，则<strong>必需</strong>认为下载是成功的，否则为失败。
 </p>
 
-<p>每个没有被 <a href="#dfn-import-link-async">标记为异步</a> 的导入会 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-end.html#delay-the-load-event">延迟文档的加载事件</a>。
+<p>每个没有被 <a href="#dfn-import-link-async">标记为异步</a> 的导入会 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-end.html#delay-the-load-event">延迟文档的加载事件</a>。</p>
 
 <div class="informative">
 <p><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#the-link-element"><code>link</code></a> 元素成功下载后，会发送一个简单的 <code>load</code> 事件。下载失败则发送一个简单的 <code>error</code> 事件。</p>
 <p>因为导入会延迟加载事件，<a href="http://dom.spec.whatwg.org/#document"><code>Document</code></a> 不会 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/syntax.html#completely-loaded">完全下载</a>，直到它链接的所有导入都下载完成。</p>
+</div>
 
 <h3 id="imports-and-csp">导入和内容安全策略</h3>
 
@@ -441,7 +442,7 @@ var pulse = heart.querySelector('div.pulse');
 <p>在 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#parsing-main-incdata">文本插入模式</a> 的条件 <em>Otherwise</em> 的子条件“<em>一个script结束标记</em>”，修改步骤3为：</p>
 <div class="monkeypatch">
 <ol start="3">
-    <li>如果解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-a-style-sheet-that-is-blocking-scripts">有阻塞脚本的样式</a> 或 <a href="#dfn-has-an-import-that-is-blocking-scripts">有阻塞脚本的导入</a> 或 <em>脚本</em>的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记没有设置，<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#spin-the-event-loop">spin 事件循环</a>，直到解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-no-style-sheet-that-is-blocking-scripts">没有阻塞脚本样式</a> 和 <a href="#dfn-has-no-import-that-is-blocking-scripts">没有阻塞脚本导入</a> 且脚本的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记被设置。</li>
+    <li>如果解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-a-style-sheet-that-is-blocking-scripts">有阻塞脚本的样式</a> 或 <a href="#dfn-has-an-import-that-is-blocking-scripts">有阻塞脚本的导入</a> 或 <em>脚本</em>的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记没有设置，<a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#spin-the-event-loop">翻阅事件循环</a>，直到解析器的 <code><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/dom.html#document">Document</a></code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/semantics.html#has-no-style-sheet-that-is-blocking-scripts">没有阻塞脚本样式</a> 和 <a href="#dfn-has-no-import-that-is-blocking-scripts">没有阻塞脚本导入</a> 且脚本的 <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/scripting-1.html#ready-to-be-parser-executed">"准备被解析器执行"</a> 标记被设置。</li>
 </ol>
 </div>
 
